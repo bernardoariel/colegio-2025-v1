@@ -1,10 +1,12 @@
 <?php 
-include("bibliotecas/fechas.inicio.php");
-include("bibliotecas/parametros.inicio.php"); 
-include("bibliotecas/caja.inicio.php"); 
-include("bibliotecas/paneles-nube.inicio.php"); 
-include("bibliotecas/ventas-nube.inicio.php"); 
-include("bibliotecas/fechas-cuotas.inicio.php"); 
+
+  include("bibliotecas/fechas.inicio.php");
+  include("bibliotecas/parametros.inicio.php"); 
+  include("bibliotecas/caja.inicio.php"); 
+  include("bibliotecas/paneles-nube.inicio.php"); 
+  include("bibliotecas/ventas-nube.inicio.php"); 
+  include("bibliotecas/fechas-cuotas.inicio.php"); 
+  
 ?>
 
 <div class="content-wrapper">
