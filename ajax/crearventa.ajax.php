@@ -92,6 +92,15 @@ class AjaxCrearVenta{
 		    $datos = $value["folio2"];
 
 		    $actualizarComprobantes = ModeloComprobantes::mdlUpdateComprobante($tablaComprobantes, $valor,$datos);
+			
+			//actualizo la tabla de comprobantes
+		    ModeloComprobantes::mdlUpdateComprobante($tablaComprobantes, $valor,$datos);
+			//51 apostilla
+			$isApostilla = 0;
+			if ($value['idnrocomprobante']==51){
+				$isApostilla = 1;	
+			}
+
 		}
 		
 		$fecha = date("Y-m-d");
@@ -108,7 +117,7 @@ class AjaxCrearVenta{
 
 			$fechapago = $fecha;
 
-			$caja = ControladorCaja::ctrMostrarCaja($item, $valor);
+			$caja = ControladorCaja::ctrMostrarCaja($item= null, $valor);
 		         
 		          
 		          $efectivo = $caja[0]['efectivo'];
@@ -148,6 +157,7 @@ class AjaxCrearVenta{
 		
 		$tabla = 'ventas';
 		$codigoFactura ="SIN HOMOLOGAR";
+
 		$datos = array("id_vendedor"=>$_POST["idVendedor"],
 					   "fecha"=>$fecha,
 					   "tipo"=>$_POST["tipoFc"],
@@ -166,9 +176,8 @@ class AjaxCrearVenta{
 					   "referenciapago"=>$_POST["nuevaReferencia"],
 					   "cae"=>'',
 					   "fecha_cae"=>'',
+					   "apostilla"=>$isApostilla,
 					   "fechapago"=>$fechapago);
-
-	   
 		 
 		$respuesta = ModeloVentas::mdlIngresarVenta($tabla, $datos);
 		
@@ -210,13 +219,13 @@ class AjaxCrearVenta{
 		  
 
 		  $datos = array("fecha"=>date('Y-m-d'),
-		  
 						 "efectivo"=>$efectivo,
 						 "tarjeta"=>$tarjeta,
 						 "cheque"=>$cheque,
 						 "transferencia"=>$transferencia);
-		  
+	
 		  $caja = ControladorCaja::ctrEditarCaja($item, $datos);
+		  
 		}
 
 		if(isset( $_POST['idVentaNro'])){
@@ -329,7 +338,7 @@ CREAR NUEVA VENTA CON FACTURA ELECTRONICA SI NO HAY NINGUN ERROR
 if(isset($_POST["nuevaVenta"])){
 
 	$nuevaVenta = new AjaxCrearVenta();
-	$nuevaVenta -> nuevaVenta();
+	// $nuevaVenta -> nuevaVenta();
 
 }
 /*=============================================

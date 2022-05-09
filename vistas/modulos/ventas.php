@@ -274,6 +274,11 @@
 
                 <button class="btn btn-info btnVerVenta" idVenta="<?php echo $value['id']; ?>" codigo="<?php echo $value['codigo']; ?>" title="ver la factura" data-toggle="modal" data-target="#modalVerArticulos"><i class="fa fa-eye"></i>
                 </button>
+                <?php if ($value['apostilla']==1): ?>
+                  <button class="btn btn-warning btnVerApostilla" idVenta="<?php echo $value['id']; ?>" title="ver las apostillas" data-toggle="modal" data-target="#modalVerApostilla"><i class="fa fa-sticky-note"></i>
+                </button>
+                <?php endif ?>
+                
 
               <?php if ($value["cae"]!=''): ?>
           
@@ -331,6 +336,98 @@
 
 </div>
 
+<!--=====================================
+      VER Apostilla
+======================================-->
+
+<div id="modalVerApostilla" class="modal fade" role="dialog">
+
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+
+      <form role="form" method="post">
+      
+        <!--=====================================
+        CABEZA DEL MODAL
+        ======================================-->
+
+        <div class="modal-header" style="background:#3c8dbc; color:white">
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+          <h4 class="modal-title">Ver Apostillas</h4>
+
+        </div>
+
+        <!--=====================================
+        CUERPO DEL MODAL
+        ======================================-->
+
+        <div class="modal-body">
+
+          <div class="box-body">
+            
+            <!-- ENTRADA PARA EL IMPORTE FACTURA -->
+            
+            <div class="form-group">
+              
+              <div class="input-group">
+              
+                <table class="table table-bordered tablaProductosVendidos">
+
+                  <thead style="background:#3c8dbc; color:white">
+
+                      <tr>
+
+                        <th>Apostilla</th>
+
+                        <th style="width: 300px;">Nombre</th>
+
+                        <th style="width: 300px;">Motivo</th>
+
+                        <th style="width: 150px;">Importe</th>
+
+                      </tr>
+
+                  </thead>    
+
+                  <tbody class="tablaApostilla"></tbody>
+
+              </table>
+
+              </div>
+
+            </div>
+            
+
+
+
+          </div>
+
+        </div>
+      
+       <!--=====================================
+        PIE DEL MODAL
+        ======================================-->
+
+        <div class="modal-footer finFactura">
+
+          <button type="button" class="btn btn-info pull-left" data-dismiss="modal" id="imprimirItems" codigo="<?php echo $value["id"];?>">aaaa Factura</button>
+          <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Salir</button>
+
+        </div>
+
+      </form>
+
+       
+
+
+    </div>
+
+  </div>
+</div>
 <!--=====================================
       VER ARTICULOS
 ======================================-->

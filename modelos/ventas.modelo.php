@@ -128,7 +128,7 @@ class ModeloVentas{
 
 	static public function mdlIngresarVenta($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fecha,tipo,codigo, id_cliente,nombre,documento,tabla, id_vendedor, productos, impuesto, neto, total,adeuda,observaciones,metodo_pago,referenciapago,fechapago,cae,fecha_cae,qr) VALUES (:fecha,:tipo,:codigo, :id_cliente,:nombre,:documento,:tabla, :id_vendedor, :productos, :impuesto, :neto, :total,:adeuda,:obs, :metodo_pago,:referenciapago,:fechapago,:cae,:fecha_cae,:qr)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fecha,tipo,codigo, id_cliente,nombre,documento,tabla, id_vendedor, productos, impuesto, neto, total,adeuda,observaciones,metodo_pago,referenciapago,fechapago,cae,fecha_cae,qr,apostilla) VALUES (:fecha,:tipo,:codigo, :id_cliente,:nombre,:documento,:tabla, :id_vendedor, :productos, :impuesto, :neto, :total,:adeuda,:obs, :metodo_pago,:referenciapago,:fechapago,:cae,:fecha_cae,:qr,:apostilla)");
 
 		$stmt->bindParam(":fecha", $datos["fecha"], PDO::PARAM_STR);
 		$stmt->bindParam(":tipo", $datos["tipo"], PDO::PARAM_STR);
@@ -150,6 +150,7 @@ class ModeloVentas{
 		$stmt->bindParam(":cae", $datos["cae"], PDO::PARAM_STR);
 		$stmt->bindParam(":fecha_cae", $datos["fecha_cae"], PDO::PARAM_STR);
 		$stmt->bindParam(":qr", $datos["qr"], PDO::PARAM_STR);
+		$stmt->bindParam(":apostilla", $datos["apostilla"], PDO::PARAM_INT);
 		if($stmt->execute()){
 
 			return "ok";

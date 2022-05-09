@@ -1,8 +1,6 @@
 $(document).ready(function() {
-
         // INICIO LOS COMPROBANTES
         var pathname = window.location.pathname;
-        console.log('pathname', pathname)
 
 
         if (pathname == "/colegio/iniciosinconexion") {
