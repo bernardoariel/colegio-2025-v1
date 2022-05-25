@@ -1262,17 +1262,22 @@ $(".tablaVentas").on("click", ".btnVerApostilla", function(){
     	success:function(respuesta){
 
 			let filas = ''
-			
+			let bnd = false
 			respuesta.forEach((fila)=>{
 				
-				filas += `<tr>
-				<td><input type="number" class="form-control" value="${fila.folio}" required readonly></td>
-				<td><input type="text" class="form-control nameTabla" placeholder="agregar el nombre" required></td>
-				<td><input type="text" class="form-control" placeholder="agregar el motivo" required></td>
-				<td><input type="number" class="form-control" required value="300"></td>
-			  </tr>
-				`
+				filas += '<tr>'
 
+				if(bnd==false){
+					filas +=`<input type="hidden" id="idVenta" value="${fila.idVenta}"><input type="hidden" id="nro_factura" value="${fila.nro_factura}">`
+					bnd = true;
+				}
+
+				filas += `<td><input type="number" id="${fila.folio}" class="form-control" value="${fila.folio}" required readonly></td>
+				<td><input type="text" id="${fila.folio}-nombre"class="form-control nameTabla" placeholder="agregar el nombre" required></td>
+				<td><input type="text" id="${fila.folio}-motivo" class="form-control" placeholder="agregar el motivo" required></td>
+				<td><input type="number" class="form-control" required value="300" readonly></td>
+			   </tr>
+			  `
 			})
 	        $('#tablaApostilla').html(filas)
 	
