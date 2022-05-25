@@ -84,6 +84,8 @@ class AjaxCrearVenta{
 		#creo un array del afip
 		$items=Array();
 		#recorro $listaproductos para cargarlos en la tabla de comprobantes
+		//51 apostilla
+		$isApostilla = 0;
 		foreach ($listaProductos as $key => $value) {
 
 		    $tablaComprobantes = "comprobantes";
@@ -95,8 +97,7 @@ class AjaxCrearVenta{
 			
 			//actualizo la tabla de comprobantes
 		    ModeloComprobantes::mdlUpdateComprobante($tablaComprobantes, $valor,$datos);
-			//51 apostilla
-			$isApostilla = 0;
+			
 			if ($value['idnrocomprobante']==51){
 				$isApostilla = 1;	
 			}

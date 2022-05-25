@@ -54,7 +54,7 @@
 
       <div class="box-body">
         
-       <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
+       <table class="table table-bordered table-striped dt-responsive tablas tablaVentas" width="100%">
          
         <thead>
          
@@ -271,17 +271,20 @@
             <td>
               
               <div class="btn-group">
-
-                <button class="btn btn-info btnVerVenta" idVenta="<?php echo $value['id']; ?>" codigo="<?php echo $value['codigo']; ?>" title="ver la factura" data-toggle="modal" data-target="#modalVerArticulos"><i class="fa fa-eye"></i>
-                </button>
-                <?php if ($value['apostilla']==1): ?>
+              <?php if ($value['apostilla']==1): ?>
                   <button class="btn btn-warning btnVerApostilla" idVenta="<?php echo $value['id']; ?>" title="ver las apostillas" data-toggle="modal" data-target="#modalVerApostilla"><i class="fa fa-sticky-note"></i>
                 </button>
                 <?php endif ?>
+              <?php if ($value["cae"]!=''): ?>
+                <button class="btn btn-info btnVerVenta" idVenta="<?php echo $value['id']; ?>" codigo="<?php echo $value['codigo']; ?>" title="ver la factura" data-toggle="modal" data-target="#modalVerArticulos"><i class="fa fa-eye"></i>
+                </button>
+               
                 
 
-              <?php if ($value["cae"]!=''): ?>
-          
+                <?php if ($value["apostilla"]>=0): ?>
+                  <button class="btn btn-success btnImprimirFactura" idVenta="<?php echo $value['id']; ?>" total="<?php echo $value['total']; ?>" adeuda="<?php echo $value['adeuda']; ?>" codigoVenta="<?php echo $value['codigo']; ?>"><i class="fa fa-file-pdf-o"></i>
+                </button>
+                <?php endif ?>
                 <button class="btn btn-danger btnImprimirFactura" idVenta="<?php echo $value['id']; ?>" total="<?php echo $value['total']; ?>" adeuda="<?php echo $value['adeuda']; ?>" codigoVenta="<?php echo $value['codigo']; ?>"><i class="fa fa-file-pdf-o"></i>
                 </button>
 
@@ -393,7 +396,14 @@
 
                   </thead>    
 
-                  <tbody class="tablaApostilla"></tbody>
+                  <tbody id="tablaApostilla">
+                    <tr>
+                      <td><input type="text" class="form-control" required value="1234" ></td>
+                      <td><input type="text" class="form-control" placeholder="agregar el nombre" required></td>
+                      <td><input type="text" class="form-control" placeholder="agregar el motivo" required></td>
+                      <td><input type="text" class="form-control" required value="300"></td>
+                    </tr>
+                  </tbody>
 
               </table>
 
@@ -414,7 +424,7 @@
 
         <div class="modal-footer finFactura">
 
-          <button type="button" class="btn btn-info pull-left" data-dismiss="modal" id="imprimirItems" codigo="<?php echo $value["id"];?>">aaaa Factura</button>
+          <button type="button" class="btn btn-danger pull-left" data-dismiss="modal" id="guardarApostillas" codigo="<?php echo $value["id"];?>">Guardar</button>
           <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Salir</button>
 
         </div>

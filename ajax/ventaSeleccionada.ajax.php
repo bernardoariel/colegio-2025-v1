@@ -14,7 +14,6 @@ class AjaxSeleccionarVenta{
 		$valor = $_POST["idVenta"];
 
 		$respuesta = ControladorVentas::ctrSeleccionarVenta($item, $valor);
-		
 
 	}
 

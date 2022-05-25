@@ -1239,6 +1239,59 @@ $("#btnHomologacion").on("click",function(){
 })
 
 /*=============================================
+MOSTRAR LA APOSTILLA
+=============================================*/
+$(".tablaVentas").on("click", ".btnVerApostilla", function(){
+
+	console.log('apostilla')
+	var idVenta = $(this).attr("idVenta");
+
+	var datos = new FormData();
+    datos.append("idVenta", idVenta);
+
+  	$.ajax({
+
+	    url:"ajax/apostilla.ajax.php",
+	    method: "POST",
+	    data: datos,
+	    cache: false,
+	    contentType: false,
+	    processData: false,
+	    dataType:"json",
+
+    	success:function(respuesta){
+
+			let filas = ''
+			
+			respuesta.forEach((fila)=>{
+				
+				filas += `<tr>
+				<td><input type="number" class="form-control" value="${fila.folio}" required readonly></td>
+				<td><input type="text" class="form-control nameTabla" placeholder="agregar el nombre" required></td>
+				<td><input type="text" class="form-control" placeholder="agregar el motivo" required></td>
+				<td><input type="number" class="form-control" required value="300"></td>
+			  </tr>
+				`
+
+			})
+	        $('#tablaApostilla').html(filas)
+	
+		
+        }
+
+    })
+
+})
+/*=============================================
+HACER FOCO EN EL NOMBRE DEL COMPROBANTE
+=============================================*/
+$('#modalVerApostilla').on('shown.bs.modal', function () {
+    
+    $('.nameTabla')[0].focus();
+    
+
+})
+/*=============================================
 NOTA DE CREDITO
 =============================================*/
 
