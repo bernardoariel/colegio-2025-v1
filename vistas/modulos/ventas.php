@@ -272,7 +272,13 @@
               
               <div class="btn-group">
               <?php if ($value['apostilla']==1): ?>
-                  <button class="btn btn-warning btnVerApostilla" idVenta="<?php echo $value['id']; ?>" title="ver las apostillas" data-toggle="modal" data-target="#modalVerApostilla"><i class="fa fa-sticky-note"></i>
+                  <button 
+                    class="btn btn-warning btnVerApostilla" 
+                    idVenta="<?php echo $value['id']; ?>"
+                    title="ver las apostillas" 
+                    data-toggle="modal" 
+                    data-target="#modalVerApostilla">
+                    <i class="fa fa-sticky-note"></i>
                 </button>
                 <?php endif ?>
               <?php if ($value["cae"]!=''): ?>
@@ -282,8 +288,14 @@
                 
 
                 <?php if ($value["apostilla"]>=0): ?>
-                  <button class="btn btn-success btnImprimirFactura" idVenta="<?php echo $value['id']; ?>" total="<?php echo $value['total']; ?>" adeuda="<?php echo $value['adeuda']; ?>" codigoVenta="<?php echo $value['codigo']; ?>"><i class="fa fa-file-pdf-o"></i>
-                </button>
+                  <button 
+                    class="btn btn-success btnImprimirFactura" 
+                    idVenta="<?php echo $value['id']; ?>" 
+                    total="<?php echo $value['total']; ?>" 
+                    adeuda="<?php echo $value['adeuda']; ?>" 
+                    codigoVenta="<?php echo $value['codigo']; ?>">
+                    <i class="fa fa-file-pdf-o"></i>
+                  </button>
                 <?php endif ?>
                 <button class="btn btn-danger btnImprimirFactura" idVenta="<?php echo $value['id']; ?>" total="<?php echo $value['total']; ?>" adeuda="<?php echo $value['adeuda']; ?>" codigoVenta="<?php echo $value['codigo']; ?>"><i class="fa fa-file-pdf-o"></i>
                 </button>
