@@ -275,14 +275,15 @@
                   <button 
                     class="btn btn-warning btnVerApostilla" 
                     idVenta="<?php echo $value['id']; ?>"
-                    title="ver las apostillas" 
-                    data-toggle="modal" 
-                    data-target="#modalVerApostilla">
+                    title="ver las apostillas">
+                    
                     <i class="fa fa-sticky-note"></i>
                 </button>
                 <?php endif ?>
               <?php if ($value["cae"]!=''): ?>
-                <button class="btn btn-info btnVerVenta" idVenta="<?php echo $value['id']; ?>" codigo="<?php echo $value['codigo']; ?>" title="ver la factura" data-toggle="modal" data-target="#modalVerArticulos"><i class="fa fa-eye"></i>
+                <button class="btn btn-info btnVerVenta" idVenta="<?php echo $value['id']; ?>"
+                 codigo="<?php echo $value['codigo']; ?>" title="ver la factura" 
+                 data-toggle="modal" data-target="#modalVerArticulos"><i class="fa fa-eye"></i>
                 </button>
                
                 

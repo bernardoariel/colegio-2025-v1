@@ -151,6 +151,8 @@ CUERPO DOCUMENTO
 
       if($_GET["ruta"] == "usuarios" ||
          $_GET["ruta"] == "inicio" ||
+         $_GET["ruta"] == "apostillas" ||
+         $_GET["ruta"] == "apostilla-items" ||
          $_GET["ruta"] == "iniciosinconexion" ||
          $_GET["ruta"] == "usuarios" ||
          $_GET["ruta"] == "miempresa" ||

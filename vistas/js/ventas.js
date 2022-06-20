@@ -1243,48 +1243,8 @@ MOSTRAR LA APOSTILLA
 =============================================*/
 $(".tablaVentas").on("click", ".btnVerApostilla", function(){
 
-	console.log('apostilla')
-	var idVenta = $(this).attr("idVenta");
-
-	var datos = new FormData();
-    datos.append("idVenta", idVenta);
-
-  	$.ajax({
-
-	    url:"ajax/apostilla.ajax.php",
-	    method: "POST",
-	    data: datos,
-	    cache: false,
-	    contentType: false,
-	    processData: false,
-	    dataType:"json",
-
-    	success:function(respuesta){
-
-			let filas = ''
-			let bnd = false
-			respuesta.forEach((fila)=>{
-				
-				filas += '<tr>'
-
-				if(bnd==false){
-					filas +=`<input type="hidden" id="idVenta" value="${fila.idVenta}"><input type="hidden" id="nro_factura" value="${fila.nro_factura}">`
-					bnd = true;
-				}
-
-				filas += `<td><input type="number" id="${fila.folio}" class="form-control" value="${fila.folio}" required readonly></td>
-				<td><input type="text" id="${fila.folio}-nombre"class="form-control nameTabla" placeholder="agregar el nombre" required></td>
-				<td><input type="text" id="${fila.folio}-motivo" class="form-control" placeholder="agregar el motivo" required></td>
-				<td><input type="number" class="form-control" required value="300" readonly></td>
-			   </tr>
-			  `
-			})
-	        $('#tablaApostilla').html(filas)
-	
-		
-        }
-
-    })
+	let idVenta = $(this).attr("idVenta");
+	location = `index.php?ruta=apostilla-items&id=${idVenta}`
 
 })
 /*=============================================

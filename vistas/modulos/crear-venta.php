@@ -948,12 +948,6 @@ foreach ($clientes2 as $key => $value) {
 
         </div>
         
-       
-
-        
-
-     
-
     </div>
 
   </div>
