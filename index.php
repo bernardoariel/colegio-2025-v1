@@ -22,6 +22,7 @@ require_once "controladores/delegaciones.controlador.php";
 require_once "controladores/remitos.controlador.php";
 require_once "controladores/cuotas.controlador.php";
 require_once "controladores/ws.controlador.php";
+require_once "controladores/apostillas.controlador.php";
 
 #MODELOS QUE SE USAN::::::::::::::::::::::::::::::::::::
 require_once "modelos/escribanos.modelo.php";
@@ -44,6 +45,7 @@ require_once "modelos/delegaciones.modelo.php";
 require_once "modelos/remitos.modelo.php";
 require_once "modelos/cuotas.modelo.php";
 require_once "modelos/ws.modelo.php";
+require_once "modelos/apostillas.modelo.php";
 $plantilla = new ControladorPlantilla();
 $plantilla -> ctrPlantilla();
 

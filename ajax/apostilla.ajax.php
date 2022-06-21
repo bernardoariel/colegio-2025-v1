@@ -2,6 +2,8 @@
 
 require_once "../controladores/ventas.controlador.php";
 require_once "../modelos/ventas.modelo.php";
+require_once "../controladores/apostillas.controlador.php";
+require_once "../modelos/apostillas.modelo.php";
 
 class AjaxApostilla{
 
@@ -48,11 +50,22 @@ class AjaxApostilla{
 			}
 			
 		}
-
 		
 		echo json_encode($apostillas);
 		
-		
+	}
+	/*=============================================
+	        MOSTRAR Apostilla
+	=============================================*/	
+	public $idApostilla;
+
+	public function ajaxVerApostilla(){
+		 //TRAER TODAS LAS APOSTILLAS
+		 $item = 'id' ;
+		 $valor =  $this->idApostilla;
+		 
+		 $apostillas = ControladorApostillas::ctrMostrarApostillas($item, $valor);
+		 echo json_encode($apostillas);
 	}
 
 }
@@ -65,5 +78,13 @@ if(isset($_POST["idVenta"])){
 	$delegaciones = new AjaxApostilla();
 	$delegaciones -> ajaxVentasApostilla();
 }
+/*=============================================
+MOSTRAR Apostilla
+=============================================*/	
+if(isset($_POST["idApostilla"])){
 
+	$apostillas = new AjaxApostilla();
+	$apostillas -> idApostilla = $_POST["idApostilla"];
+	$apostillas -> ajaxVerApostilla();
+}
 

@@ -67,6 +67,8 @@ class ControladorVentas{
 		$listaProductos = json_decode($_POST["listaProductos"], true);
 		#creo un array del afip
 		$items=Array();
+		$apostillas=Array();
+		
 		#recorro $listaproductos para cargarlos en la tabla de comprobantes
 		foreach ($listaProductos as $key => $value) {
 
@@ -87,7 +89,9 @@ class ControladorVentas{
 
 			$items[$key]=array('codigo' => $value["id"],'descripcion' => $miItem,'cantidad' => $value["cantidad"],'codigoUnidadMedida'=>7,'precioUnitario'=>$value["precio"],'importeItem'=>$value["total"],'impBonif'=>0 );
 			
+			
 		}
+		
 		
 		include('../extensiones/afip/afip.php');
 
@@ -178,6 +182,8 @@ class ControladorVentas{
 				   );    
 			
 			$respuesta = ModeloVentas::mdlIngresarVenta($tabla, $datos);
+			
+			
 
 	        }
 		}
@@ -202,7 +208,7 @@ class ControladorVentas{
 					$item = "nombre";
 					$valor = "FC";
 
-					$registro = ControladorVentas::ctrUltimoComprobante($item, $valor);
+					
         		}
 			
 			  

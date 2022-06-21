@@ -669,7 +669,7 @@ $("#guardarVenta").on("click",function(){
             codigoUltimaFactura=respuestaUltimaFactura["codigo"];
             
             
-            window.location = "index.php?ruta=ventas&id="+idUltimaFactura;
+           window.location = "index.php?ruta=ventas&id="+idUltimaFactura;
             
           } 
 

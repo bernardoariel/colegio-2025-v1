@@ -165,6 +165,31 @@ class ModeloVentas{
 		$stmt = null;
 
 	}
+/*=============================================
+	REGISTRO DE APOSTILLAS
+	=============================================*/
+
+	static public function mdlIngresarApostillas($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(idventa,folio, importe) VALUES (:idventa,:folio,:importe)");
+
+		$stmt->bindParam(":idventa", $datos["idventa"], PDO::PARAM_INT);
+		$stmt->bindParam(":folio", $datos["folio"], PDO::PARAM_INT);
+		$stmt->bindParam(":importe", $datos["importe"], PDO::PARAM_STR);
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return $stmt->errorInfo();
+		
+		}
+
+		$stmt->close();
+		$stmt = null;
+
+	}
 
 	
 

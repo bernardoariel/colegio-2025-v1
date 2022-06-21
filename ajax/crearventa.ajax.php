@@ -181,6 +181,42 @@ class AjaxCrearVenta{
 					   "fechapago"=>$fechapago);
 		 
 		$respuesta = ModeloVentas::mdlIngresarVenta($tabla, $datos);
+		$ultimoId = ControladorVentas::ctrUltimoId();
+	
+		foreach ($listaProductos as $key => $value) {
+
+			if ($value['idnrocomprobante'] == 51){
+				
+				if ($value["folio1"] == $value["folio2"]){
+					
+					$apostillasDatos=array(
+						'idventa' => $ultimoId['id'],
+						'cantidad' => 1,
+						'folio'=>$value["folio1"],
+						'importe'=>'300');
+					//agregar en la bd
+					$ResApostilla= ModeloVentas::mdlIngresarApostillas('apostillas', $apostillasDatos);
+					
+					 
+
+				}else{
+					
+					for ($i=0; $i < ($value["folio2"]-$value["folio1"])+1 ; $i++) { 
+						
+						$apostillasDatos=array(
+							'idventa' => $ultimoId['id'],
+							'cantidad' => 1,
+							'folio'=>$value["folio1"]+$i,
+							'importe'=>'300');
+						//agregar en la bd
+						$ResApostilla= ModeloVentas::mdlIngresarApostillas('apostillas', $apostillasDatos);
+					
+					}
+				}
+				
+			}
+			
+		}
 		
 		
 		// ControladorArticulos::ctrPrepararIngresoArticulo();
@@ -314,8 +350,7 @@ class AjaxCrearVenta{
 	HOLOGOGACION VENTA
 	=============================================*/	
 	public function ajaxHomogacionVenta(){
-
-
+		
 		$respuesta = ControladorVentas::ctrHomologacionVenta();
 	
 		return $respuesta;

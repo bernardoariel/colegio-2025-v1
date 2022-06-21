@@ -238,6 +238,7 @@ CUERPO DOCUMENTO
 <script src="vistas/js/osde.js"></script>
 <script src="vistas/js/escribanos.js"></script>
 <script src="vistas/js/rubros.js"></script>
+<script src="vistas/js/apostillas.js"></script>
 
 <script src="vistas/js/productos.js"></script>
 <script src="vistas/js/ventas.js"></script>

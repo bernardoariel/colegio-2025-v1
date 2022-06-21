@@ -1,10 +1,27 @@
+<?php
+
+  //TRAER TODAS LAS APOSTILLAS
+  $item = 'idventa' ;
+  $valor = isset($_GET['id']) ? $_GET['id']: 1;
+
+  $apostillas = ControladorApostillas::ctrMostrarTodasApostillasVenta($item, $valor);
+
+  //TRAER TODAS LA FACTURA
+  $item = 'id' ;
+  $valor = isset($_GET['id']) ? $_GET['id']: 1;
+
+  $ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
+
+  
+?>
+
 <div class="content-wrapper">
 
   <section class="content-header">
     
     <h1>
       
-      Administrar Apostillas
+      <button class="btn btn-primary" id="btnIrHistoria" style="border-radius:100px"> <i class="fa fa-long-arrow-left"></i></button>  Administrar Apostillas
     
     </h1>
 
@@ -41,12 +58,15 @@
 
           <div class="box-footer no-padding">
             
+            
             <ul class="nav nav-stacked">
-              <li><a href="#"><b>31/06/2022</b></a></li>
-              <li><a href="#"><b>0004-00000164</b> </a></li>
-              <li><a href="#"><b>AGUIRRE HNOS</b></a></li>
-              <li><a href="#"><b>$ 45000</b> </a></li>
-              <li><a href="#"><b>Apostillas</b>  <span class="pull-right badge bg-red">5</span></a></li>
+             
+              <li><a href="#"><b><?php echo $ventas['fecha']; ?></b></a></li>
+              <li><a href="#"><b><?php echo $ventas['codigo']; ?></b> </a></li>
+              <li><a href="#"><b><?php echo $ventas['nombre']; ?></b></a></li>
+              <li><a href="#"><b><?php echo $ventas['total']; ?></b> </a></li>
+              <li><a href="#"><b>Apostillas</b><span class="pull-right badge bg-red"><?php echo count($apostillas); ?></span></a></li>
+              
             </ul>
 
           </div>
@@ -61,7 +81,7 @@
 
           <div class="box-body">
 
-            <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
+            <table class="table table-bordered table-striped dt-responsive tablas tablasApostillas" width="100%">
               
               <thead>
               
@@ -79,66 +99,36 @@
 
               <tbody>
 
+              <?php foreach ($apostillas as $key => $value): ?>
                 <tr>
-                  <td>1</td>
-                  <td>10006</td>
-                  <td>Juan Perez </td>
-                  <td>nacionalidad</td>
+                  <td><?php echo $key+1; ?></td>
+                  <td><?php echo $value['folio']; ?></td>
+
                   <td>
+                    <?php if(strlen($value['nombre'])>=1){echo $value['nombre'];$btn=true;}else{ echo "<span class='text-danger'>sin registrar</span>";$btn=false;} ?>
+                  </td>
+
+                  <td>
+                    <?php if(strlen($value['descripcion'])>=1){echo $value['descripcion'];$btn=true;}else{ echo "<span class='text-danger'>sin registrar</span>";$btn=false;} ?>
+                  </td>
+                  <td>
+
                     <div class="btn-group">
                     
-                      <button class="btn btn-danger"  data-toggle="modal" data-target="#modalAgregarApostilla" title="modificar o agregar datos en la apostilla"><i class="fa fa-edit"></i>
-                      <button class="btn btn-primary "><i class="fa fa-print" title="imprimir apostilla"></i>
-                  </td>
-                </tr>
+                      <button class="btn btn-danger btnApostilla"  
+                        idApostilla=<?php echo $value['id']; ?>
+                        data-toggle="modal" 
+                        data-target="#modalAgregarApostilla" 
+                        title="modificar o agregar datos en la apostilla">
+                        <i class="fa fa-edit"></i></button>
+                        <?php if ($btn): ?>
+                          
+                          <button class="btn btn-primary "><i class="fa fa-print" title="imprimir apostilla"></i></button>
 
-                <tr>
-                  <td>1</td>
-                  <td>10006</td>
-                  <td>Juan Perez </td>
-                  <td>nacionalidad</td>
-                  <td>
-                    <div class="btn-group">
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
+                        <?php endif ?>
                   </td>
                 </tr>
-
-                <tr>
-                  <td>1</td>
-                  <td>10006</td>
-                  <td>Juan Perez </td>
-                  <td>nacionalidad</td>
-                  <td>
-                    <div class="btn-group">
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>1</td>
-                  <td>10006</td>
-                  <td>Juan Perez </td>
-                  <td>nacionalidad</td>
-                  <td>
-                    <div class="btn-group">
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>10006</td>
-                  <td>Juan Perez </td>
-                  <td>nacionalidad</td>
-                  <td>
-                    <div class="btn-group">
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                      <button class="btn btn-info"><i class="fa fa-eye"></i>
-                  </td>
-                </tr>
-               
+              <?php endforeach ?>
 
               </tbody>
 
@@ -182,106 +172,117 @@
         <div class="modal-body">
 
           <div class="box-body">
-
-            <div class="form-group">
               
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-thumb-tack"></i></span> 
+            <form role="form" method="post">
+              <!-- ENTRADA PARA EL NRO DE FOLIO -->
+              <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon"><i class="fa fa-thumb-tack"></i></span> 
+                  
+                  <input type="hidden" id="idVentaA" name="idVentaA">
+                  <input type="hidden" id="idApostillaVenta" name="idApostillaVenta">
+                  <input type="text" 
+                    class="form-control" 
+                    placeholder="numero de folio" 
+                    id='nroFolio' 
+                    name='nroFolio' 
+                    value='10006' 
+                    readonly> 
 
-                <input type="text" 
-                  class="form-control" 
-                  placeholder="numero de folio" 
-                  id='nroFolio' 
-                  name='nroFolio' 
-                  value='10006' 
-                  readonly> 
+                </div>
 
               </div>
+              <!-- ENTRADA PARA EL NOMBRE -->
+              <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon"><i class="fa fa-id-card"></i></span> 
 
-            </div>
+                  <input type="text" 
+                    class="form-control" 
+                    placeholder="Nombre...." 
+                    id='idNombreApostilla' 
+                    name='idNombreApostilla' 
+                    pattern="[a-zA-Z ]{3,60}"
+                    autocomplete="off">  
 
-             <!-- ENTRADA PARA EL NOMBRE -->
+                </div>
+
+              </div>
+              <!-- ENTRADA PARA LA DESCRIPCION -->
+              <div class="form-group">
+                  
+                  <div class="input-group">
+                  
+                    <span class="input-group-addon"><i class="fa fa-star-half-full"></i></span> 
+
+                    <input type="text" 
+                      class="form-control" 
+                      placeholder="Descripcion...." 
+                      id='idDescripcionApostilla' 
+                      name='idDescripcionApostilla' 
+                      pattern="[a-zA-Z ]{3,60}"
+                      autocomplete="off">     
+
+                  </div>
+
+              </div>
+              <!-- ENTRADA PARA EL IMPORTE APOSTILLA -->
+              <div class="form-group">
+                  
+                  <div class="input-group">
+                  
+                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span> 
+
+                    <input type="text" 
+                      class="form-control" 
+                      placeholder="Importe...." 
+                      id='idImporteApostilla' 
+                      name='idImporteApostilla' 
+                      pattern="[0-9]{3}"
+                      autocomplete="off">     
+
+                  </div>
+
+              </div>
+             
             
-            <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-id-card"></i></span> 
+              <?php
 
-                <input type="text" 
-                  class="form-control" 
-                  placeholder="Nombre...." 
-                  id='idNombreApostilla' 
-                  name='idNombreApostilla' 
-                  value='Ariel Bernardo' 
-                  autocomplete="off">  
+                $realizarPago = new ControladorVentas();
+                $realizarPago -> ctrRealizarPagoVenta();
+
+              ?>
+
+              <div class="modal-footer">
+
+                <button type="submit" class="btn btn-primary">Guardar Datos Apostillas</button>
 
               </div>
+          
+            </form> 
+                
+            <?php
 
-            </div>
+            $guardarDatosApostilla = new ControladorApostillas();
+            $guardarDatosApostilla -> ctrGuardarDatosApostilla();
 
-          <!-- ENTRADA PARA EL NOMBRE -->
-            
-          <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-star-half-full"></i></span> 
-
-                <input type="text" 
-                  class="form-control" 
-                  placeholder="Descripcion...." 
-                  id='idDescripcionApostilla' 
-                  name='idDescripcionApostilla' 
-                  value='Por nacimiento' 
-                  autocomplete="off">     
-
-              </div>
-
+            ?>
           </div>
-          <!-- ENTRADA PARA EL NOMBRE -->
-            
-          <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-dollar"></i></span> 
-
-                <input type="text" 
-                  class="form-control" 
-                  placeholder="Importe...." 
-                  id='idImporteApostilla' 
-                  name='idImporteApostilla' 
-                  value='3500' 
-                  autocomplete="off">     
-
-              </div>
-
-          </div>
-          <?php
-
-            $realizarPago = new ControladorVentas();
-            $realizarPago -> ctrRealizarPagoVenta();
-
-          ?>
-           
-  
-          </div>  
-
-        </div>
-
-        <div class="modal-footer">
-
-          <button type="button" class="btn btn-danger" id="seleccionarClienteDni">Ingresar Datos</button>
-
-        </div>
         
+        </div>
+
     </div>
 
   </div>
 
 </div>
+
+
+
 
 
        
