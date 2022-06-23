@@ -182,7 +182,7 @@ class AjaxCrearVenta{
 		 
 		$respuesta = ModeloVentas::mdlIngresarVenta($tabla, $datos);
 		$ultimoId = ControladorVentas::ctrUltimoId();
-	
+		$importe = ModeloVentas::mdlMostrarJsonApostilla('datosjson','nombre','apostilla_importe_INT');
 		foreach ($listaProductos as $key => $value) {
 
 			if ($value['idnrocomprobante'] == 51){
@@ -193,7 +193,7 @@ class AjaxCrearVenta{
 						'idventa' => $ultimoId['id'],
 						'cantidad' => 1,
 						'folio'=>$value["folio1"],
-						'importe'=>'300');
+						'importe'=>$importe['valor']);
 					//agregar en la bd
 					$ResApostilla= ModeloVentas::mdlIngresarApostillas('apostillas', $apostillasDatos);
 					
@@ -207,7 +207,7 @@ class AjaxCrearVenta{
 							'idventa' => $ultimoId['id'],
 							'cantidad' => 1,
 							'folio'=>$value["folio1"]+$i,
-							'importe'=>'300');
+							'importe'=>$importe['valor']);
 						//agregar en la bd
 						$ResApostilla= ModeloVentas::mdlIngresarApostillas('apostillas', $apostillasDatos);
 					

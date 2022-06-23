@@ -35,19 +35,41 @@ class ControladorApostillas{
 
 		if(isset($_POST["idApostillaVenta"])){
 
-			if(preg_match('/^[a-zA-ZñÑ0-9 ]+$/', $_POST["idNombreApostilla"])||preg_match('/^[a-zA-ZñÑ0-9 ]+$/', $_POST["idDescripcionApostilla"])){
+			if(preg_match('/^[a-zA-ZñÑ0-9. ]+$/', $_POST["idNombreApostilla"])||preg_match('/^[a-zA-ZñÑ0-9 ]+$/', $_POST["idDescripcionApostilla"])){
+
+				if($_POST['idHaya']==0){
+					$tabla = 'comprobantes';
+					//ULTIMO NUMERO DE COMPROBANTE
+					$item = "nombre";
+					$valor = "haya";
+					$nroComprobante = ControladorVentas::ctrUltimoComprobante($item, $valor);
+					
+					$haya=$nroComprobante["numero"]+1;
+				}else{
+					$haya = $_POST['idHaya'];
+				}
+
+				$respuesta = ModeloVentas::mdlAgregarNroComprobanteHaya($tabla, $haya);
 
 				$tabla = "apostillas";
 
 				$datos = array("id"=> $_POST['idApostillaVenta'],
 							"descripcion"=> strtoupper($_POST['idDescripcionApostilla']),
 							"nombre" => strtoupper($_POST["idNombreApostilla"]),
-							"importe" => $_POST["idImporteApostilla"]);
+							"intervino" => strtoupper($_POST["intervinoApostilla"]),
+							"importe" => $_POST["idImporteApostilla"],
+							"haya" => $haya);
 
 				$respuesta = ModeloApostillas::mdlGuardarDatosApostilla($tabla, $datos);
 
 				if($respuesta == "ok"){
 
+					
+						 
+					 
+   
+					
+					
 					echo'<script>
 
 					swal({
@@ -89,5 +111,6 @@ class ControladorApostillas{
 		
 
 	}
+
 
 }

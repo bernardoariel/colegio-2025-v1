@@ -761,14 +761,14 @@ class ModeloVentas{
 
 		return $stmt -> fetch();
 
-		$stmt -> close();
+
 
 		$stmt = null;
 
 	}
 
 
-	public function mdlUltimoComprobante($tabla, $item, $valor){
+	static public function mdlUltimoComprobante($tabla, $item, $valor){
 
 		
 		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
@@ -804,7 +804,7 @@ class ModeloVentas{
 
 		}else{
 
-			return "error";
+			return $stmt->errorInfo();
 		
 		}
 
@@ -812,7 +812,45 @@ class ModeloVentas{
 		$stmt = null;
 
 	}
+	/*=============================================
+	EDITAR VENTA
+	=============================================*/
 
+	static public function mdlAgregarNroComprobanteHaya($tabla, $datos){
+		
+
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET numero = :numero WHERE id= 60");
+
+		
+		
+		$stmt->bindParam(":numero", $datos, PDO::PARAM_INT);
+	
+		
+
+		if($stmt->execute()){
+
+			return "ok";
+
+		}else{
+
+			return $stmt->errorInfo();
+		
+		}
+
+		$stmt = null;
+
+	}
+	static public function mdlMostrarJsonApostilla($tabla, $item, $valor){
+	
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+
+		$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+		$stmt -> execute();
+
+		return $stmt -> fetch();
+
+
+	}
 	/*=============================================
 	EDITAR VENTA
 	=============================================*/

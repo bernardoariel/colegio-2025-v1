@@ -19,12 +19,15 @@ $(".tablasApostillas").on("click", ".btnApostilla", function(){
       processData: false,
       dataType:"json",
 
-      success:function({id,folio,descripcion,nombre,importe,idventa}){
+      success:function({idventa,haya,id,folio,nombre,descripcion,intervino,importe}){
+        // console.log(haya)
         $("#idVentaA").val(idventa);
+        $("#idHaya").val(haya);
         $("#idApostillaVenta").val(id);
         $("#nroFolio").val(folio);
         $("#idNombreApostilla").val(nombre);
         $("#idDescripcionApostilla").val(descripcion);
+        $("#intervinoApostilla").val(intervino);
 		$("#idImporteApostilla").val(importe);
 	
 	  }
@@ -53,4 +56,9 @@ $('#modalAgregarApostilla').on('shown.bs.modal', function () {
 $('#btnIrHistoria').on('click', ()=>{
     // history.back();
     window.location = "ventas";
+})
+$(".tablasApostillas").on("click", ".btnImprimirApostilla", function(){
+    let idApostilla = $(this).attr("idApostilla");
+    window.open(`extensiones/fpdf/pdf/apostilla.php?id=${idApostilla}` ,"APOSTILLA "+idApostilla,1,2);
+
 })

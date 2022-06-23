@@ -809,7 +809,7 @@ class ControladorVentas{
 
 	}
 
-	public function ctrUltimoComprobante($item,$valor){
+	static public function ctrUltimoComprobante($item,$valor){
 
 		$tabla = "comprobantes";
 
@@ -1275,6 +1275,7 @@ echo $productosNuevosInicio . $productosNuevosMedio . $productosNuevosFinal;
 		return $respuesta;
 
 	}
+
 
 }
 

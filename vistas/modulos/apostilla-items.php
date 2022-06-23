@@ -43,7 +43,7 @@
 
         <div class="box box-widget widget-user-2">
 
-          <div class="widget-user-header bg-purple">
+          <div class="widget-user-header bg-warning">
           
             <div class="widget-user-image">
               
@@ -58,14 +58,23 @@
 
           <div class="box-footer no-padding">
             
-            
-            <ul class="nav nav-stacked">
+            <ul class="nav nav-stacked text-center">
              
               <li><a href="#"><b><?php echo $ventas['fecha']; ?></b></a></li>
-              <li><a href="#"><b><?php echo $ventas['codigo']; ?></b> </a></li>
+          
+              <li>
+
+                <a href="extensiones/fpdf/pdf/facturaElectronica.php?id=<?php echo $ventas['id']; ?>" 
+                   target="_blank"><b><?php echo $ventas['codigo']; ?></b> 
+                </a>
+
+              </li>
               <li><a href="#"><b><?php echo $ventas['nombre']; ?></b></a></li>
-              <li><a href="#"><b><?php echo $ventas['total']; ?></b> </a></li>
-              <li><a href="#"><b>Apostillas</b><span class="pull-right badge bg-red"><?php echo count($apostillas); ?></span></a></li>
+              <li><a href="#"><b>$<?php echo $ventas['total']; ?>.-</b></a></li>
+
+              <li>
+                <a href="#"><b>Apostillas</b><span class="pull-right badge bg-red"><?php echo count($apostillas); ?></span></a>
+              </li>
               
             </ul>
 
@@ -74,6 +83,7 @@
         </div>
 
       </div>
+      
       
       <div class="col-md-10">
 
@@ -91,6 +101,7 @@
                   <th style="width:80px">Folio Nro.</th>
                   <th>Nombre</th>
                   <th>Descripcion</th>
+                  <th>Intervino</th>
                   <th style="width:80px">Acciones</th>
 
                 </tr> 
@@ -112,6 +123,9 @@
                     <?php if(strlen($value['descripcion'])>=1){echo $value['descripcion'];$btn=true;}else{ echo "<span class='text-danger'>sin registrar</span>";$btn=false;} ?>
                   </td>
                   <td>
+                    <?php if(strlen($value['intervino'])>=1){echo $value['intervino'];$btn=true;}else{ echo "<span class='text-danger'>sin registrar</span>";$btn=false;} ?>
+                  </td>
+                  <td>
 
                     <div class="btn-group">
                     
@@ -123,7 +137,11 @@
                         <i class="fa fa-edit"></i></button>
                         <?php if ($btn): ?>
                           
-                          <button class="btn btn-primary "><i class="fa fa-print" title="imprimir apostilla"></i></button>
+                          <button class="btn btn-primary btnImprimirApostilla"
+                            idApostilla="<?php echo $value['id']; ?>"
+                                  >
+                            <i class="fa fa-print" title="imprimir apostilla"></i>
+                          </button>
 
                         <?php endif ?>
                   </td>
@@ -183,6 +201,7 @@
                   
                   <input type="hidden" id="idVentaA" name="idVentaA">
                   <input type="hidden" id="idApostillaVenta" name="idApostillaVenta">
+                  <input type="hidden" id="idHaya" name="idHaya">
                   <input type="text" 
                     class="form-control" 
                     placeholder="numero de folio" 
@@ -225,6 +244,24 @@
                       id='idDescripcionApostilla' 
                       name='idDescripcionApostilla' 
                       pattern="[a-zA-Z ]{3,60}"
+                      autocomplete="off">     
+
+                  </div>
+
+              </div>
+              <!-- ENTRADA PARA QUIEN INTERVINO -->
+              <div class="form-group">
+                  
+                  <div class="input-group">
+                  
+                    <span class="input-group-addon"><i class="fa fa-balance-scale"></i></span> 
+
+                    <input type="text" 
+                      class="form-control" 
+                      placeholder="Intervino...." 
+                      id='intervinoApostilla' 
+                      name='intervinoApostilla' 
+                      pattern="[a-zA-Z. ]{3,60}"
                       autocomplete="off">     
 
                   </div>
