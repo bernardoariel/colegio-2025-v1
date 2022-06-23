@@ -43,7 +43,7 @@
 
         <div class="box box-widget widget-user-2">
 
-          <div class="widget-user-header bg-warning">
+          <div class="widget-user-header bg-success">
           
             <div class="widget-user-image">
               
@@ -52,7 +52,7 @@
             </div>
 
             <h5 class="widget-user-desc">Facturado a</h5> 
-            <h3 class="widget-user-username">Nadia Carmichael</h3>
+            <h6 class="widget-user-username"><?php echo $ventas['nombre']; ?></h6>
 
           </div>
 
@@ -129,7 +129,7 @@
 
                     <div class="btn-group">
                     
-                      <button class="btn btn-danger btnApostilla"  
+                      <button class="btn btn-warning btnApostilla"  
                         idApostilla=<?php echo $value['id']; ?>
                         data-toggle="modal" 
                         data-target="#modalAgregarApostilla" 
@@ -207,7 +207,7 @@
                     placeholder="numero de folio" 
                     id='nroFolio' 
                     name='nroFolio' 
-                    value='10006' 
+                    value='' 
                     readonly> 
 
                 </div>
@@ -280,7 +280,7 @@
                       id='idImporteApostilla' 
                       name='idImporteApostilla' 
                       pattern="[0-9]{3}"
-                      autocomplete="off">     
+                      readonly>     
 
                   </div>
 
