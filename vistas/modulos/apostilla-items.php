@@ -52,7 +52,7 @@
             </div>
 
             <h5 class="widget-user-desc">Facturado a</h5> 
-            <h6 class="widget-user-username"><?php echo $ventas['nombre']; ?></h6>
+            <h6 class="widget-user-username"><small><?php echo $ventas['nombre']; ?></small></h6>
 
           </div>
 
