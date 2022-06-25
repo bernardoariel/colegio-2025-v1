@@ -101,8 +101,8 @@ $pdf->AddPage('P','A4');
 $pdf -> SetFont($parametros['formatofuente1'], $parametros['formatofuente2'], $parametros['formatofuente3']); 
 $pdf->Image('../../../vistas/img/afip/apostillas.jpg' , 5 ,5, 200 , 245,'JPG', '');
 
-$total = 8 - strlen($apostilla['haya']);
-$nroHaya = str_repeat("0", $total).$apostilla['haya'];
+
+$nroHaya = str_repeat("0", 8 - strlen($apostilla['haya'])).$apostilla['haya'];
 
 
 /*=============================================

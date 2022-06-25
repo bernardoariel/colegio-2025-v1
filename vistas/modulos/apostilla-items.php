@@ -280,7 +280,7 @@
                       id='idImporteApostilla' 
                       name='idImporteApostilla' 
                       pattern="[0-9]{3}"
-                      readonly>     
+                      >     
 
                   </div>
 
