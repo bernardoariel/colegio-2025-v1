@@ -233,133 +233,133 @@ $pdf->Cell(0,0,convertirLetras($apostilla['folio']));
  */
 
 /*=============================================
-COPIA 1
+COPIA 3
 =============================================*/
-$pdf->AddPage('P','A4');
-$pdf -> SetFont($parametros['formatofuente1'], $parametros['formatofuente2'], $parametros['formatofuente3']); 	
-$pdf->Image('../../../vistas/img/afip/apostillas.jpg' , 5 ,10, 200 , 110,'JPG', '');
-$nroHaya = str_repeat("0", 8 - strlen($apostilla['haya'])).$apostilla['haya'];
+// $pdf->AddPage('P','A4');
+// $pdf -> SetFont($parametros['formatofuente1'], $parametros['formatofuente2'], $parametros['formatofuente3']); 	
+// $pdf->Image('../../../vistas/img/afip/apostillas.jpg' , 5 ,10, 200 , 110,'JPG', '');
+// $nroHaya = str_repeat("0", 8 - strlen($apostilla['haya'])).$apostilla['haya'];
 
-//POSICION DE PUNTO DE VENTA Y NRO DE COMPROBANTE
-$pdf -> SetY(21);
-$pdf -> SetX(162);
-$pdf -> SetFont('Arial','B',12);
-$pdf->Cell(0,0,convertirLetras($nroHaya));
-//FECHA
-$pdf -> SetY(27.5);
-$pdf -> SetX(162);
-$pdf -> SetFont('Arial','',12);
-$pdf->Cell(0,0,date('d/m/Y'));
+// //POSICION DE PUNTO DE VENTA Y NRO DE COMPROBANTE
+// $pdf -> SetY(21);
+// $pdf -> SetX(162);
+// $pdf -> SetFont('Arial','B',12);
+// $pdf->Cell(0,0,convertirLetras($nroHaya));
+// //FECHA
+// $pdf -> SetY(27.5);
+// $pdf -> SetX(162);
+// $pdf -> SetFont('Arial','',12);
+// $pdf->Cell(0,0,date('d/m/Y'));
 
-//NOMBRE DE LA PERSONA
-$pdf -> SetY(44);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',9);
-$pdf->Cell(0,0,convertirLetras($apostilla['nombre']));
-//SUMA EN LETRAS
-$pdf -> SetY(49.5);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',9);
-$pdf->Cell(0,0,convertirLetras($importe['valor'] ));
+// //NOMBRE DE LA PERSONA
+// $pdf -> SetY(44);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',9);
+// $pdf->Cell(0,0,convertirLetras($apostilla['nombre']));
+// //SUMA EN LETRAS
+// $pdf -> SetY(49.5);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',9);
+// $pdf->Cell(0,0,convertirLetras($importe['valor'] ));
+// /*=============================================
+// 			DETALLE
+// =============================================*/
+// //BODY - CERTIFICACION -LABEL
+// $pdf -> SetY(67);
+// $pdf -> SetX(30);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Certificación Documento:'));
+// //BODY - CERTIFICACION -DESCRIPCION
+// $pdf -> SetY(67);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['descripcion']));
+// //BODY - INTERVENCION -LABEL
+// $pdf -> SetY(78);
+// $pdf -> SetX(32);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Intervino:'));
+// //BODY - CERTIFICACION -NOMBRE
+// $pdf -> SetY(78);
+// $pdf -> SetX(54);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['intervino']));
+// //BODY - APOSTILLA - LABEL
+// $pdf -> SetY(107.5);
+// $pdf -> SetX(28);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Apostilla Nº:'));
+// //BODY - APOSTILLA - NRO
+// $pdf -> SetY(107.5);
+// $pdf -> SetX(54);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['folio']));
+
+
+// $hoja2=160;
+
 /*=============================================
-			DETALLE
-=============================================*/
-//BODY - CERTIFICACION -LABEL
-$pdf -> SetY(67);
-$pdf -> SetX(30);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Certificación Documento:'));
-//BODY - CERTIFICACION -DESCRIPCION
-$pdf -> SetY(67);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['descripcion']));
-//BODY - INTERVENCION -LABEL
-$pdf -> SetY(78);
-$pdf -> SetX(32);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Intervino:'));
-//BODY - CERTIFICACION -NOMBRE
-$pdf -> SetY(78);
-$pdf -> SetX(54);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['intervino']));
-//BODY - APOSTILLA - LABEL
-$pdf -> SetY(107.5);
-$pdf -> SetX(28);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Apostilla Nº:'));
-//BODY - APOSTILLA - NRO
-$pdf -> SetY(107.5);
-$pdf -> SetX(54);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['folio']));
-
-
-$hoja2=160;
-
-/*=============================================
-COPIA 2
+COPIA 4
 =============================================*/
 
-$pdf -> SetFont($parametros['formatofuente1'], $parametros['formatofuente2'], $parametros['formatofuente3']); 	
-$pdf->Image('../../../vistas/img/afip/apostillas.jpg' , 5 ,10 +$hoja2, 200 , 110,'JPG', '');
-$nroHaya = str_repeat("0", 8 - strlen($apostilla['haya'])).$apostilla['haya'];
+// $pdf -> SetFont($parametros['formatofuente1'], $parametros['formatofuente2'], $parametros['formatofuente3']); 	
+// $pdf->Image('../../../vistas/img/afip/apostillas.jpg' , 5 ,10 +$hoja2, 200 , 110,'JPG', '');
+// $nroHaya = str_repeat("0", 8 - strlen($apostilla['haya'])).$apostilla['haya'];
 
-//POSICION DE PUNTO DE VENTA Y NRO DE COMPROBANTE
-$pdf -> SetY(21+$hoja2);
-$pdf -> SetX(162);
-$pdf -> SetFont('Arial','B',12);
-$pdf->Cell(0,0,convertirLetras($nroHaya));
-//FECHA
-$pdf -> SetY(27.5+$hoja2);
-$pdf -> SetX(162);
-$pdf -> SetFont('Arial','',12);
-$pdf->Cell(0,0,date('d/m/Y'));
+// //POSICION DE PUNTO DE VENTA Y NRO DE COMPROBANTE
+// $pdf -> SetY(21+$hoja2);
+// $pdf -> SetX(162);
+// $pdf -> SetFont('Arial','B',12);
+// $pdf->Cell(0,0,convertirLetras($nroHaya));
+// //FECHA
+// $pdf -> SetY(27.5+$hoja2);
+// $pdf -> SetX(162);
+// $pdf -> SetFont('Arial','',12);
+// $pdf->Cell(0,0,date('d/m/Y'));
 
-//NOMBRE DE LA PERSONA
-$pdf -> SetY(44+$hoja2);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',9);
-$pdf->Cell(0,0,convertirLetras($apostilla['nombre']));
-//SUMA EN LETRAS
-$pdf -> SetY(49.5+$hoja2);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',9);
-$pdf->Cell(0,0,convertirLetras($importe['valor'] ));
-/*=============================================
-			DETALLE
-=============================================*/
-//BODY - CERTIFICACION -LABEL
-$pdf -> SetY(67+$hoja2);
-$pdf -> SetX(30);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Certificación Documento:'));
-//BODY - CERTIFICACION -DESCRIPCION
-$pdf -> SetY(67+$hoja2);
-$pdf -> SetX(75);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['descripcion']));
-//BODY - INTERVENCION -LABEL
-$pdf -> SetY(78+$hoja2);
-$pdf -> SetX(32);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Intervino:'));
-//BODY - CERTIFICACION -NOMBRE
-$pdf -> SetY(78+$hoja2);
-$pdf -> SetX(54);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['intervino']));
-//BODY - APOSTILLA - LABEL
-$pdf -> SetY(107.5+$hoja2);
-$pdf -> SetX(28);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras('Apostilla Nº:'));
-//BODY - APOSTILLA - NRO
-$pdf -> SetY(107.5+$hoja2);
-$pdf -> SetX(54);
-$pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($apostilla['folio']));
+// //NOMBRE DE LA PERSONA
+// $pdf -> SetY(44+$hoja2);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',9);
+// $pdf->Cell(0,0,convertirLetras($apostilla['nombre']));
+// //SUMA EN LETRAS
+// $pdf -> SetY(49.5+$hoja2);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',9);
+// $pdf->Cell(0,0,convertirLetras($importe['valor'] ));
+// /*=============================================
+// 			DETALLE
+// =============================================*/
+// //BODY - CERTIFICACION -LABEL
+// $pdf -> SetY(67+$hoja2);
+// $pdf -> SetX(30);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Certificación Documento:'));
+// //BODY - CERTIFICACION -DESCRIPCION
+// $pdf -> SetY(67+$hoja2);
+// $pdf -> SetX(75);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['descripcion']));
+// //BODY - INTERVENCION -LABEL
+// $pdf -> SetY(78+$hoja2);
+// $pdf -> SetX(32);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Intervino:'));
+// //BODY - CERTIFICACION -NOMBRE
+// $pdf -> SetY(78+$hoja2);
+// $pdf -> SetX(54);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['intervino']));
+// //BODY - APOSTILLA - LABEL
+// $pdf -> SetY(107.5+$hoja2);
+// $pdf -> SetX(28);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras('Apostilla Nº:'));
+// //BODY - APOSTILLA - NRO
+// $pdf -> SetY(107.5+$hoja2);
+// $pdf -> SetX(54);
+// $pdf -> SetFont('Arial','',10);
+// $pdf->Cell(0,0,convertirLetras($apostilla['folio']));
 
 
 
