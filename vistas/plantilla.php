@@ -182,6 +182,7 @@ CUERPO DOCUMENTO
          $_GET["ruta"] == "cuotas-editar" ||
          $_GET["ruta"] == "buscaritem2" ||
          
+         $_GET["ruta"] == "comprobantes-cantidad" ||
 
          
          $_GET["ruta"] == "ventas" ||
@@ -268,6 +269,6 @@ CUERPO DOCUMENTO
 <script src="vistas/js/clorinda.js"></script>
 <script src="vistas/js/clientes.js"></script>
 <script src="vistas/js/cuotas.js"></script>
-
+<script src="vistas/js/comprobantes-cantidad.js"></script>
 </body>
 </html>

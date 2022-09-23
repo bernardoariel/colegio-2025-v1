@@ -497,10 +497,24 @@ class ControladorVentas{
 	}
 
 	static public function ctrRangoFechasVentas2($fechaInicial, $fechaFinal){
-
+		
 		$tabla = "ventas";
 
 		$respuesta = ModeloVentas::mdlRangoFechasVentas2($tabla, $fechaInicial, $fechaFinal);
+
+		return $respuesta;
+		
+	}
+	static public function ctrRangoFechasVentas3($fechaInicial, $fechaFinal){
+		echo $fechaInicial.'<br>';
+		$fechaInicial = explode("-",$fechaInicial); //09-23-2022
+		
+		$fechaInicial = $fechaInicial[2]."-".$fechaInicial[0]."-".$fechaInicial[1];
+		$fechaFinal = explode("-",$fechaFinal); //15-05-2018
+  	    $fechaFinal = $fechaFinal[2]."-".$fechaFinal[0]."-".$fechaFinal[1];
+		$tabla = "ventas";
+
+		$respuesta = ModeloVentas::mdlRangoFechasVentas3($tabla, $fechaInicial, $fechaFinal);
 
 		return $respuesta;
 		

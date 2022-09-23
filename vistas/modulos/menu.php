@@ -291,6 +291,16 @@
               </a>
 
             </li>
+            <li>
+
+              <a href="comprobantes-cantidad">
+                
+                <i class="fa fa-table"></i>
+                <span>Cant.Comprobantes</span>
+
+              </a>
+
+            </li>
 
             <li>
 

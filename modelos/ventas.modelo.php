@@ -457,6 +457,42 @@ class ModeloVentas{
 
 	}
 
+	static public function mdlRangoFechasVentas3($tabla, $fechaInicial, $fechaFinal){
+		
+	
+
+		if($fechaInicial == null){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE codigo<> '1' ORDER BY fecha desc,codigo DESC,tipo asc limit 150");
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();	
+
+
+		}else if($fechaInicial == $fechaFinal){
+
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha like '%$fechaFinal%' and codigo<> '1' ORDER BY fecha desc,codigo DESC,tipo asc");
+
+			$stmt -> bindParam(":fecha", $fechaFinal, PDO::PARAM_STR);
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}else{
+			echo $fechaInicial .'-'.$fechaFinal;
+			
+			echo "SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal' and codigo<> '1' ORDER BY codigo desc";
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal' and codigo<> '1' ORDER BY codigo desc");
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+		}
+
+	}
+
 	static public function mdlRangoFechasCtaCorriente($tabla, $fechaInicial, $fechaFinal){
 		
 		if($fechaInicial == null){
