@@ -481,9 +481,9 @@ class ModeloVentas{
 			return $stmt -> fetchAll();
 
 		}else{
-			echo $fechaInicial .'-'.$fechaFinal;
+			// echo $fechaInicial .'-'.$fechaFinal;
 			
-			echo "SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal' and codigo<> '1' ORDER BY codigo desc";
+			// echo "SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal' and codigo<> '1' ORDER BY codigo desc";
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal' and codigo<> '1' ORDER BY codigo desc");
 			$stmt -> execute();
 

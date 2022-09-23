@@ -61,44 +61,57 @@
     <div class="box cajaPrincipal">
 
       <div class="box-header with-border">
-        
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label>Fecha Inicio: </label>
-            <div class="input-group date">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" class="form-control pull-right" id="datepicker_inicio" value="<?php echo $fechaInicial;?>">
-            </div>
 
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label>Fecha Fin:</label>
-            <div class="input-group date">
-              <div class="input-group-addon">
-                <i class="fa fa-calendar"></i>
-              </div>
-              <input type="text" class="form-control pull-right" id="datepicker_fin" value="<?php echo $fechaFin; ?>">
-            </div>
+        <div class="row">
 
-          </div>
-        </div>
-        <div class="col">
-          <br>
-          
-
-            <button class="btn btn-primary" id="bsq_comprobantes">
+          <div class="col-lg-2">
+            
+            <div class="form-group">
               
-              Buscar
+              <label>Fecha Inicio: </label>
+              
+              <div class="input-group date">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right" id="datepicker_inicio" value="<?php echo $fechaInicial;?>">
+              </div>
 
-            </button>
+            </div>
+
+          </div>
+
+          <div class="col-lg-2">
+
+            <div class="form-group">
+
+              <label>Fecha Fin:</label>
+
+              <div class="input-group date">
+                
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+
+                <input type="text" class="form-control pull-right" id="datepicker_fin" value="<?php echo $fechaFin; ?>">
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-2">
+              <br>
+              <button class="btn btn-primary " id="bsq_comprobantes">
+                
+                Buscar
+
+              </button>
+
+          </div>
 
         </div>
-
-     
 
       </div>
 
@@ -216,10 +229,10 @@
             <td>haya</td>
             <td><?php echo $haya; ?></td>
           </tr>
-          <!-- <tr>
+         <tr>
             <td>otros</td>
             <td><?php echo $otros; ?></td>
-          </tr> -->
+          </tr>
 
 
         </tbody>
