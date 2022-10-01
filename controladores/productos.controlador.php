@@ -95,10 +95,9 @@ class ControladorProductos{
 	static public function ctrEditarProducto(){
 
 		if(isset($_POST["editarDescripcion"])){
-			
+				
 
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarDescripcion"]) &&
-			   preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarNombre"])){
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarDescripcion"]) ){
 
 				$tabla = "productos";
 
