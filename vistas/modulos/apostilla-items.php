@@ -179,7 +179,7 @@
         <div class="modal-header" style="background:#3c8dbc; color:white">
 
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Ingresar datos en la Apostilla</h4>
+          <h4 class="modal-title">Ingresar datos en la Apostilla #</h4>
 
         </div>
 
@@ -279,7 +279,7 @@
                       placeholder="Importe...." 
                       id='idImporteApostilla' 
                       name='idImporteApostilla' 
-                      pattern="[0-9]{3}"
+                      pattern="[0-9]{4}"
                       >     
 
                   </div>

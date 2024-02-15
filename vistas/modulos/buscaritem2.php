@@ -55,7 +55,7 @@
               
           
       }
-      buscarFolio('2018-05-01','2021-11-12','683289');
+      buscarFolio('2021-01-01','2023-03-03','754447');
       
       echo '<h1 class="text-danger">TERMINADO </h1>';
      
