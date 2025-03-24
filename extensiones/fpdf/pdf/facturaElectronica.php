@@ -89,6 +89,7 @@ function convertirLetras($texto){
 
 require_once('../../../modelos/conexion.php');
 
+<<<<<<< HEAD
 function eliminarQRViejos($carpeta, $dias = 30) {
     $archivos = glob($carpeta . '/*.png');
 
@@ -105,6 +106,8 @@ function eliminarQRViejos($carpeta, $dias = 30) {
         }
     }
 }
+=======
+>>>>>>> c2f09df03 (init 2025 con docker)
 
 // PARAMETROS
 $item= "id";

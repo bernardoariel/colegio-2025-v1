@@ -76,7 +76,6 @@ class AjaxCrearVenta{
 	FACTURA SIN HOMOLOGACION
 	=============================================*/	
 	public function ajaxSinHomologacion(){
-		
 		/**
 		 * agrego esto para poder realizar la correlatividad... de los eje
 		 */
