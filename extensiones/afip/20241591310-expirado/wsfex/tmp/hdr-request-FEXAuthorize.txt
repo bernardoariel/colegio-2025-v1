@@ -1,0 +1,8 @@
+POST /wsfexv1/service.asmx HTTP/1.1
+Host: wswhomo.afip.gov.ar
+Connection: Keep-Alive
+User-Agent: PHP-SOAP/5.6.33
+Content-Type: application/soap+xml; charset=utf-8; action="http://ar.gov.afip.dif.fexv1/FEXAuthorize"
+Content-Length: 2517
+Cookie: TS01983a04=01f60834d28b184f16c72f9d6da7e883f1ae0f5b5482b7a8f9a8d7e7e86bea405ff64e56a1;
+
