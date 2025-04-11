@@ -25,7 +25,65 @@ class ControladorVentas{
 		return $respuesta;
 
 	}
-
+	public static function ctrBuscarFolio($folio) {
+		// Fecha inicial definida por los datos
+		$start = new DateTime("2018-08-28"); // Fecha de inicio fija (agosto 2018)
+		$end = new DateTime(); // Fecha actual
+		$end->modify('last day of this month'); // Extender al final del mes actual
+	
+		$resultados = []; // Almacenar todos los resultados
+	
+		while ($start <= $end) {
+			// Obtener el mes actual
+			$mesInicio = $start->format('Y-m-01');
+			$mesFin = $start->format('Y-m-t');
+	
+			// Llamar al modelo para obtener ventas de este mes
+			$ventas = ModeloVentas::mdlRangoFechasVentasNuevo("ventas", $mesInicio, $mesFin);
+	
+			// Analizar cada venta
+			if (!empty($ventas) && is_array($ventas)) {
+				foreach ($ventas as $venta) {
+					$productos = json_decode($venta['productos'], true);
+	
+					// Validar que json_decode fue exitoso y devolvió un array
+					if (json_last_error() === JSON_ERROR_NONE && is_array($productos)) {
+						foreach ($productos as $producto) {
+							// Verificar si el folio está dentro del rango
+							if (isset($producto['folio1'], $producto['folio2']) &&
+								$folio >= $producto['folio1'] && $folio <= $producto['folio2']
+							) {
+								// Generar el enlace a la factura
+								$link = 'http://localhost/colegio/extensiones/fpdf/pdf/facturaElectronica.php?id=' . $venta['id'];
+								$facturaLink = "<a href='$link' target='_blank'>Factura</a>";
+	
+								// Agregar el resultado a la lista
+								$resultados[] = [
+									'venta' => $venta,
+									'producto' => $producto,
+									'factura' => $facturaLink
+								];
+							}
+						}
+					} else {
+						// Log o mensaje de error si el JSON no es válido
+						error_log("Error al decodificar JSON en la venta ID: " . $venta['id']);
+					}
+				}
+			}
+	
+			// Avanzar al siguiente mes
+			$start->modify('+1 month');
+		}
+	
+		// Devolver resultados o mensaje de error si no se encontraron
+		if (!empty($resultados)) {
+			return $resultados;
+		} else {
+			return ["error" => "No se encontró el folio en el rango de fechas especificado desde agosto 2018 hasta el mes actual."];
+		}
+	}
+	
 	static public function ctrMostrarVentasFecha($item, $valor){
 
 		$tabla = "ventas";
@@ -495,6 +553,18 @@ class ControladorVentas{
 		return $respuesta;
 		
 	}
+	/*=============================================
+    MOSTRAR RESUMEN DE VENTAS POR FECHA
+    =============================================*/
+    static public function ctrResumenVentasPorFecha($fechaInicio, $fechaFin) {
+        // Nombre de la tabla en tu base de datos
+        $tabla = "ventas";
+
+        // Llama al modelo para ejecutar el procedimiento almacenado
+        $respuesta = ModeloVentas::mdlResumenVentasPorFecha($tabla, $fechaInicio, $fechaFin);
+
+        return $respuesta;
+    }
 
 	static public function ctrRangoFechasVentas2($fechaInicial, $fechaFinal){
 		
@@ -919,11 +989,15 @@ class ControladorVentas{
 
 
 	}
+
+	
 	/*=============================================
 	RANGO FECHAS
 	=============================================*/	
 
 	static public function ctrHistorial(){
+
+		
 
 		// FACTURAS
 		$tabla = "cta";

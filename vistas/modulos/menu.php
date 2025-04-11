@@ -323,6 +323,26 @@
 
               </a>
 
+            </li>
+             <li>
+
+              <a href="resumen">
+                
+                <i class="fa fa-calendar"></i>
+                <span>Resumen</span>
+
+              </a>
+
+            </li>
+             <li>
+
+              <a href="buscar-folio">
+                
+                <i class="fa fa-search"></i>
+                <span>Buscar Folio</span>
+
+              </a>
+
             </li>';
 
  // <li>

@@ -114,7 +114,12 @@ $empresa = ControladorEmpresa::ctrMostrarEmpresa($item, $valor);
 
   <!-- bootstrap datepicker -->
   <script src="vistas/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
-
+  <style>
+    .btn-helper {
+      background-color: #6a0dad; /* Color violeta */
+      color: white;
+    }
+  </style>
 </head>
 
 <!--=====================================
@@ -167,7 +172,7 @@ CUERPO DOCUMENTO
          $_GET["ruta"] == "restaurar" ||
          // $_GET["ruta"] == "update" ||
          $_GET["ruta"] == "tmpcuotas" ||
-    
+         $_GET["ruta"] == "buscar-folio" ||
          $_GET["ruta"] == "afacturar" ||
          $_GET["ruta"] == "productos" ||
          $_GET["ruta"] == "ctacorriente" ||
@@ -196,6 +201,7 @@ CUERPO DOCUMENTO
          $_GET["ruta"] == "ws" ||
          $_GET["ruta"] == "libros" ||
          $_GET["ruta"] == "remitos" ||
+         $_GET["ruta"] == "resumen" ||
          $_GET["ruta"] == "editar-perfil" ||
          $_GET["ruta"] == "reportes" ||
          $_GET["ruta"] == "salir"){

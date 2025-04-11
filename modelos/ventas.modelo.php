@@ -425,7 +425,7 @@ class ModeloVentas{
 
 		if($fechaInicial == null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE codigo<> '1' ORDER BY fecha desc,codigo DESC,tipo asc limit 150");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE codigo<> '1' ORDER BY fecha desc,codigo DESC,tipo asc limit 25");
 
 			$stmt -> execute();
 
@@ -444,19 +444,48 @@ class ModeloVentas{
 
 		}else{
 
-			$fechaFinal = new DateTime();
+			/* $fechaFinal = new DateTime();
 			$fechaFinal->add(new DateInterval('P1D'));
 			$fechaFinal2 = $fechaFinal->format('Y-m-d');
 
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinal2' and codigo<> '1' ORDER BY codigo desc");
 			$stmt -> execute();
 
-			return $stmt -> fetchAll();
+			return $stmt -> fetchAll(); */
+			try {
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN :fechaInicial AND :fechaFinal AND codigo<> '1' ORDER BY codigo DESC");
+				$stmt->bindParam(":fechaInicial", $fechaInicial, PDO::PARAM_STR);
+				$stmt->bindParam(":fechaFinal", $fechaFinal, PDO::PARAM_STR);
+				$stmt->execute();
+				return $stmt->fetchAll();
+			} catch (PDOException $e) {
+				echo "Error en la consulta: " . $e->getMessage();
+				return null;
+			}
 
 		}
 
 	}
+ /*=============================================
+    EJECUTAR PROCEDIMIENTO ALMACENADO DE RESUMEN DE VENTAS POR FECHA
+    =============================================*/
+    static public function mdlResumenVentasPorFecha($tabla, $fechaInicio, $fechaFin) {
+        try {
+            $stmt = Conexion::conectar()->prepare("CALL ResumenVentasPorFecha(:fechaInicio, :fechaFin)");
+            $stmt->bindParam(":fechaInicio", $fechaInicio, PDO::PARAM_STR);
+            $stmt->bindParam(":fechaFin", $fechaFin, PDO::PARAM_STR);
+            $stmt->execute();
 
+            // Retorna los resultados como un arreglo asociativo
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+            return "Error: " . $e->getMessage();
+        }
+
+        // Cierra la conexión
+        $stmt = null;
+    }
 	static public function mdlRangoFechasVentas3($tabla, $fechaInicial, $fechaFinal){
 		
 	

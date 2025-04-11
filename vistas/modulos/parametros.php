@@ -55,8 +55,8 @@
           $valor = null;
 
           $parametros = ControladorParametros::ctrMostrarParametroAtraso($item, $valor);
-         
-
+          $parametros = json_decode(json_encode($parametros), true);
+ 
           foreach ($parametros as $key => $value) {
             
            
@@ -65,8 +65,8 @@
 
                     <td>'.($key+1).'</td>';
 
-            if ($value["parametro"]=="maxLibro"){$tipo="CANTIDAD MAXIMA DE LIBROS";}
-            if ($value["parametro"]=="maxAtraso"){$tipo="CANTIDAD MAXIMA DE DIAS DE ATRASO";}
+                    if ($value["parametro"] == "maxLibro") { $tipo = "CANTIDAD MAXIMA DE LIBROS"; }
+                    if ($value["parametro"] == "maxAtraso") { $tipo = "CANTIDAD MAXIMA DE DIAS DE ATRASO"; }
 
              echo  '<td>'.$tipo.'</td>
 

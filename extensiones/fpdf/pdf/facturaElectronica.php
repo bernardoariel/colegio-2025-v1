@@ -605,7 +605,7 @@ $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
 
 	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,252, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,254, 45 , 17,'JPG', '');
+	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,254, 26 , 0,'JPG', '');
 	$pdf -> SetY(272);
 	$pdf -> SetX(32);
 	$pdf -> SetFont('Arial','BI',5);
@@ -614,7 +614,7 @@ if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
 }else{
 
 	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,252, 45 , 17,'JPG', '');
+	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,252, 26 , 0,'JPG', '');
 	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
 	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,272, 70 , 14,'PNG', '');
 	
@@ -1052,7 +1052,8 @@ $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
 
 	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,258, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,258, 45 , 17,'JPG', '');
+	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,258, 26 , 0,'JPG', '');
+	
 	$pdf -> SetY(276);
 	$pdf -> SetX(32);
 	$pdf -> SetFont('Arial','BI',5);
@@ -1061,7 +1062,7 @@ if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
 }else{
 
 	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,256, 45 , 17,'JPG', '');
+	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,256, 26 , 0,'JPG', '');
 	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
 	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,275, 70 , 14,'PNG', '');
 	

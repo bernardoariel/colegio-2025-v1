@@ -103,6 +103,14 @@
               $valorCliente = $value["id_cliente"];
   
               $respuestaCliente = ControladorEscribanos::ctrMostrarEscribanos($itemCliente, $valorCliente);
+
+              $itemApostilla = "idventa";
+              $valorApostilla = $value["id"];
+              $apostillas = ControladorApostillas::ctrMostrarTodasApostillasVenta($itemApostilla, $valorApostilla);
+      
+              // Si hay apostillas, se usa el color de advertencia, si no, el botón será de color predeterminado.
+              $colorBoton = (!empty($apostillas) && $apostillas[0]['descripcion'] !== '') ? "btn-warning":"btn-helper";
+              $placeHolder =  (!empty($apostillas) && $apostillas[0]['descripcion'] !== '') ? " completadas" : " sin completar" ;
             ?>
 
  
@@ -273,10 +281,9 @@
               <div class="btn-group">
               <?php if ($value['apostilla']==1): ?>
                   <button 
-                    class="btn btn-warning btnVerApostilla" 
+                    class="btn <?php echo $colorBoton; ?> btnVerApostilla" 
                     idVenta="<?php echo $value['id']; ?>"
-                    title="ver las apostillas">
-                    
+                    title="ver las apostillas <?php echo $placeHolder . '-' . $value['id']; ?>">
                     <i class="fa fa-sticky-note"></i>
                 </button>
                 <?php endif ?>
