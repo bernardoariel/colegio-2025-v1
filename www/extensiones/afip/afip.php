@@ -100,7 +100,6 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 				# code...
 				$codigoTipoDoc = 80;
 				$numeroDoc=$traerCliente['cuit'];
-				break;
 
 			}else{
 
@@ -108,12 +107,18 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 				$numeroDoc=$traerCliente['documento'];
 
 			}
+			$condicionIVA = '6'; // default Consumidor Final
+			if (isset($traerCliente['tipoiva'])) {
+				$condicionIVA = mapearCondicionIVA($traerCliente['tipoiva']);
+			}
+			break;
 				
 		case 'casual':
 				# code...
 		// print_r ($_POST);
 				$codigoTipoDoc = 96;
 				$numeroDoc=$_POST["documentoCliente"];
+				$condicionIVA = '6'; // Consumidor Final
 				break;
 
 		case 'clientes':
@@ -127,9 +132,10 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 
 				$codigoTipoDoc = 80;
 				$numeroDoc=$traerCliente['cuit'];
-				// # code...
-				// $codigoTipoDoc = 80;
-				// $numeroDoc=$traerCliente['cuit'];
+				$condicionIVA = '6'; // default
+				if (isset($traerCliente['tipoiva'])) {
+					$condicionIVA = mapearCondicionIVA($traerCliente['tipoiva']);
+				}
 				break;
 
 		default:
@@ -147,6 +153,7 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 	// echo  $codigoTipoDoc." ".$numeroDoc;
 	$regcomp['codigoTipoDocumento'] = $codigoTipoDoc;				# 80: CUIT, 96: DNI, 99: Consumidor Final
 	$regcomp['numeroDocumento'] = $numeroDoc;//$traerCliente['cuit'];			# 0 para Consumidor Final (<$1000)
+	
 	
 	$regcomp['importeTotal'] = $_POST["totalVenta"];//121.00;				# total del comprobante
 	$regcomp['importeGravado'] = $_POST["totalVenta"];	#subtotal neto sujeto a IVA
@@ -168,7 +175,10 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 		
 		
 	$regcomp['items'] = $items;	
-	
+	$regcomp['opcionales'][] = array(
+		'Id' => '2001',
+		'Valor' => $condicionIVA
+	);
   
 		
     } else {
@@ -185,3 +195,22 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 
 }
 // echo "--------------Ejecución WSFEV1 finalizada-----------------\n";
+function mapearCondicionIVA($textoTipoIVA) {
+    $tipo = strtolower(trim($textoTipoIVA));
+    switch ($tipo) {
+        case 'iva responsable inscripto':
+            return '1';
+        case 'iva responsable no inscripto':
+            return '2';
+        case 'iva no responsable':
+            return '3';
+        case 'iva sujeto exento':
+            return '4';
+        case 'monotributo':
+        case 'iva monotributo':
+            return '5';
+        case 'consumidor final':
+        default:
+            return '6';
+    }
+}
