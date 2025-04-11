@@ -142,7 +142,8 @@ class Wsaa {
             'location' => $this->url,
             'trace' => 1,
             'exceptions' => 0,
-            'stream_context' => $context
+            'stream_context' => $context,
+            'features' => SOAP_SINGLE_ELEMENT_ARRAYS 
         ));
         $results = $client->loginCms(array('in0' => $CMS));
 

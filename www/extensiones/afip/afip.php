@@ -175,10 +175,13 @@ if ($result["code"] === Wsfev1::RESULT_OK) {
 		
 		
 	$regcomp['items'] = $items;	
-	$regcomp['opcionales'][] = array(
-		'Id' => '2001',
-		'Valor' => $condicionIVA
-	);
+	if ($codigoTipoDoc != 99) {
+		$regcomp['opcionales'][] = array(
+			'Id' => '2001',
+			'Valor' => $condicionIVA
+		);
+	}
+	
   
 		
     } else {

@@ -690,6 +690,18 @@ class Wsfev1 {
         $comprobante->ImpOpEx = $voucher["importeExento"];
         $comprobante->ImpNeto = $voucher["importeGravado"];
         $comprobante->ImpTotal = $voucher["importeTotal"];
+        // OPCIONALES *****************************************
+        if (array_key_exists("opcionales", $voucher) && count($voucher["opcionales"]) > 0) {
+            $comprobante->Opcionales = new stdClass();
+            $comprobante->Opcionales->Opcional = array();
+        
+            foreach ($voucher["opcionales"] as $value) {
+                $opcional = new stdClass();
+                $opcional->Id = $value["Id"];
+                $opcional->Valor = $value["Valor"];
+                $comprobante->Opcionales->Opcional[] = $opcional;
+            }
+        }
 
         //IVA**************************************************
         if (array_key_exists("subtotivas", $voucher) && count($voucher["subtotivas"]) > 0) {
