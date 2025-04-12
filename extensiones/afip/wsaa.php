@@ -87,9 +87,9 @@ class Wsaa {
             if ($this->modo === self::MODO_PRODUCCION && !$modo->local) {
                 // Producción real (hosting)
                 $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
-                $generationTime = $ahora->sub(new DateInterval('PT2M'))->format('Y-m-d\TH:i:sP');
+                $generationTime = $ahora->sub(new DateInterval('PT2M'))->format('Y-m-d\\TH:i:sP');
                 $expirationTime = (new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')))
-                                    ->add(new DateInterval('PT1H'))->format('Y-m-d\TH:i:sP');
+                                    ->add(new DateInterval('PT1H'))->format('Y-m-d\\TH:i:sP');
             } else {
                 // Local o modo desarrollador
                 $generationTime = date('c', time() - 60);
