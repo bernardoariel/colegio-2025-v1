@@ -76,28 +76,39 @@ class Wsaa {
      */
     function CreateTRA() {
         try {
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-            $xml .= '<loginTicketRequest version="1.0">';
-            $xml .= '<header>';
-            $xml .= '<uniqueId>' . date('U') . '</uniqueId>';
-            $xml .= '<generationTime>' . date('c', time() - 60) . '</generationTime>';
-            $xml .= '<expirationTime>' . date('c', time() + 60) . '</expirationTime>';
-            $xml .= '</header>';
-            $xml .= '<service>' . $this->service . '</service>';
+            $generationTime = date('c', time() - 60);
+            $expirationTime = date('c', time() + 60);
+    
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+            $xml .= '<loginTicketRequest version="1.0">' . "\n";
+            $xml .= '  <header>' . "\n";
+            $xml .= '    <uniqueId>' . date('U') . '</uniqueId>' . "\n";
+            $xml .= '    <generationTime>' . $generationTime . '</generationTime>' . "\n";
+            $xml .= '    <expirationTime>' . $expirationTime . '</expirationTime>' . "\n";
+            $xml .= '  </header>' . "\n";
+            $xml .= '  <service>' . $this->service . '</service>' . "\n";
             $xml .= '</loginTicketRequest>';
     
-            $file = $this->base_dir . "/" . $this->cuit . '/' . $this->service . "/token/TRA.xml";
+            $token_dir = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token';
     
-            if (!file_put_contents($file, $xml)) {
-                return array("code" => self::RESULT_ERROR, "msg" => "❌ Error al escribir manualmente en: $file");
+            if (!file_exists($token_dir)) {
+                if (!mkdir($token_dir, 0775, true)) {
+                    return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo crear la carpeta: $token_dir");
+                }
             }
     
-            return array("code" => self::RESULT_OK, "msg" => "✅ TRA.xml creado correctamente");
+            $tra_path = $token_dir . '/TRA.xml';
+            if (!file_put_contents($tra_path, $xml)) {
+                return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
+            }
+    
+            return array("code" => self::RESULT_OK, "msg" => "✅ TRA.xml generado correctamente");
     
         } catch (Exception $e) {
-            return array("code" => self::RESULT_ERROR, "msg" => "❌ Excepción: " . $e->getMessage());
+            return array("code" => Wsaa::RESULT_ERROR, "msg" => "❌ Excepción al crear TRA.xml: " . $e->getMessage());
         }
     }
+    
 
     /**
      * Esta funcion realiza la firma PKCS#7 usando como entrada el archivo TRA.xml, el certificado y la clave privada
