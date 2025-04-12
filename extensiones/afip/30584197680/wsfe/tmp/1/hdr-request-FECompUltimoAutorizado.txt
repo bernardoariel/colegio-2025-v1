@@ -1,0 +1,8 @@
+POST /wsfev1/service.asmx HTTP/1.1
+Host: servicios1.afip.gov.ar
+Connection: Keep-Alive
+User-Agent: PHP-SOAP/5.6.30
+Content-Type: application/soap+xml; charset=utf-8; action="http://ar.gov.afip.dif.FEV1/FECompUltimoAutorizado"
+Content-Length: 1326
+Cookie: TS0122d503=0145b27a97c905aa82f821adc108e4233369e2c1e90622b0d45ed723096f1063a2e909cfb6;
+
