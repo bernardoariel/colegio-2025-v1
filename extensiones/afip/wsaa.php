@@ -76,20 +76,27 @@ class Wsaa {
      */
     function CreateTRA() {
         try {
-            $TRA = new SimpleXMLElement(
-                    '<?xml version="1.0" encoding="UTF-8"?>' .
-                    '<loginTicketRequest version="1.0">' .
-                    '</loginTicketRequest>');
-            $TRA->addChild('header');
-            $TRA->header->addChild('uniqueId', date('U'));
-            $TRA->header->addChild('generationTime', date('c', date('U') - 60));
-            $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
-            $TRA->addChild('service', $this->service);
-            $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
-        } catch (Exception $exc) {
-            return array("code" => Wsaa::RESULT_ERROR, "msg" => "Error al crear TRA.xml: " . $exc->getTraceAsString());
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+            $xml .= '<loginTicketRequest version="1.0">';
+            $xml .= '<header>';
+            $xml .= '<uniqueId>' . date('U') . '</uniqueId>';
+            $xml .= '<generationTime>' . date('c', time() - 60) . '</generationTime>';
+            $xml .= '<expirationTime>' . date('c', time() + 60) . '</expirationTime>';
+            $xml .= '</header>';
+            $xml .= '<service>' . $this->service . '</service>';
+            $xml .= '</loginTicketRequest>';
+    
+            $file = $this->base_dir . "/" . $this->cuit . '/' . $this->service . "/token/TRA.xml";
+    
+            if (!file_put_contents($file, $xml)) {
+                return array("code" => self::RESULT_ERROR, "msg" => "❌ Error al escribir manualmente en: $file");
+            }
+    
+            return array("code" => self::RESULT_OK, "msg" => "✅ TRA.xml creado correctamente");
+    
+        } catch (Exception $e) {
+            return array("code" => self::RESULT_ERROR, "msg" => "❌ Excepción: " . $e->getMessage());
         }
-        return array("code" => Wsaa::RESULT_OK, "msg" => "TRA.xml creado");
     }
 
     /**
