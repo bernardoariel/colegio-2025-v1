@@ -191,18 +191,33 @@ switch ($ventas["tabla"]) {
 		break;
 }
 
+require_once '../../../extensiones/qr/phpqrcode/qrlib.php';
+
 $qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
 if (!file_exists($qrPath)) {
-    $PTOVTA = (int)$codigo[0];
-    $tipocbte = 11;
-    $ultimoComprobante = (int)$codigo[1];
-    $totalVenta = (float)$ventas["total"];
-    $codigoTipoDoc = 96;
-    $numeroDoc = (int)$ventas["documento"];
-    $result = [ "cae" => $ventas["cae"] ];
+    $data = [
+        "ver" => 1,
+        "fecha" => date("Y-m-d", strtotime($ventas["fecha"])),
+        "cuit" => "30584197680",
+        "ptoVta" => (int)$codigo[0],
+        "tipoCmp" => 11,
+        "nroCmp" => (int)$codigo[1],
+        "importe" => (float)$ventas["total"],
+        "moneda" => "PES",
+        "ctz" => 1,
+        "tipoDocRec" => $codigoTipoDoc,
+        "nroDocRec" => (int)$ventas["documento"],
+        "tipoCodAut" => "E",
+        "codAut" => (string)$ventas["cae"]
+    ];
 
-    include('../../../extensiones/qr/index.php');
+    $json = json_encode($data);
+    $base64 = base64_encode($json);
+    $url = "https://www.afip.gob.ar/fe/qr/?p=" . $base64;
+
+    QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
 }
+
 //CODIGO DE BARRA
 $tipocbte = 11;
 $fechaCae = explode("/", $ventas['fecha_cae']);
