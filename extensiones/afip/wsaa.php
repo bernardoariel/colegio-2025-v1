@@ -82,8 +82,22 @@ class Wsaa {
                     '</loginTicketRequest>');
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
-            $TRA->header->addChild('generationTime', date('c', date('U') - 60));
-            $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
+            global $modo;
+
+            if ($this->modo === self::MODO_PRODUCCION && !$modo->local) {
+                // Producción real (hosting)
+                $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+                $generationTime = $ahora->sub(new DateInterval('PT2M'))->format('Y-m-d\TH:i:sP');
+                $expirationTime = (new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')))
+                                    ->add(new DateInterval('PT1H'))->format('Y-m-d\TH:i:sP');
+            } else {
+                // Local o modo desarrollador
+                $generationTime = date('c', time() - 60);
+                $expirationTime = date('c', time() + 60);
+            }
+
+            $TRA->header->addChild('generationTime', $generationTime);
+            $TRA->header->addChild('expirationTime', $expirationTime);
             $TRA->addChild('service', $this->service);
             $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
         } catch (Exception $exc) {

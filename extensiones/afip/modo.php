@@ -1,21 +1,28 @@
 <?php
 
-$prueba = "PRODUCCION"; //DEVELOPER o PRODUCCION
+class Modo {
+    public $nombre;
+    public $local;
 
-if($prueba=="PRODUCCION"){
+    public function __construct($nombre, $local = false) {
+        $this->nombre = strtoupper($nombre);
+        $this->local = $local;
+    }
 
-	// MODO DE PRODUCCION
+    public function esProduccion() {
+        return $this->nombre === "PRODUCCION";
+    }
 
-	$CUIT = 30584197680;
-	$MODO = Wsaa::MODO_PRODUCCION;
-
+    public function esDeveloper() {
+        return $this->nombre === "DEVELOPER";
+    }
 }
 
-if($prueba=="DEVELOPER"){
+// CONFIGURACIÓN DEL ENTORNO ACTUAL
+$modo = new Modo("PRODUCCION", false); // Cambiá a true si estás en entorno local
 
-	// MODO DE PRUEBA
-	$CUIT = 20241591310;
-	$MODO = Wsaa::MODO_HOMOLOGACION;
-}
+// Variables globales opcionales
+$CUIT = $modo->esProduccion() ? 30584197680 : 20241591310;
+$MODO = $modo->esProduccion() ? Wsaa::MODO_PRODUCCION : Wsaa::MODO_HOMOLOGACION;
 
 ?>
