@@ -2,7 +2,7 @@
 
 $cuit = '30584197680';
 $servicio = 'wsfe';
-$base_dir = __DIR__ . "/colegio/extensiones/afip/$cuit/$servicio/token";
+$base_dir = __DIR__ . "/extensiones/afip/$cuit/$servicio/token";
 
 // Verificamos si existe, y si no, lo creamos
 if (!file_exists($base_dir)) {
