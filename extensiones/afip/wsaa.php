@@ -76,15 +76,13 @@ class Wsaa {
      */
     function CreateTRA() {
         try {
-            date_default_timezone_set('America/Argentina/Buenos_Aires');
-    
-            $generationTime = date('c', time() - 60);  // 1 minuto antes
-            $expirationTime = date('c', time() + 3600); // 1 hora después
+            $generationTime = gmdate("Y-m-d\TH:i:s", time() - 120) . "-03:00"; // 2 min antes
+            $expirationTime = gmdate("Y-m-d\TH:i:s", time() + 3600) . "-03:00"; // 1 hora después
     
             $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             $xml .= '<loginTicketRequest version="1.0">' . "\n";
             $xml .= '  <header>' . "\n";
-            $xml .= '    <uniqueId>' . date('U') . '</uniqueId>' . "\n";
+            $xml .= '    <uniqueId>' . time() . '</uniqueId>' . "\n";
             $xml .= '    <generationTime>' . $generationTime . '</generationTime>' . "\n";
             $xml .= '    <expirationTime>' . $expirationTime . '</expirationTime>' . "\n";
             $xml .= '  </header>' . "\n";
@@ -92,18 +90,16 @@ class Wsaa {
             $xml .= '</loginTicketRequest>';
     
             $token_dir = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token';
-    
             if (!file_exists($token_dir)) {
                 if (!mkdir($token_dir, 0775, true)) {
                     return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo crear la carpeta: $token_dir");
                 }
             }
     
-            file_put_contents($token_dir . '/TRA-debug.xml', $xml); // Debug opcional
+            file_put_contents($token_dir . '/TRA-debug.xml', $xml);
     
-            $tra_path = $token_dir . '/TRA.xml';
-            if (!file_put_contents($tra_path, $xml)) {
-                return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
+            if (!file_put_contents($token_dir . '/TRA.xml', $xml)) {
+                return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml");
             }
     
             return array("code" => self::RESULT_OK, "msg" => "✅ TRA.xml generado correctamente");
