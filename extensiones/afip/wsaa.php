@@ -29,7 +29,7 @@ class Wsaa {
     const PASSPHRASE = ""; # # The passphrase (if any) to sign
 
     //************* VARIABLES *****************************
-    var $base_dir = $_SERVER['DOCUMENT_ROOT'] . '/colegio';
+    var $base_dir = __DIR__;
     var $service = "";
     var $modo = 0;
     var $log_xmls = TRUE; 
