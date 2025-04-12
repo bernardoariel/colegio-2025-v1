@@ -167,6 +167,42 @@ $codigo = explode("-", $ventas['codigo']);
 $fecha = explode("-", $ventas['fecha']);
 $fecha = $fecha[2]."/".$fecha[1]."/".$fecha[0];
 
+//👇 ACA INSERTÁS EL BLOQUE QR
+switch ($ventas["tabla"]) {
+
+	case 'escribanos':
+		$item = "id";
+		$valor = $ventas["id_cliente"];
+		$traerCliente = ModeloEscribanos::mdlMostrarEscribanos('escribanos', $item, $valor);
+
+		$codigoTipoDoc = ($traerCliente['facturacion'] == "CUIT") ? 80 : 96;
+		break;
+
+	case 'casual':
+		$codigoTipoDoc = 96;
+		break;
+
+	case 'clientes':
+		$codigoTipoDoc = 80;
+		break;
+
+	default:
+		$codigoTipoDoc = 99;
+		break;
+}
+
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+if (!file_exists($qrPath)) {
+    $PTOVTA = (int)$codigo[0];
+    $tipocbte = 11;
+    $ultimoComprobante = (int)$codigo[1];
+    $totalVenta = (float)$ventas["total"];
+    $codigoTipoDoc = 96;
+    $numeroDoc = (int)$ventas["documento"];
+    $result = [ "cae" => $ventas["cae"] ];
+
+    include('../../../extensiones/qr/index.php');
+}
 //CODIGO DE BARRA
 $tipocbte = 11;
 $fechaCae = explode("/", $ventas['fecha_cae']);
