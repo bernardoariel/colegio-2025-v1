@@ -98,12 +98,16 @@ class Wsaa {
 
             $TRA->header->addChild('generationTime', $generationTime);
             $TRA->header->addChild('expirationTime', $expirationTime);
-            echo "<pre>";
-echo "generationTime = " . $generationTime . "\n";
-echo "expirationTime = " . $expirationTime . "\n";
-echo "</pre>";
+//             echo "<pre>";
+// echo "generationTime = " . $generationTime . "\n";
+// echo "expirationTime = " . $expirationTime . "\n";
+// echo "</pre>";
             $TRA->addChild('service', $this->service);
-            $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
+            $tra_path = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml';
+
+if (!$TRA->asXML($tra_path)) {
+    return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
+}
         } catch (Exception $exc) {
             return array("code" => Wsaa::RESULT_ERROR, "msg" => "Error al crear TRA.xml: " . $exc->getTraceAsString());
         }
