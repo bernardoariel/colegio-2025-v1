@@ -102,11 +102,22 @@ class Wsaa {
 // echo "generationTime = " . $generationTime . "\n";
 // echo "expirationTime = " . $expirationTime . "\n";
 // echo "</pre>";
-            $TRA->addChild('service', $this->service);
-            $tra_path = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml';
+$token_dir = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token';
 
+// Crear la carpeta si no existe
+if (!file_exists($token_dir)) {
+    if (!mkdir($token_dir, 0775, true)) {
+        return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo crear la carpeta: $token_dir");
+    }
+}
+
+$tra_path = $token_dir . '/TRA.xml';
 if (!$TRA->asXML($tra_path)) {
     return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
+}
+
+return array("code" => self::RESULT_OK, "msg" => "TRA.xml creado correctamente");
+
 }
         } catch (Exception $exc) {
             return array("code" => Wsaa::RESULT_ERROR, "msg" => "Error al crear TRA.xml: " . $exc->getTraceAsString());
