@@ -76,15 +76,21 @@ class Wsaa {
      */
     function CreateTRA() {
         try {
-            $generationTime = date('c', time() - 60);
-            $expirationTime = date('c', time() + 60);
+            $tz = new DateTimeZone('America/Argentina/Buenos_Aires');
+    
+            $ahora = new DateTime('now', $tz);
+            $generationTime = clone $ahora;
+            $generationTime->modify('-2 minutes');
+    
+            $expirationTime = clone $ahora;
+            $expirationTime->modify('+1 hour');
     
             $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
             $xml .= '<loginTicketRequest version="1.0">' . "\n";
             $xml .= '  <header>' . "\n";
             $xml .= '    <uniqueId>' . date('U') . '</uniqueId>' . "\n";
-            $xml .= '    <generationTime>' . $generationTime . '</generationTime>' . "\n";
-            $xml .= '    <expirationTime>' . $expirationTime . '</expirationTime>' . "\n";
+            $xml .= '    <generationTime>' . $generationTime->format('Y-m-d\TH:i:sP') . '</generationTime>' . "\n";
+            $xml .= '    <expirationTime>' . $expirationTime->format('Y-m-d\TH:i:sP') . '</expirationTime>' . "\n";
             $xml .= '  </header>' . "\n";
             $xml .= '  <service>' . $this->service . '</service>' . "\n";
             $xml .= '</loginTicketRequest>';
@@ -98,6 +104,7 @@ class Wsaa {
             }
     
             $tra_path = $token_dir . '/TRA.xml';
+            file_put_contents($token_dir . '/TRA-debug.xml', $xml); // para depurar
             if (!file_put_contents($tra_path, $xml)) {
                 return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
             }
@@ -105,7 +112,7 @@ class Wsaa {
             return array("code" => self::RESULT_OK, "msg" => "✅ TRA.xml generado correctamente");
     
         } catch (Exception $e) {
-            return array("code" => Wsaa::RESULT_ERROR, "msg" => "❌ Excepción al crear TRA.xml: " . $e->getMessage());
+            return array("code" => self::RESULT_ERROR, "msg" => "❌ Error al crear TRA.xml: " . $e->getMessage());
         }
     }
     
