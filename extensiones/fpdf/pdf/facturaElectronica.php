@@ -89,6 +89,22 @@ function convertirLetras($texto){
 
 require_once('../../../modelos/conexion.php');
 
+function eliminarQRViejos($carpeta, $dias = 30) {
+    $archivos = glob($carpeta . '/*.png');
+
+    foreach ($archivos as $archivo) {
+        if (is_file($archivo)) {
+            $ultimaModificacion = filemtime($archivo);
+            $ahora = time();
+
+            $diferenciaDias = ($ahora - $ultimaModificacion) / (60 * 60 * 24);
+
+            if ($diferenciaDias > $dias) {
+                unlink($archivo);
+            }
+        }
+    }
+}
 
 // PARAMETROS
 $item= "id";
@@ -192,7 +208,7 @@ switch ($ventas["tabla"]) {
 }
 
 require_once '../../../extensiones/qr/phpqrcode/qrlib.php';
-
+eliminarQRViejos('../../../extensiones/qr/temp', 30);
 $qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
 if (!file_exists($qrPath)) {
     $data = [
