@@ -82,43 +82,10 @@ class Wsaa {
                     '</loginTicketRequest>');
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
-            global $modo;
-
-            if ($this->modo === self::MODO_PRODUCCION && !$modo->local) {
-                // Producción real (hosting)
-                $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
-                $generationTime = $ahora->sub(new DateInterval('PT2M'))->format('Y-m-d\\TH:i:sP');
-                $expirationTime = (new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires')))
-                                    ->add(new DateInterval('PT1H'))->format('Y-m-d\\TH:i:sP');
-            } else {
-                // Local o modo desarrollador
-                $generationTime = date('c', time() - 60);
-                $expirationTime = date('c', time() + 60);
-            }
-
-            $TRA->header->addChild('generationTime', $generationTime);
-            $TRA->header->addChild('expirationTime', $expirationTime);
-//             echo "<pre>";
-// echo "generationTime = " . $generationTime . "\n";
-// echo "expirationTime = " . $expirationTime . "\n";
-// echo "</pre>";
-$token_dir = $this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token';
-
-// Crear la carpeta si no existe
-if (!file_exists($token_dir)) {
-    if (!mkdir($token_dir, 0775, true)) {
-        return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo crear la carpeta: $token_dir");
-    }
-}
-
-$tra_path = $token_dir . '/TRA.xml';
-if (!$TRA->asXML($tra_path)) {
-    return array("code" => self::RESULT_ERROR, "msg" => "❌ No se pudo guardar TRA.xml en: $tra_path");
-}
-
-return array("code" => self::RESULT_OK, "msg" => "TRA.xml creado correctamente");
-
-}
+            $TRA->header->addChild('generationTime', date('c', date('U') - 60));
+            $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
+            $TRA->addChild('service', $this->service);
+            $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
         } catch (Exception $exc) {
             return array("code" => Wsaa::RESULT_ERROR, "msg" => "Error al crear TRA.xml: " . $exc->getTraceAsString());
         }
