@@ -133,7 +133,12 @@
                   <td>
                     <div class="btn-group">
                       <center>
-                        <button class="btn btn-warning btnHomologacionAutomatica" title="aprobacioAfip" idVenta="<?php echo $value['id']; ?>" documentoHomologacion="<?php echo $value['documento']; ?>" nombreHomologacion="<?php echo $value['nombre']; ?>" totalHomologacion="<?php echo $value['total']; ?>">Comprobando...<span class="fa fa-refresh fa-spin"></span>
+                        <button 
+                          class="btn btn-warning btnHomologacionAutomatica" title="aprobacioAfip" 
+                          idVenta="<?php echo $value['id']; ?>" 
+                          documentoHomologacion="<?php echo $value['documento']; ?>"
+                          nombreHomologacion="<?php echo $value['nombre']; ?>" 
+                          totalHomologacion="<?php echo $value['total']; ?>">Comprobando...<span class="fa fa-refresh fa-spin"></span>
                         </button>
                       </center>
                     </div>

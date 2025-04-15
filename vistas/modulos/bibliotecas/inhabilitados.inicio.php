@@ -33,33 +33,25 @@ foreach ($escribanos as $key => $value) {
   /*=============================================
             INHABILITACION POR DEUDA
   =============================================*/
-  //ACA ENTRAN TODOS LOS ATRASADOS
-  $item= "id";
-  $valor = $value["id"];
-  // //VER LA DEUDA DE CADA ESCRIBANO
-  $escribanosConDeudaTodos = ControladorCuotas::ctrEscribanosDeuda($item,$valor);
-  
-  if(!empty($escribanosConDeudaTodos)){
+  // $item = "id";
+  // $valor = $value["id"];
+  // $escribanosConDeudaTodos = ControladorCuotas::ctrEscribanosDeuda($item, $valor);
+  // if (!empty($escribanosConDeudaTodos)) {
+  //   $fecha2 = date("Y-m-j");
+  //   $dias = (strtotime($escribanosConDeudaTodos["fecha"]) - strtotime($fecha2)) / 86400;
+  //   $dias = abs($dias); 
+  //   $dias = floor($dias);   
+  //   if ($dias >= $atraso['valor'] && $value['id'] <> 1) {
+  //     $inhabilitado++;
+  //   }
+  // }
 
-    $fecha2=date("Y-m-j");
-    $dias = (strtotime($escribanosConDeudaTodos["fecha"])-strtotime($fecha2))/86400;
-    $dias   = abs($dias); 
-    $dias = floor($dias);   
-  
-    if($dias>=$atraso['valor']) {
+  // NUEVA lógica: si el día actual del mes es mayor a 15, inhabilitar
+  $diaDelMes = date("j");
 
-      if ($value['id']<>1){
-
-        $inhabilitado++;
-
-         // echo '<pre>'; print_r($value["nombre"]); echo ' - ('.$dias.'-'.$inhabilitado. ')</pre>';
-
-      }
-          
-    }
-
+  if ($diaDelMes > 15 && $value['id'] <> 1) {
+    $inhabilitado++;
   }
-
   /*=============================================
   GUARDO LOS INHABILITADOS EN LA BD LOCAL
   =============================================*/
