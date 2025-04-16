@@ -47,10 +47,16 @@ foreach ($escribanos as $key => $value) {
   // }
 
   // NUEVA lógica: si el día actual del mes es mayor a 15, inhabilitar
-  $diaDelMes = date("j");
+  $item = "id";
+  $valor = $value["id"];
+  $escribanosConDeudaTodos = ControladorCuotas::ctrEscribanosDeuda($item, $valor);
 
-  if ($diaDelMes > 16 && $value['id'] <> 1) {
-    $inhabilitado++;
+  if (!empty($escribanosConDeudaTodos)) {
+    $diaDelMes = date("j");
+
+    if ($diaDelMes > 15 && $value['id'] <> 1) {
+      $inhabilitado++;
+    }
   }
   /*=============================================
   GUARDO LOS INHABILITADOS EN LA BD LOCAL
