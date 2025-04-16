@@ -49,7 +49,7 @@ foreach ($escribanos as $key => $value) {
   // NUEVA lógica: si el día actual del mes es mayor a 15, inhabilitar
   $diaDelMes = date("j");
 
-  if ($diaDelMes > 15 && $value['id'] <> 1) {
+  if ($diaDelMes > 16 && $value['id'] <> 1) {
     $inhabilitado++;
   }
   /*=============================================
