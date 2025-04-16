@@ -44,11 +44,18 @@ foreach ($escribanos as $key => $value) {
   //   }
   // }
 
-  // NUEVA lógica: si el día actual del mes es mayor a 15, inhabilitar
-  $diaDelMes = date("j");
 
-  if ($diaDelMes > 15 && $value['id'] <> 1) {
-    $inhabilitado++;
+  // NUEVA lógica: si el día actual del mes es mayor a 15, inhabilitar
+  $item = "id";
+  $valor = $value["id"];
+  $escribanosConDeudaTodos = ControladorCuotas::ctrEscribanosDeuda($item, $valor);
+
+  if (!empty($escribanosConDeudaTodos)) {
+    $diaDelMes = date("j");
+
+    if ($diaDelMes > 15 && $value['id'] <> 1) {
+      $inhabilitado++;
+    }
   }
 
   /*=============================================

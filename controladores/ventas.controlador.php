@@ -176,7 +176,9 @@ class ControladorVentas{
 		if($ERRORAFIP==0){
 
 			$result = $afip->emitirComprobante($regcomp); //$regcomp debe tener la estructura esperada (ver a continuación de la wiki)
-			
+
+			$observaciones = isset($result["observaciones"]) ? $result["observaciones"] : [];
+
 			if ($result["code"] === Wsfev1::RESULT_OK) {
 				
 			/*=============================================
@@ -318,11 +320,18 @@ class ControladorVentas{
 			  
         	if($afip==1){
 
-        		 echo 'FE';
+        		return [
+					'code' => 'FE',
+					'msg' => 'Factura generada correctamente',
+					'observaciones' => $observaciones
+				];
 
 			}else{
 
-				echo "ER";
+				return [
+					'code' => 'ER',
+					'msg' => $result["msg"]
+				];
 
 			}
 
