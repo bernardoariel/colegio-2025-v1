@@ -834,17 +834,17 @@ class Wsfev1 {
     function emitirComprobante($voucher) {
         $result = $this->checkToken();
         if ($result["code"] == Wsfev1::RESULT_OK) {
-
+    
             $params = $this->_comprobante($voucher);
-
+    
             try {
                 $results = $this->client->FECAESolicitar($params);
             } catch (Exception $e) {
                 return array("code" => Wsfev1::RESULT_ERROR, "msg" => Wsfev1::MSG_AFIP_CONNECTION . $e->getMessage(), "datos" => NULL);
             }
-
+    
             $this->checkErrors('FECAESolicitar');
-
+    
             if (!isset($results->FECAESolicitarResult)) {
                 return array("code" => Wsfev1::RESULT_ERROR, "msg" => Wsfev1::MSG_BAD_RESPONSE, "datos" => NULL);
             } else if (isset($results->FECAESolicitarResult->Errors)) {
@@ -857,7 +857,6 @@ class Wsfev1 {
                 //Pedido rechazado
                 $error_str = "Comprobante rechazado: ";
                 $respuestas = $results->FECAESolicitarResult->FeDetResp->FECAEDetResponse;
-                //1 respuesta por cada comprobante
                 foreach ($respuestas as $r) {
                     if (isset($r->Observaciones)) {
                         foreach ($r->Observaciones->Obs as $e) {
@@ -865,23 +864,37 @@ class Wsfev1 {
                         }
                     }
                 }
-
                 return array("code" => Wsfev1::RESULT_ERROR, "msg" => $error_str, "cae" => -1, "fechaVencimientoCAE" => -1);
             } else if (is_soap_fault($results)) {
                 return array("code" => Wsfev1::RESULT_ERROR, "msg" => "$results->faultcode - $results->faultstring", "datos" => NULL);
             } else {
-
-                $respuestas = $results->FECAESolicitarResult->FeDetResp->FECAEDetResponse; //Faltaria contemplar mas de 1 comprobante
-                //Faltaria contemplar mas de 1 comprobante
+                $respuestas = $results->FECAESolicitarResult->FeDetResp->FECAEDetResponse;
                 $cae = $respuestas[0]->CAE;
                 $fecha_vencimiento = $respuestas[0]->CAEFchVto;
-                return array("code" => Wsfev1::RESULT_OK, "msg" => "OK", "cae" => $cae, "fechaVencimientoCAE" => $fecha_vencimiento);
+    
+                $observaciones = [];
+                if (isset($respuestas[0]->Observaciones)) {
+                    foreach ($respuestas[0]->Observaciones->Obs as $obs) {
+                        $observaciones[] = [
+                            'code' => (string)$obs->Code,
+                            'msg' => (string)$obs->Msg
+                        ];
+                    }
+                }
+    
+                return array(
+                    "code" => Wsfev1::RESULT_OK,
+                    "msg" => "OK",
+                    "cae" => $cae,
+                    "fechaVencimientoCAE" => $fecha_vencimiento,
+                    "observaciones" => $observaciones
+                );
             }
         } else {
             return $result;
         }
     }
-
+    
     /**
      * Presenta un comprobante electronico con el web service de afip
      * A partir de un arreglo asociativo con los datos necesarios 
