@@ -174,7 +174,8 @@ class ControladorVentas{
 		}
 	
 		if($ERRORAFIP==0){
-
+			$regcomp["CondicionIVAReceptorId"] = 1;
+			error_log("🧪 REGCOMP => " . print_r($regcomp, true));
 			$result = $afip->emitirComprobante($regcomp); //$regcomp debe tener la estructura esperada (ver a continuación de la wiki)
 
 			$observaciones = isset($result["observaciones"]) ? $result["observaciones"] : [];
@@ -355,7 +356,15 @@ class ControladorVentas{
 			
 			foreach ($listaProductos as $key => $value) {
 
-				$items[$key]=array('codigo' => $value["id"],'descripcion' => $value["descripcion"],'cantidad' => $value["cantidad"],'codigoUnidadMedida'=>7,'precioUnitario'=>$value["precio"],'importeItem'=>$value["total"],'impBonif'=>0);
+				$items[$key]=array(
+					'codigo' => $value["id"],
+					'descripcion' => $value["descripcion"],
+					'cantidad' => $value["cantidad"],
+					'codigoUnidadMedida'=>7,
+					'precioUnitario'=>$value["precio"],
+					'importeItem'=>$value["total"],
+					'impBonif'=>0
+				);
 				
 			}
 
@@ -375,20 +384,21 @@ class ControladorVentas{
 
 				$result = $afip->emitirComprobante($regcomp); //$regcomp debe tener la estructura esperada (ver a continuación de la wiki)
 				
-		        
+		        $observaciones = isset($result["observaciones"]) ? $result["observaciones"] : [];
 		        if ($result["code"] === Wsfev1::RESULT_OK) {
 		        	
 		        	$cantCabeza = strlen($PTOVTA); 
 					switch ($cantCabeza) {
-							case 1:
-					          $ptoVenta="000".$PTOVTA;
-					          break;
-							case 2:
-					          $ptoVenta="00".$PTOVTA;
-					          break;
-						  case 3:
-					          $ptoVenta="0".$PTOVTA;
-					          break;   
+						case 1:
+							$ptoVenta="000".$PTOVTA;
+							break;
+						case 2:
+							$ptoVenta="00".$PTOVTA;
+							break;
+						case 3:
+							$ptoVenta="0".$PTOVTA;
+							break;   
+						default: $ptoVenta = $PTOVTA;
 					}
 
 				    $codigoFactura = $ptoVenta .'-'. $ultimoComprobante;
@@ -413,24 +423,36 @@ class ControladorVentas{
 								   "cae"=>$result["cae"],
 								   "fecha_cae"=>$fechaCaeDia.'/'.$fechaCaeMes.'/'.$fechaCaeAno,"qr"=>$datos_cmp_base_64."=");
 
-					$tabla="ventas";
+					$respuesta = ModeloVentas::mdlHomologacionVenta("ventas", $datos);
 
-					$respuesta = ModeloVentas::mdlHomologacionVenta($tabla,$datos);
-
-					echo 'FE';
-				
-
+					if ($respuesta == "ok") {
+						return [
+							'code' => 'FE',
+							'msg' => 'Factura de homologación generada correctamente',
+							'observaciones' => $observaciones
+						];
+					} else {
+						return [
+							'code' => 'ER',
+							'msg' => 'No se pudo guardar la venta en la base de datos'
+						];
+					}
+	
+				} else {
+					return [
+						'code' => 'ER',
+						'msg' => $result["msg"],
+						'observaciones' => $observaciones
+					];
 				}
-
-			}else{
-
-				echo "ER";
-				
+	
+			} else {
+				return [
+					'code' => 'ER',
+					'msg' => 'Error al conectar con AFIP'
+				];
 			}
-
 		}
-
-
 	}
 
 	

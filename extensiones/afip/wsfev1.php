@@ -815,7 +815,17 @@ class Wsfev1 {
                 $comprobante->CbtesAsoc[] = $cbte;
             }
         }
-		
+		if (isset($voucher["CondicionIVAReceptorId"])) {
+            $comprobante->Opcionales = array();
+        
+            $opcionalIVA = new stdClass();
+            $opcionalIVA->Id = 2001;
+            $opcionalIVA->Valor = $voucher["CondicionIVAReceptorId"];
+        
+            $comprobante->Opcionales[] = $opcionalIVA;
+             // LOG PARA VERIFICAR QUE SE ENVÍA
+    error_log("🧾 OPCIONAL CondicionIVAReceptorId enviado: " . $voucher["CondicionIVAReceptorId"]);
+        }
         $params->FeCAEReq->FeDetReq = array();
 
         $params->FeCAEReq->FeDetReq[] = $comprobante;
