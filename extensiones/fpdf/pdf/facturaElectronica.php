@@ -606,28 +606,31 @@ $pdf -> SetFont('Arial','',12);
 $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 
 //IMAGEN
-if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+$afipImg = '../../../vistas/img/afip/afip.jpg';
+$barcodePath = '../../codigos/'.$codigodeBarra.$ultimoDigito.'.png';
 
-	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,252, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,254, 26 , 0,'JPG', '');
-	$pdf -> SetY(272);
-	$pdf -> SetX(32);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-	
-}else{
-
-	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,252, 26 , 0,'JPG', '');
-	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
-	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,272, 70 , 14,'PNG', '');
-	
-	$pdf -> SetY(270);
-	$pdf -> SetX(6);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-
+if (file_exists($qrPath)) {
+	try {
+		$pdf->Image($qrPath, 6, 252, 25, 25, 'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
+		$pdf->Image($afipImg, 32, 254, 26, 0, 'JPG', '');
+	} catch (Exception $e) {
+		// si algo falla, usar el de abajo
+		$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+		barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+		$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
+	}
+} else {
+	$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+	barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+	$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
 }
+
+// Siempre mostramos esta advertencia
+$pdf->SetY(270);
+$pdf->SetX(6);
+$pdf->SetFont('Arial','BI',5);
+$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 
 
@@ -1053,29 +1056,31 @@ $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 	
 // }
 //IMAGEN
-if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+$afipImg = '../../../vistas/img/afip/afip.jpg';
+$barcodePath = '../../codigos/'.$codigodeBarra.$ultimoDigito.'.png';
 
-	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,258, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,258, 26 , 0,'JPG', '');
-	
-	$pdf -> SetY(276);
-	$pdf -> SetX(32);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-	
-}else{
-
-	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,256, 26 , 0,'JPG', '');
-	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
-	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,275, 70 , 14,'PNG', '');
-	
-	$pdf -> SetY(273);
-	$pdf -> SetX(6);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-
+if (file_exists($qrPath)) {
+	try {
+		$pdf->Image($qrPath, 6, 252, 25, 25, 'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
+		$pdf->Image($afipImg, 32, 254, 26, 0, 'JPG', '');
+	} catch (Exception $e) {
+		// si algo falla, usar el de abajo
+		$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+		barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+		$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
+	}
+} else {
+	$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+	barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+	$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
 }
+
+// Siempre mostramos esta advertencia
+$pdf->SetY(270);
+$pdf->SetX(6);
+$pdf->SetFont('Arial','BI',5);
+$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 /*=====  End of PAGINA 2  ======*/
 
