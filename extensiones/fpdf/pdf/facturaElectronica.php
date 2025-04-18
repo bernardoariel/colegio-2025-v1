@@ -1,7 +1,10 @@
 <?php
 session_start();
-error_reporting(0);
-ini_set('display_errors', 0);
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include('../fpdf.php');
 include ('../../barcode.php');
 
@@ -91,6 +94,7 @@ function convertirLetras($texto){
 require_once('../../../modelos/conexion.php');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 function eliminarQRViejos($carpeta, $dias = 30) {
     $archivos = glob($carpeta . '/*.png');
 
@@ -109,6 +113,8 @@ function eliminarQRViejos($carpeta, $dias = 30) {
 }
 =======
 >>>>>>> c2f09df03 (init 2025 con docker)
+=======
+>>>>>>> preprod
 
 // PARAMETROS
 $item= "id";
@@ -187,6 +193,7 @@ $codigo = explode("-", $ventas['codigo']);
 $fecha = explode("-", $ventas['fecha']);
 $fecha = $fecha[2]."/".$fecha[1]."/".$fecha[0];
 
+<<<<<<< HEAD
 //👇 ACA INSERTÁS EL BLOQUE QR
 switch ($ventas["tabla"]) {
 
@@ -238,6 +245,8 @@ if (!file_exists($qrPath)) {
     QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
 }
 
+=======
+>>>>>>> preprod
 //CODIGO DE BARRA
 $tipocbte = 11;
 $fechaCae = explode("/", $ventas['fecha_cae']);

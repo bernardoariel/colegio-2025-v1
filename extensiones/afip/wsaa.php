@@ -77,18 +77,13 @@ class Wsaa {
     function CreateTRA() {
         try {
             $TRA = new SimpleXMLElement(
-                '<?xml version="1.0" encoding="UTF-8"?>' .
-                '<loginTicketRequest version="1.0">' .
-                '</loginTicketRequest>');
+                    '<?xml version="1.0" encoding="UTF-8"?>' .
+                    '<loginTicketRequest version="1.0">' .
+                    '</loginTicketRequest>');
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
-    
-             // Ajustamos 25 minutos hacia atrás para generationTime
-        $TRA->header->addChild('generationTime', date('c', time() - 1500));
-
-        // Expira en 1 hora como siempre
-        $TRA->header->addChild('expirationTime', date('c', time() + 3600));
-    
+            $TRA->header->addChild('generationTime', date('c', date('U') - 60));
+            $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
             $TRA->addChild('service', $this->service);
             $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
         } catch (Exception $exc) {
@@ -96,7 +91,6 @@ class Wsaa {
         }
         return array("code" => Wsaa::RESULT_OK, "msg" => "TRA.xml creado");
     }
-    
 
     /**
      * Esta funcion realiza la firma PKCS#7 usando como entrada el archivo TRA.xml, el certificado y la clave privada
