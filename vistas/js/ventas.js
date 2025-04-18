@@ -1162,81 +1162,63 @@ $("#btn-bsqVentaProducto").on("click", function(){
 	window.location = "index.php?ruta=buscar-venta-repuestos&idProducto="+$("#productos").val();
 })
 
-$("#btnHomologacion").on("click",function(){
-  
-  var idVentaHomologacion = $(this).attr("idfchomologar");
-
-  var datos = new FormData();
-  datos.append("idVentaHomologacion", idVentaHomologacion);
-  
-   
-  	$.ajax({
-
-        url:"ajax/crearventa.ajax.php",
-        method: "POST",
-        data: datos,
-        cache: false,
-        contentType: false,
-        processData: false,
-        beforeSend: function(){
-            $('#modalLoader').modal('show');
-        },
-        success:function(respuesta){
-        	console.log("respuesta1", respuesta);
-        	
-        	respuestaCortada=respuesta.substring(0, 2);
-        	console.log("respuestaCortada", respuestaCortada);
-        	
-        	switch(respuestaCortada) {
-
-        		case 'FE':
-
-        			$('#modalLoader').modal('hide');
-                    window.open("extensiones/fpdf/pdf/facturaElectronica.php?id="+idVentaHomologacion, "_blank");
-                    window.location = "ventas";
-                    break;
-
-                case 'ER':
-
-        			$('#modalLoader').modal('hide');
-                    swal({
-                        type: "warning",
-                        title: "ERROR",
-                        text: respuesta,
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                        }).then(function(result){
-                            
-                            if (result.value) {
-                            	window.location = "ventas";
-                            }
-
-                        });
-                       break;
-
-        		default:
-                    swal({
-                        type: "warning",
-                        title: 'Posiblemente falla en la conexion',
-                        text: "INDEFINIDO",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                        }).then(function(result){
-                            
-                            if (result.value) {
-                            	window.location = "ventas";
-                            }
-
-                        })
-        			}
-        }
-
-	  })
-
-
-                    
-       
-})
+$("#btnHomologacion").on("click", function () {
+		var idVentaHomologacion = $(this).attr("idfchomologar");
+	  
+		var datos = new FormData();
+		datos.append("idVentaHomologacion", idVentaHomologacion);
+	  
+		$.ajax({
+		  url: "ajax/crearventa.ajax.php",
+		  method: "POST",
+		  data: datos,
+		  cache: false,
+		  contentType: false,
+		  processData: false,
+		  beforeSend: function () {
+			$('#modalLoader').modal('show');
+		  },
+		  success: function (respuesta) {
+			console.log("respuesta1", respuesta);
+			$('#modalLoader').modal('hide');
+	  
+			try {
+			  const res = JSON.parse(respuesta);
+			  console.log("respuestaParseada", res);
+	  
+			  let mensaje = res.msg || 'Sin mensaje';
+	  
+			  if (Array.isArray(res.observaciones) && res.observaciones.length > 0) {
+				const observacionesTexto = res.observaciones
+				  .map(o => `(${o.code}) ${o.msg}`)
+				  .join('\n');
+				mensaje += '\nObservaciones:\n' + observacionesTexto;
+			  }
+	  
+			  swal({
+				type: res.code === 'FE' ? "success" : "error",
+				title: res.code === 'FE' ? "Factura Homologada" : "Error",
+				text: mensaje,
+				confirmButtonText: "Cerrar"
+			  }).then(() => {
+				if (res.code === 'FE') {
+				  window.location = "ventas";
+				}
+			  });
+	  
+			} catch (error) {
+			  console.error("No se pudo parsear JSON:", error);
+			  swal({
+				type: "warning",
+				title: 'Respuesta no esperada!',
+				text: respuesta,
+				confirmButtonText: "Cerrar"
+			  });
+			}
+		  }
+		});
+	  });
+	  
 
 /*=============================================
 MOSTRAR LA APOSTILLA

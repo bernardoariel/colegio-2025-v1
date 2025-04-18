@@ -677,9 +677,9 @@ $("#guardarVenta").on("click",function(){
             
             idUltimaFactura=respuestaUltimaFactura["id"];
             codigoUltimaFactura=respuestaUltimaFactura["codigo"];
-            
-            
-           window.location = "index.php?ruta=ventas&id="+idUltimaFactura;
+
+            // Redirigir a la ruta de ventas
+            window.location = "index.php?ruta=ventas&id=" + idUltimaFactura;
             
           } 
 

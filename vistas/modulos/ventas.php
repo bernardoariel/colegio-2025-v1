@@ -138,87 +138,129 @@
                       </center>
                     </div>
                   </td>
-
                   <script>
+const idVenta = "<?php echo $value["id"];?>";
+const nombre = "<?php echo $value["nombre"];?>";
+const doc = "<?php echo $value["documento"];?>";
 
-                    var idVentaHomologacion = "<?php echo $value["id"];?>";
-                    console.log('idVentaHomologacion: ', idVentaHomologacion);
-                    var nombreClienteHomologacionBtn = "<?php echo $value["nombre"];?>";//$(this).attr("nombrehomologacion");
-                    console.log('nombreClienteHomologacionBtn: ', nombreClienteHomologacionBtn);
-                    var documentoClienteHomologacionBtn = "<?php echo $value["documento"];?>";//$(this).attr("documentohomologacion");
-                    console.log('documentoClienteHomologacionBtn: ', documentoClienteHomologacionBtn);
+const erroresPersonalizados = {
+  "10015": "El CUIT y/o documento ingresado no existe en los registros de AFIP. Revise la información ingresada",
+  "10016": "El tipo de comprobante no es válido para este punto de venta",
+  "10017": "Falta información obligatoria en el cuerpo del comprobante",
+  // Más códigos acá...
+};
 
-                    var datos = new FormData();
-                    datos.append("idVentaHomologacion", idVentaHomologacion);
-                    datos.append("nombreClienteHomologacionBtn", nombreClienteHomologacionBtn);
-                    datos.append("documentoClienteHomologacionBtn", documentoClienteHomologacionBtn);
+if (sessionStorage.getItem("homologada_<?php echo $value["id"]; ?>") === "pendiente") {
+  mostrarBotonReintento(idVenta, "SIN HOMOLOGAR");
+}
 
-                    $.ajax({
+if (!sessionStorage.getItem("homologada_<?php echo $value["id"]; ?>")) {
+  sessionStorage.setItem("homologada_<?php echo $value["id"]; ?>", "pendiente");
 
-                      url:"ajax/crearventa.ajax.php",
-                      method: "POST",
-                      data: datos,
-                      cache: false,
-                      contentType: false,
-                      processData: false,
-                      beforeSend: function(){
-                      $('#modalLoader').modal('show');
-                      },
-                      success:function(respuesta){
-                        console.log("respuesta", respuesta);
+  $('#modalLoader').modal('show');
 
-                        respuestaCortada=respuesta.substring(0, 2);
+  const datos = new FormData();
+  datos.append("idVentaHomologacion", idVenta);
+  datos.append("nombreClienteHomologacionBtn", nombre);
+  datos.append("documentoClienteHomologacionBtn", doc);
 
-                        switch(respuestaCortada) {
-                          case 'FE':
-                            const valores = window.location.search;
-                            const urlParams = new URLSearchParams(valores);
-                            var tipo = urlParams.get('tipo');
-                            console.log('tipo: ', tipo);
-                           
-                            $('#modalLoader').modal('hide');
+  $.ajax({
+    url: "ajax/crearventa.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    success: function (respuesta) {
+      setTimeout(() => $('#modalLoader').modal('hide'), 200); // Esperar un poco antes de mostrar swal
 
-                            window.open("extensiones/fpdf/pdf/facturaElectronica.php?id="+idVentaHomologacion, "FACTURA",1);
-                            
-                            if(tipo=='cuota'){
-                              
-                              window.location = "index.php?ruta=inicio&tipo=cuota&idventa=<?php echo $value["id"];?>&idescribano=<?php echo $value["id_cliente"];?>";
+      try {
+        const json = JSON.parse(respuesta);
+        console.log("respuestaParseada", json);
 
-                            } else {
+        if (json.code === "FE" && json.msg.includes("generada correctamente")) {
+          sessionStorage.setItem("homologada_" + idVenta, "true");
 
-                              
+          const obs = json.observaciones?.map(o => "- " + o.msg).join('\n');
 
-                              window.location = "inicio";
+          swal({
+            type: "success",
+            title: "Factura Homologada",
+            text: "Factura de homologación generada correctamente" + (obs ? "\nObservaciones:\n" + obs : ""),
+            confirmButtonText: "Cerrar"
+          }).then(() => {
+            window.open("extensiones/fpdf/pdf/facturaElectronica.php?id=" + idVenta, "FACTURA", 1);
+            window.location = "ventas";
+          });
 
-                            }
-                            
+        } else if (json.code === "ER") {
+          const codError = json.msg?.match(/\d{5}/)?.[0];
+          const mensajePersonalizado = erroresPersonalizados[codError] || json.msg || "Motivo no informado";
 
-                             
-                          break;
+          swal({
+            type: "error",
+            title: "Comprobante rechazado por AFIP",
+            text: mensajePersonalizado,
+            confirmButtonText: "Cerrar"
+          }).then(() => {
+            window.open("extensiones/tcpdf/pdf/factura.php?id=" + idVenta, "FACTURA", 1);
+            mostrarBotonReintento(idVenta, "RECHAZADO");
+            window.location = "ventas";
+          });
 
-                          default:
-                            $('#modalLoader').modal('hide');
-                              swal({
-                                type: "warning",
-                                title: 'Posiblemente falla en la conexion',
-                                text: "DE AFIP",
-                                showConfirmButton: true,
-                                confirmButtonText: "Cerrar"
-                              }).then(function(result){
-                                  
-                                  if (result.value) {
-                                    window.open("extensiones/tcpdf/pdf/factura.php?id="+idVentaHomologacion ,"FACTURA",1);
-                                    window.location = "ventas";
-                                  }
+        } else {
+          swal({
+            type: "warning",
+            title: "Error inesperado",
+            text: "Respuesta no reconocida por el sistema",
+            confirmButtonText: "Cerrar"
+          }).then(() => {
+            window.open("extensiones/tcpdf/pdf/factura.php?id=" + idVenta, "FACTURA", 1);
+            mostrarBotonReintento(idVenta, "ERROR");
+            window.location = "ventas";
+          });
+        }
 
-                              })
-                        } //switch
+      } catch (e) {
+        swal({
+          type: "warning",
+          title: "Sin conexión con ARCA",
+          text: "Se imprimirá el comprobante sin homologar",
+          confirmButtonText: "Cerrar"
+        }).then(() => {
+          window.open("extensiones/tcpdf/pdf/factura.php?id=" + idVenta, "FACTURA", 1);
+          mostrarBotonReintento(idVenta, "SIN CONEXIÓN");
+          window.location = "ventas";
+        });
+      }
+    }
+  });
+}
 
-                      }//success
+function mostrarBotonReintento(id, motivo) {
+  $(`.btn-homologar-${id}`).parent().html(`
+    <button class="btn btn-danger btnReintentar" data-id="${id}" style="font-size: 12px; width: 190px;">
+      <i class="fa fa-refresh"></i> ${motivo} - ID:${id}
+    </button>
+  `);
+}
 
-                    })//ajax
+// Reintentar homologación
+$(document).on("click", ".btnReintentar", function() {
+  const id = $(this).data("id");
+  sessionStorage.removeItem("homologada_" + id);
+  $('#modalLoader').modal('show');
+  setTimeout(() => location.reload(), 300);
+});
+</script>
 
-                  </script>
+
+
+
+
+
+
+
             
                 <?php else: ?> <!-- if ($value["id"]==$_GET["id"]): -->
 
