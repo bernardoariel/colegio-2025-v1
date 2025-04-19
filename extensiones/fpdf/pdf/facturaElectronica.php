@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-ini_set('display_errors', 1);
+ini_set('display_errors', 0);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
@@ -93,8 +93,7 @@ function convertirLetras($texto){
 
 require_once('../../../modelos/conexion.php');
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 function eliminarQRViejos($carpeta, $dias = 30) {
     $archivos = glob($carpeta . '/*.png');
 
@@ -111,10 +110,6 @@ function eliminarQRViejos($carpeta, $dias = 30) {
         }
     }
 }
-=======
->>>>>>> c2f09df03 (init 2025 con docker)
-=======
->>>>>>> preprod
 
 // PARAMETROS
 $item= "id";
@@ -193,60 +188,6 @@ $codigo = explode("-", $ventas['codigo']);
 $fecha = explode("-", $ventas['fecha']);
 $fecha = $fecha[2]."/".$fecha[1]."/".$fecha[0];
 
-<<<<<<< HEAD
-//👇 ACA INSERTÁS EL BLOQUE QR
-switch ($ventas["tabla"]) {
-
-	case 'escribanos':
-		$item = "id";
-		$valor = $ventas["id_cliente"];
-		$traerCliente = ModeloEscribanos::mdlMostrarEscribanos('escribanos', $item, $valor);
-
-		$codigoTipoDoc = ($traerCliente['facturacion'] == "CUIT") ? 80 : 96;
-		break;
-
-	case 'casual':
-		$codigoTipoDoc = 96;
-		break;
-
-	case 'clientes':
-		$codigoTipoDoc = 80;
-		break;
-
-	default:
-		$codigoTipoDoc = 99;
-		break;
-}
-
-require_once '../../../extensiones/qr/phpqrcode/qrlib.php';
-eliminarQRViejos('../../../extensiones/qr/temp', 30);
-$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
-if (!file_exists($qrPath)) {
-    $data = [
-        "ver" => 1,
-        "fecha" => date("Y-m-d", strtotime($ventas["fecha"])),
-        "cuit" => "30584197680",
-        "ptoVta" => (int)$codigo[0],
-        "tipoCmp" => 11,
-        "nroCmp" => (int)$codigo[1],
-        "importe" => (float)$ventas["total"],
-        "moneda" => "PES",
-        "ctz" => 1,
-        "tipoDocRec" => $codigoTipoDoc,
-        "nroDocRec" => (int)$ventas["documento"],
-        "tipoCodAut" => "E",
-        "codAut" => (string)$ventas["cae"]
-    ];
-
-    $json = json_encode($data);
-    $base64 = base64_encode($json);
-    $url = "https://www.afip.gob.ar/fe/qr/?p=" . $base64;
-
-    QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
-}
-
-=======
->>>>>>> preprod
 //CODIGO DE BARRA
 $tipocbte = 11;
 $fechaCae = explode("/", $ventas['fecha_cae']);
