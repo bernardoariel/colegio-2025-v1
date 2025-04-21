@@ -83,11 +83,11 @@ class Wsaa {
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
             date_default_timezone_set('America/Argentina/Buenos_Aires');
-             // Ajustamos 25 minutos hacia atrás para generationTime
-        $TRA->header->addChild('generationTime', date('c', time() - 2500));
+                // Ajustamos 25 minutos hacia atrás para generationTime
+            $TRA->header->addChild('generationTime', date('c', time() - 2500));
 
-        // Expira en 1 hora como siempre
-        $TRA->header->addChild('expirationTime', date('c', time() + 3600));
+            // Expira en 1 hora como siempre
+            $TRA->header->addChild('expirationTime', date('c', time() + 3600));
     
             $TRA->addChild('service', $this->service);
             $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
