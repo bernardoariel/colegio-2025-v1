@@ -82,7 +82,7 @@ class Wsaa {
                 '</loginTicketRequest>');
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
-    
+            date_default_timezone_set('America/Argentina/Buenos_Aires');
              // Ajustamos 25 minutos hacia atrás para generationTime
         $TRA->header->addChild('generationTime', date('c', time() - 2500));
 
