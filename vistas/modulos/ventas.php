@@ -150,6 +150,7 @@ const erroresPersonalizados = {
   // Más códigos acá...
 };
 
+
 if (sessionStorage.getItem("homologada_<?php echo $value["id"]; ?>") === "pendiente") {
   mostrarBotonReintento(idVenta, "SIN HOMOLOGAR");
 }
