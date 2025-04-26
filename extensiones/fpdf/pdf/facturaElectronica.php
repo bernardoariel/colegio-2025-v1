@@ -293,6 +293,16 @@ $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
 $pdf -> SetX(40);
 $pdf -> SetFont('Arial','B',8);
 $pdf->Cell(0,0,convertirLetras('Iva Exento'));
+//TELEFONO
+$pdf -> SetY(56.5);
+$pdf -> SetX(6);
+$pdf -> SetFont('Arial','B',8);
+$pdf->Cell(0,0,convertirLetras('Telefono:'));
+$pdf -> SetX(10);
+$pdf->Image('../../../extensiones/fpdf/pdf/whatsapp.png', 25, 55, 3, 0, 'PNG'); // 30 X, 55 Y, 4mm de ancho
+$pdf->SetXY(29, 56.5); // después del icono, pongo el número
+$pdf->SetFont('Arial', '', 8);
+$pdf->Cell(0, 0, '3704-718693');
 
 /*=============================================
 			DERECHA DE LA FACTURA
@@ -396,6 +406,7 @@ $pdf -> SetY(76);
 $pdf -> SetX(6);
 $pdf -> SetFont('Arial','B',10);
 $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
+
 
 //primera linea
 
@@ -627,9 +638,9 @@ if (file_exists($qrPath)) {
 }
 
 // Siempre mostramos esta advertencia
-$pdf->SetY(270);
-$pdf->SetX(6);
-$pdf->SetFont('Arial','BI',5);
+$pdf->SetY(275);
+$pdf->SetX(40);
+$pdf->SetFont('Arial','BI',8);
 $pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 
@@ -721,6 +732,16 @@ $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
 $pdf -> SetX(40);
 $pdf -> SetFont('Arial','B',8);
 $pdf->Cell(0,0,convertirLetras('Iva Exento'));
+// TELEFONO
+$pdf -> SetY(56.5+$pagina2);
+$pdf -> SetX(6);
+$pdf -> SetFont('Arial','B',8);
+$pdf->Cell(0,0,convertirLetras('Telefono:'));
+$pdf -> SetX(10);
+$pdf->Image('../../../extensiones/fpdf/pdf/whatsapp.png', 25, 55+$pagina2, 3, 0, 'PNG');
+$pdf->SetXY(29, 56.5+$pagina2);
+$pdf->SetFont('Arial', '', 8);
+$pdf->Cell(0, 0, '3704-718693');
 
 /*=============================================
 			DERECHA DE LA FACTURA
@@ -1077,9 +1098,9 @@ if (file_exists($qrPath)) {
 }
 
 // Siempre mostramos esta advertencia
-$pdf->SetY(270);
-$pdf->SetX(6);
-$pdf->SetFont('Arial','BI',5);
+$pdf->SetY(275);
+$pdf->SetX(40);
+$pdf->SetFont('Arial','BI',8);
 $pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 /*=====  End of PAGINA 2  ======*/
