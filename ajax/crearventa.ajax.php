@@ -270,6 +270,12 @@ class AjaxCrearVenta{
 			ModeloCuotas::mdlEliminarVenta("cuotas", $_POST["idVentaNro"]);
 			// echo '<center><pre>'; print_r($respuesta2 . ' '.$_POST["idVentaNro"]); echo '</pre></center>';
 		}
+		return [
+			'code' => 'FE',
+			'msg' => 'Factura guardada correctamente sin homologación',
+			'observaciones' => []
+		  ];
+		
 		
 	}
 
@@ -382,11 +388,18 @@ CREAR NUEVA VENTA CON PENDIENTE A FACTURAR PERO SI EXISTE UN ERROR
 =============================================*/	
 
 if(isset($_POST["sinHomologacion"])){
-
 	$nuevaVenta = new AjaxCrearVenta();
-	$nuevaVenta -> ajaxSinHomologacion();
+	$respuesta = $nuevaVenta->ajaxSinHomologacion();
 
+	if (is_array($respuesta)) {
+		echo json_encode($respuesta);
+	} else {
+		echo $respuesta;
+	}
+
+	exit;
 }
+
 
 /*=============================================
 EDITA UNA VENTA CUOTA O REINTEGRO PERO SI NO TIENE ERROR
@@ -416,11 +429,16 @@ if(isset($_POST["idVentaSinHomologacion"])){
 HOMOLOGA UNA FACTURA SI TIENE LOS DATOS CORRECTOS Y SI HAY INTERNET
 =============================================*/	
 if(isset($_POST["idVentaHomologacion"])){
-
-
 	$nuevaVenta = new AjaxCrearVenta();
-	$nuevaVenta -> ajaxHomogacionVenta();
+	$respuesta = $nuevaVenta->ajaxHomogacionVenta();
 
+	if (is_array($respuesta)) {
+		echo json_encode($respuesta);
+	} else {
+		echo $respuesta;
+	}
+
+	exit;
 }
 
 if(isset($_POST["remito"])){

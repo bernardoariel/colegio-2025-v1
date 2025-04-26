@@ -648,7 +648,17 @@ $("#guardarVenta").on("click",function(){
       
       success:function(respuestaSinHomologacion){
         console.log("respuestaSinHomologacion", respuestaSinHomologacion);
-          
+        try {
+          let res = JSON.parse(respuestaSinHomologacion);
+      
+          if (res.code === 'FE' && res.observaciones && res.observaciones.length > 0) {
+            let mensajes = res.observaciones.map(obs => `${obs.code}: ${obs.msg}`).join("\n");
+            swal("Advertencias de AFIP", mensajes, "warning");
+          }
+      
+        } catch(e) {
+          console.warn("No se pudo parsear como JSON o no hay observaciones:", e);
+        }  
         ultimaFactura = 'ultimaFactura';
         var datos = new FormData();
         datos.append("ultimaFactura",ultimaFactura);
@@ -667,9 +677,9 @@ $("#guardarVenta").on("click",function(){
             
             idUltimaFactura=respuestaUltimaFactura["id"];
             codigoUltimaFactura=respuestaUltimaFactura["codigo"];
-            
-            
-           window.location = "index.php?ruta=ventas&id="+idUltimaFactura;
+
+            // Redirigir a la ruta de ventas
+            window.location = "index.php?ruta=ventas&id=" + idUltimaFactura;
             
           } 
 
