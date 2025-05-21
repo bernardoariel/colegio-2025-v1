@@ -1,6 +1,14 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+require_once dirname(__DIR__) . "/controladores/clientes.controlador.php";
+require_once dirname(__DIR__) . "/modelos/clientes.modelo.php";
+require_once dirname(__DIR__) . "/controladores/escribanos.controlador.php";
+require_once dirname(__DIR__) . "/modelos/escribanos.modelo.php";
+
 class ControladorVentas{
 
 	/*=============================================
@@ -174,9 +182,12 @@ class ControladorVentas{
 		}
 	
 		if($ERRORAFIP==0){
-
+			$regcomp["CondicionIVAReceptorId"] = 1;
+			error_log("🧪 REGCOMP => " . print_r($regcomp, true));
 			$result = $afip->emitirComprobante($regcomp); //$regcomp debe tener la estructura esperada (ver a continuación de la wiki)
-			
+
+			$observaciones = isset($result["observaciones"]) ? $result["observaciones"] : [];
+
 			if ($result["code"] === Wsfev1::RESULT_OK) {
 				
 			/*=============================================
@@ -318,11 +329,18 @@ class ControladorVentas{
 			  
         	if($afip==1){
 
-        		 echo 'FE';
+        		return [
+					'code' => 'FE',
+					'msg' => 'Factura generada correctamente',
+					'observaciones' => $observaciones
+				];
 
 			}else{
 
-				echo "ER";
+				return [
+					'code' => 'ER',
+					'msg' => $result["msg"]
+				];
 
 			}
 
@@ -332,97 +350,223 @@ class ControladorVentas{
 
 	}
     
+	static public function ctrHomologacionVenta() {
 
-	static public function ctrHomologacionVenta(){
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+		error_reporting(E_ALL);
 
-		if(isset($_POST["idVentaHomologacion"])){
+		$log = __DIR__ . '/../log_afip.txt';
+		$inicio = "=== INICIO HOMOLOGACION [" . date('Y-m-d H:i:s') . "] ===\n";
+		file_put_contents($log, $inicio);
 
-			$item="id";
-			$valor=$_POST["idVentaHomologacion"];
-			$ventas=ControladorVentas::ctrMostrarVentas($item,$valor);
-
-			$listaProductos = json_decode($ventas["productos"], true);
-			$items=Array();//del afip
-			
-			foreach ($listaProductos as $key => $value) {
-
-				$items[$key]=array('codigo' => $value["id"],'descripcion' => $value["descripcion"],'cantidad' => $value["cantidad"],'codigoUnidadMedida'=>7,'precioUnitario'=>$value["precio"],'importeItem'=>$value["total"],'impBonif'=>0);
-				
-			}
-
-			$nombre=$ventas['nombre'];
-			$documento=$ventas['documento'];
-			$tabla=$ventas['tabla'];
-
-		   
-
-			include('../extensiones/afip/homologacion.php');
-
-
-			/*=============================================
-				GUARDAR LA VENTA
-			=============================================*/	
-			if($ERRORAFIP==0){
-
-				$result = $afip->emitirComprobante($regcomp); //$regcomp debe tener la estructura esperada (ver a continuación de la wiki)
-				
-		        
-		        if ($result["code"] === Wsfev1::RESULT_OK) {
-		        	
-		        	$cantCabeza = strlen($PTOVTA); 
-					switch ($cantCabeza) {
-							case 1:
-					          $ptoVenta="000".$PTOVTA;
-					          break;
-							case 2:
-					          $ptoVenta="00".$PTOVTA;
-					          break;
-						  case 3:
-					          $ptoVenta="0".$PTOVTA;
-					          break;   
-					}
-
-				    $codigoFactura = $ptoVenta .'-'. $ultimoComprobante;
-					
-					$fechaCaeDia = substr($result["fechaVencimientoCAE"],-2);
-					$fechaCaeMes = substr($result["fechaVencimientoCAE"],4,-2);
-					$fechaCaeAno = substr($result["fechaVencimientoCAE"],0,4);
-
-		        	$tabla = "comprobantes";
-					$datos = $ult;
-						
-					ModeloVentas::mdlAgregarNroComprobante($tabla, $datos);
-					$numeroDoc=$documento;
-					$totalVenta=$ventas["total"];
-					include('../extensiones/qr/index.php');
-
-					$datos = array("id"=>$_POST["idVentaHomologacion"],
-						           "fecha" => date('Y-m-d'),
-								   "codigo"=>$codigoFactura,
-								   "nombre"=>$nombre,
-							       "documento"=>$documento,
-								   "cae"=>$result["cae"],
-								   "fecha_cae"=>$fechaCaeDia.'/'.$fechaCaeMes.'/'.$fechaCaeAno,"qr"=>$datos_cmp_base_64."=");
-
-					$tabla="ventas";
-
-					$respuesta = ModeloVentas::mdlHomologacionVenta($tabla,$datos);
-
-					echo 'FE';
-				
-
-				}
-
-			}else{
-
-				echo "ER";
-				
-			}
-
+		if (!isset($_POST["idVentaHomologacion"])) {
+			echo json_encode(["code" => "ER", "msg" => "ID de venta no recibido"]);
+			file_put_contents($log, "Falta ID de venta\n", FILE_APPEND);
+			return;
 		}
 
+		try {
+			file_put_contents($log, "Incluyendo: " . __DIR__ . '/../extensiones/arca/wsfev1.php' . "\n", FILE_APPEND);
+			require_once __DIR__ . '/../extensiones/arca/wsfev1.php';
+			require_once __DIR__ . '/../extensiones/arca/wsaa.php';
+			file_put_contents($log, "Clases AFIP incluidas OK\n", FILE_APPEND);
+		} catch (Throwable $e) {
+			echo json_encode(["code" => "ER", "msg" => "Error al incluir clases: " . $e->getMessage()]);
+			file_put_contents($log, "ERROR incluir clases: " . $e->getMessage() . "\n", FILE_APPEND);
+			return;
+		}
 
-	}
+		$item = "id";
+		$valor = $_POST["idVentaHomologacion"];
+		$ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
+		if (!$ventas) {
+			echo json_encode(["code" => "ER", "msg" => "No se encontró la venta con ID: $valor"]);
+			file_put_contents($log, "Venta no encontrada: $valor\n", FILE_APPEND);
+			return;
+		}
+
+		switch ($ventas["tabla"]) {
+			case 'clientes':
+				$codigoTipoDoc = 80;
+				$itemCliente = "id";
+				$valorCliente = $ventas["id_cliente"];
+				$cliente = ControladorClientes::ctrMostrarClientes($itemCliente,$valorCliente);
+				file_put_contents($log, "Cliente obtenido:\n" . print_r($cliente, true), FILE_APPEND);
+
+				$iva = trim(strtoupper($cliente['tipoiva']));
+
+				if ($iva == "IVA RESPONSABLE INSCRIPTO") {
+					$CondicionIVAReceptorId = 1;
+				} elseif ($iva == "RESPONSABLE MONOTRIBUTO") {
+					$CondicionIVAReceptorId = 6;
+				} elseif ($iva == "IVA SUJETO EXENTO" || $iva == "IVA NO RESPONSABLE" || $iva == "IVA RESPONSABLE NO INSCRIPTO" ) {
+					$CondicionIVAReceptorId = 4;
+				}
+				break;
+			case 'escribanos':
+				
+				$itemEscribano = "id";
+				$valorEscribano = $ventas["id_cliente"];
+				$escribano = ControladorEscribanos::ctrMostrarEscribanos($itemEscribano,$valorEscribano);
+				file_put_contents($log, "ESCRI obtenido:\n" . print_r($escribano, true), FILE_APPEND);
+				//id_tipo_iva 
+				$CondicionIVAReceptorId =  $escribano["id_tipo_iva"];
+				/* if ($escribano["id_tipo_iva"]== 1) { //IVA Responsable Inscripto
+					$CondicionIVAReceptorId = 1;
+				} elseif ($escribano["id_tipo_iva"]== 5) { //Consumidor Final
+					$CondicionIVAReceptorId = 5;
+				} elseif ($escribano["id_tipo_iva"]== 6) { //6Responsable Monotributo
+					$CondicionIVAReceptorId = 4;
+				}
+ */
+				$codigoTipoDoc = 80;
+		
+				break;
+			case 'casual':
+				$codigoTipoDoc = 96;
+				$CondicionIVAReceptorId = 5;
+				break;
+	
+			default:
+				$codigoTipoDoc = 99;
+				$CondicionIVAReceptorId = 5;
+				break;
+		}
+
+		$items = [];
+		$productos = json_decode($ventas["productos"], true);
+		foreach ($productos as $p) {
+			$items[] = [
+				"codigo" => (string) $p["id"],
+				"scanner" => (string) $p["id"],
+				"descripcion" => $p["descripcion"],
+				"codigoUnidadMedida" => 7,
+				"UnidadMedida" => "Unidades",
+				"codigoCondicionIVA" => 1,
+				"Alic" => 0,
+				"cantidad" => (float) $p["cantidad"],
+				"porcBonif" => 0,
+				"impBonif" => 0,
+				"precioUnitario" => (float) $p["precio"],
+				"importeIVA" => 0,
+				"importeItem" => (float) $p["total"]
+			];
+		}
+		include ('../extensiones/arca/modo.php');
+		
+		$tipocbte = 11; 		#COMPROBANTE C
+		$documento = (int) $ventas["documento"];
+		$nombre = $ventas["nombre"];
+		$total = (float) $ventas["total"];
+		$date_raw = date('Y-m-d');
+		$desde = date('Ymd', strtotime('-2 day', strtotime($date_raw)));
+		$hasta = date('Ymd', strtotime('-1 day', strtotime($date_raw)));
+
+    try {
+        $afip = new Wsfev1($CUIT, $MODO);
+        $ultimo = $afip->consultarUltimoComprobanteAutorizado($PTOVTA, $tipocbte) + 1;
+        file_put_contents($log, "Último comprobante: $ultimo\n", FILE_APPEND);
+        file_put_contents($log, "Preparando voucher...\n", FILE_APPEND);
+
+        $voucher = [
+            "idVoucher" => 1,
+            "numeroComprobante" => $ultimo,
+            "numeroPuntoVenta" => $PTOVTA,
+            "cae" => 0,
+            "letra" => "C",
+            "fechaVencimientoCAE" => "",
+            "tipoResponsable" => "",
+            "nombreCliente" => $nombre,
+            "domicilioCliente" => "",
+            "fechaComprobante" => date('Ymd'),
+            "codigoTipoComprobante" => 11,
+            "TipoComprobante" => "Factura",
+            "codigoConcepto" => 1,
+            "codigoMoneda" => "PES",
+            "cotizacionMoneda" => 1.000,
+            "fechaDesde" => $desde,
+            "fechaHasta" => $hasta,
+            "fechaVtoPago" => date('Ymd'),
+            "codigoTipoDocumento" => $codigoTipoDoc,
+            "CondicionIVAReceptorId" => $CondicionIVAReceptorId,
+            "TipoDocumento" => "DNI",
+            "numeroDocumento" => $documento,
+            "importeTotal" => $ventas["total"],
+            "importeOtrosTributos" => 0.000,
+            "importeGravado" => $ventas["total"],
+            "importeNoGravado" => 0.000,
+            "importeExento" => 0.000,
+            "importeIVA" => 0,
+            "codigoPais" => 200,
+            "idiomaComprobante" => 1,
+            "NroRemito" => 0,
+            "CondicionVenta" => "Efectivo",
+            "canmismaMoneda" => "N",
+            "items" => $items,
+            "subtotivas" => [],
+            "Tributos" => [],
+            "CbtesAsoc" => []
+        ];
+
+        file_put_contents($log, "VOUCHER ARMADO:\n" . json_encode($voucher, JSON_PRETTY_PRINT) . "\n", FILE_APPEND);
+
+        file_put_contents($log, "Llamando a emitirComprobante...\n", FILE_APPEND);
+        $result = $afip->emitirComprobante($voucher);
+        file_put_contents($log, "Resultado AFIP:\n" . print_r($result, true), FILE_APPEND);
+
+        if (isset($result["cae"]) && isset($result["fechaVencimientoCAE"])) {
+            $ptoVenta = str_pad($PTOVTA, 4, "0", STR_PAD_LEFT);
+            $ultimoComprobante = str_pad($ultimo, 8, "0", STR_PAD_LEFT);
+            $codigoFactura = $ptoVenta . '-' . $ultimoComprobante;
+			
+            $fechaCae = $result["fechaVencimientoCAE"];
+            $fechaCaeFormateada = substr($fechaCae, 6, 2) . '/' . substr($fechaCae, 4, 2) . '/' . substr($fechaCae, 0, 4);
+
+            ModeloVentas::mdlAgregarNroComprobante("comprobantes", $ultimo);
+			$totalVenta = $ventas["total"];
+			$numeroDoc  = $ventas['documento'];
+            include('../extensiones/qr/index.php');
+
+            $datos = [
+                "id" => $_POST["idVentaHomologacion"],
+                "fecha" => date('Y-m-d'),
+                "codigo" => $codigoFactura,
+                "nombre" => $nombre,
+                "documento" => $documento,
+                "cae" => $result["cae"],
+                "fecha_cae" => $fechaCaeFormateada,
+                "qr" => $datos_cmp_base_64 . "="
+            ];
+
+            $respuesta = ModeloVentas::mdlHomologacionVenta("ventas", $datos);
+
+            if ($respuesta == "ok") {
+                echo json_encode([
+                    "code" => "FE",
+                    "msg" => "Factura de homologación generada correctamente",
+                    "observaciones" => isset($result["observaciones"]) ? $result["observaciones"] : []
+                ]);
+                return;
+            } else {
+                echo json_encode(["code" => "ER", "msg" => "No se pudo guardar la venta en la base de datos"]);
+                return;
+            }
+        }
+
+        echo json_encode(["code" => "ER", "msg" => "No se obtuvo CAE en la respuesta de AFIP"]);
+        return;
+
+    } catch (Throwable $e) {
+        file_put_contents($log, "❌ EXCEPCIÓN al emitirComprobante:\n" . $e->getMessage() . "\n" . $e->getTraceAsString(), FILE_APPEND);
+        echo json_encode(["code" => "ER", "msg" => "Excepción en emitirComprobante: " . $e->getMessage()]);
+        return;
+    }
+
+    file_put_contents($log, "=== FIN HOMOLOGACION [" . date('Y-m-d H:i:s') . "] ===\n", FILE_APPEND);
+}
+
+
 
 	
 

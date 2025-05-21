@@ -1,7 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
-ini_set('display_errors', 0);
+
 include('../fpdf.php');
 include ('../../barcode.php');
 
@@ -90,6 +89,22 @@ function convertirLetras($texto){
 
 require_once('../../../modelos/conexion.php');
 
+function eliminarQRViejos($carpeta, $dias = 30) {
+    $archivos = glob($carpeta . '/*.png');
+
+    foreach ($archivos as $archivo) {
+        if (is_file($archivo)) {
+            $ultimaModificacion = filemtime($archivo);
+            $ahora = time();
+
+            $diferenciaDias = ($ahora - $ultimaModificacion) / (60 * 60 * 24);
+
+            if ($diferenciaDias > $dias) {
+                unlink($archivo);
+            }
+        }
+    }
+}
 
 // PARAMETROS
 $item= "id";
@@ -167,6 +182,57 @@ $codigo = explode("-", $ventas['codigo']);
 //FECHA
 $fecha = explode("-", $ventas['fecha']);
 $fecha = $fecha[2]."/".$fecha[1]."/".$fecha[0];
+
+//👇 ACA INSERTÁS EL BLOQUE QR
+switch ($ventas["tabla"]) {
+
+	case 'escribanos':
+		$item = "id";
+		$valor = $ventas["id_cliente"];
+		$traerCliente = ModeloEscribanos::mdlMostrarEscribanos('escribanos', $item, $valor);
+
+		$codigoTipoDoc = ($traerCliente['facturacion'] == "CUIT") ? 80 : 96;
+		break;
+
+	case 'casual':
+		$codigoTipoDoc = 96;
+		break;
+
+	case 'clientes':
+		$codigoTipoDoc = 80;
+		break;
+
+	default:
+		$codigoTipoDoc = 99;
+		break;
+}
+
+require_once '../../../extensiones/qr/phpqrcode/qrlib.php';
+eliminarQRViejos('../../../extensiones/qr/temp', 30);
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+if (!file_exists($qrPath)) {
+    $data = [
+        "ver" => 1,
+        "fecha" => date("Y-m-d", strtotime($ventas["fecha"])),
+        "cuit" => "30584197680",
+        "ptoVta" => (int)$codigo[0],
+        "tipoCmp" => 11,
+        "nroCmp" => (int)$codigo[1],
+        "importe" => (float)$ventas["total"],
+        "moneda" => "PES",
+        "ctz" => 1,
+        "tipoDocRec" => $codigoTipoDoc,
+        "nroDocRec" => (int)$ventas["documento"],
+        "tipoCodAut" => "E",
+        "codAut" => (string)$ventas["cae"]
+    ];
+
+    $json = json_encode($data);
+    $base64 = base64_encode($json);
+    $url = "https://www.afip.gob.ar/fe/qr/?p=" . $base64;
+
+    QRcode::png($url, $qrPath, QR_ECLEVEL_L, 4);
+}
 
 //CODIGO DE BARRA
 $tipocbte = 11;
@@ -290,6 +356,16 @@ $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
 $pdf -> SetX(40);
 $pdf -> SetFont('Arial','B',8);
 $pdf->Cell(0,0,convertirLetras('Iva Exento'));
+//TELEFONO
+$pdf -> SetY(56.5);
+$pdf -> SetX(6);
+$pdf -> SetFont('Arial','B',8);
+$pdf->Cell(0,0,convertirLetras('Telefono:'));
+$pdf -> SetX(10);
+$pdf->Image('../../../extensiones/fpdf/pdf/whatsapp.png', 25, 55, 3, 0, 'PNG'); // 30 X, 55 Y, 4mm de ancho
+$pdf->SetXY(29, 56.5); // después del icono, pongo el número
+$pdf->SetFont('Arial', '', 8);
+$pdf->Cell(0, 0, '3704-718693');
 
 /*=============================================
 			DERECHA DE LA FACTURA
@@ -393,6 +469,7 @@ $pdf -> SetY(76);
 $pdf -> SetX(6);
 $pdf -> SetFont('Arial','B',10);
 $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
+
 
 //primera linea
 
@@ -603,28 +680,31 @@ $pdf -> SetFont('Arial','',12);
 $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 
 //IMAGEN
-if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+$afipImg = '../../../vistas/img/afip/afip.jpg';
+$barcodePath = '../../codigos/'.$codigodeBarra.$ultimoDigito.'.png';
 
-	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,252, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,254, 26 , 0,'JPG', '');
-	$pdf -> SetY(272);
-	$pdf -> SetX(32);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-	
-}else{
-
-	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,252, 26 , 0,'JPG', '');
-	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
-	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,272, 70 , 14,'PNG', '');
-	
-	$pdf -> SetY(270);
-	$pdf -> SetX(6);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-
+if (file_exists($qrPath)) {
+	try {
+		$pdf->Image($qrPath, 6, 252, 25, 25, 'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
+		$pdf->Image($afipImg, 32, 254, 26, 0, 'JPG', '');
+	} catch (Exception $e) {
+		// si algo falla, usar el de abajo
+		$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+		barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+		$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
+	}
+} else {
+	$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+	barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+	$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
 }
+
+// Siempre mostramos esta advertencia
+$pdf->SetY(275);
+$pdf->SetX(40);
+$pdf->SetFont('Arial','BI',8);
+$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 
 
@@ -715,6 +795,16 @@ $pdf->Cell(0,0,convertirLetras('Condición frente al IVA:'));
 $pdf -> SetX(40);
 $pdf -> SetFont('Arial','B',8);
 $pdf->Cell(0,0,convertirLetras('Iva Exento'));
+// TELEFONO
+$pdf -> SetY(56.5+$pagina2);
+$pdf -> SetX(6);
+$pdf -> SetFont('Arial','B',8);
+$pdf->Cell(0,0,convertirLetras('Telefono:'));
+$pdf -> SetX(10);
+$pdf->Image('../../../extensiones/fpdf/pdf/whatsapp.png', 25, 55+$pagina2, 3, 0, 'PNG');
+$pdf->SetXY(29, 56.5+$pagina2);
+$pdf->SetFont('Arial', '', 8);
+$pdf->Cell(0, 0, '3704-718693');
 
 /*=============================================
 			DERECHA DE LA FACTURA
@@ -1050,29 +1140,31 @@ $pdf->Cell(15,0,convertirLetras($ventas['fecha_cae']),0,0,'L');
 	
 // }
 //IMAGEN
-if(file_exists('../../../extensiones/qr/temp/'.$ventas["cae"].'.png')){
+$qrPath = '../../../extensiones/qr/temp/'.$ventas["cae"].'.png';
+$afipImg = '../../../vistas/img/afip/afip.jpg';
+$barcodePath = '../../codigos/'.$codigodeBarra.$ultimoDigito.'.png';
 
-	$pdf->Image('../../../extensiones/qr/temp/'.$ventas["cae"].'.png', 6 ,258, 25 , 25,'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 32 ,258, 26 , 0,'JPG', '');
-	
-	$pdf -> SetY(276);
-	$pdf -> SetX(32);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-	
-}else{
-
-	//IMAGEN
-	$pdf->Image('../../../vistas/img/afip/afip.jpg' , 6 ,256, 26 , 0,'JPG', '');
-	barcode('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
-	$pdf->Image('../../codigos/'.$codigodeBarra.$ultimoDigito.'.png', 6 ,275, 70 , 14,'PNG', '');
-	
-	$pdf -> SetY(273);
-	$pdf -> SetX(6);
-	$pdf -> SetFont('Arial','BI',5);
-	$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
-
+if (file_exists($qrPath)) {
+	try {
+		$pdf->Image($qrPath, 6, 252, 25, 25, 'PNG', 'https://www.afip.gob.ar/fe/qr/?p='.$ventas["qr"]);
+		$pdf->Image($afipImg, 32, 254, 26, 0, 'JPG', '');
+	} catch (Exception $e) {
+		// si algo falla, usar el de abajo
+		$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+		barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+		$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
+	}
+} else {
+	$pdf->Image($afipImg, 6, 252, 26, 0, 'JPG', '');
+	barcode($barcodePath, $codigodeBarra.$ultimoDigito, 50, 'horizontal', 'code128', true);
+	$pdf->Image($barcodePath, 6, 272, 70, 14, 'PNG', '');
 }
+
+// Siempre mostramos esta advertencia
+$pdf->SetY(275);
+$pdf->SetX(40);
+$pdf->SetFont('Arial','BI',8);
+$pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabiliza por los datos ingresados en el detalle de la operación'),0,0,'L');
 
 /*=====  End of PAGINA 2  ======*/
 

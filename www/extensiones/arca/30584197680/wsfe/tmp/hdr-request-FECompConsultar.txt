@@ -1,0 +1,8 @@
+POST /wsfev1/service.asmx HTTP/1.1
+Host: wswhomo.afip.gov.ar
+Connection: Keep-Alive
+User-Agent: PHP-SOAP/5.6.40
+Content-Type: application/soap+xml; charset=utf-8; action="http://ar.gov.afip.dif.FEV1/FECompConsultar"
+Content-Length: 1381
+Cookie: f5avraaaaaaaaaaaaaaaa_session_=EHHJLHFCLJPDFJIHIDDGIPFMJLAELJHIGCJPCIJKMBAGLCEIGIKEHFNEJKEHGDKNLHEDJPEEDDAGGENKMKPAGNJAHPGCNDPMCPBEHLODMPJIBOCJEHPLNMPHGDONHIPF;TS010b76f1=01ef919f3020a6cf0fb2de60cd72e37a5667cf6b5bd0b56e38dc43ea0a00f136b99a767125e976e57c59399d86f3f6b38b856e099ca160a338379654dd31ca2fcf43386c70;
+

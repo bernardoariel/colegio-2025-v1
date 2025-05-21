@@ -6,8 +6,6 @@
 * Date:    2015-12-20                                                          *
 * Author:  Olivier PLATHEY                                                     *
 *******************************************************************************/
-error_reporting(E_ALL & ~E_NOTICE);
-ini_set('display_errors', 0);
 define('FPDF_VERSION','1.81');
 
 class FPDF

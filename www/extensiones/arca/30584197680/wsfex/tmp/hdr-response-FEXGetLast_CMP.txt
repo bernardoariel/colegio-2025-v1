@@ -1,0 +1,13 @@
+HTTP/1.1 200 OK
+Date: Tue, 29 Apr 2025 14:36:32 GMT
+MicrosoftOfficeWebServer: 5.0_Pub
+Expect-CT: enforce
+Strict-Transport-Security: nosniff
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 1; mode=block
+Cache-Control: private, max-age=0
+Content-Type: application/soap+xml; charset=utf-8
+Content-Length: 795
+Set-Cookie: f5avraaaaaaaaaaaaaaaa_session_=GFIMLLGCEDIDHBIIFOOOOIHMEGOHLNIEALLHIHIINMGLKALNNDHOBNANCIOLPPNCEGCDOGJDFDGIOLJLKNFAIPFNKOFHACEIJEKCLDKIPADJAOMGANMCKNPNFOJFNGFK; HttpOnly; secure;
+Set-Cookie: TS010b76f1=01ef919f304958c0349bbcd27cb25d3bb5da4d327a2eb95b8699c7d53f2b2d9b909d2b0eb21999272264ab85b42245ed09cf43a9ecf323b82273b206e4e18401110ffec9a3; Path=/; Domain=.wswhomo.afip.gov.ar; 

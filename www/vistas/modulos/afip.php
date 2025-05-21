@@ -15,7 +15,7 @@ function cvf_convert_object_to_array($data) {
 
 }
 
-include('extensiones/afip/consulta.php');
+include('extensiones/arca/consulta.php');
 
 ?>
 <div class="content-wrapper">
@@ -158,21 +158,24 @@ include('extensiones/afip/consulta.php');
             $ultimoComprobante = $afip->consultarUltimoComprobanteAutorizado($PTOVTA,11);  
           
 
-              if(isset($_GET['comprobante'])){
-                
+        try {
+    if (isset($_GET['comprobante'])) {
+        $result = $afip->consultarComprobante($PTOVTA, $_GET['comprobante'], $_GET['numero']);
+    } else {
+        $result = $afip->consultarComprobante($PTOVTA, 11, $ultimoComprobante);
+    }
 
-                $result = $afip->consultarComprobante($PTOVTA,$_GET['comprobante'],$_GET['numero']);
-
-              }else{
-
-                
-
-                $result = $afip->consultarComprobante($PTOVTA,1,$ultimoComprobante);
-
-              }
-           
-             $miObjeto=cvf_convert_object_to_array($result["datos"]);
-             // echo '<pre>'; print_r($miObjeto); echo '</pre>';
+    $miObjeto = isset($result->datos) ? cvf_convert_object_to_array($result->datos) : null;
+    $miObjeto = cvf_convert_object_to_array($result);
+/* if (!isset($result->datos)) {
+    echo "<pre>";
+    var_dump($result);
+    echo "</pre>";
+} */
+} catch (Exception $e) {
+    echo "<div class='alert alert-danger'>Error al consultar comprobante: " . $e->getMessage() . "</div>";
+    $miObjeto = null;
+}
 
 
           ?>
@@ -284,7 +287,10 @@ include('extensiones/afip/consulta.php');
 
 
         <div class="col-lg-6">
-
+ <div class="box box-success">
+      
+      <div class="box-header with-border">
+        <h4>DATOS DEL SISTEMA</h4>
 
           
           <?php
@@ -294,12 +300,12 @@ include('extensiones/afip/consulta.php');
              
               #BUSCO EL CAE DE LA FACTURA PARA TENER LOS DATOS QUE TENGO GUARDADO EN MI TABLA
               $item = "cae";
-              $valor = $miObjeto['CodAutorizacion'];
+              $valor = $miObjeto['CodAutorizacion'];34511
 
  // echo $miObjeto['CodAutorizacion'];
               $ventas = ControladorVentas::ctrMostrarVentas($item,$valor);
               // echo '<pre>'; print_r($ventas); echo '</pre>';
-              echo "<strong>".strtoupper($ventas['tabla'])."</strong>";
+              // echo "<strong>".strtoupper($ventas['tabla'])."</strong>";
               $nombre =$ventas['nombre'];
               $cuit=$ventas['documento'];
 
@@ -336,14 +342,80 @@ include('extensiones/afip/consulta.php');
 
               }
 
-              if($ventas['tabla']=="consumidor_final"){
+              if($ventas['tabla']=="consumidorfinal"){
 
                 $tipoIva = "CONSUMIDOR FINAL";
                 
               }
              
              ?>
+             <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">Cuit</span> 
+
+                  <input type="text" class="form-control input-lg"  value="<?php echo $cuit;?>"> 
+
+                </div>
+                
+            </div>
+            <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">Fecha</span> 
+
+                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['fecha'];?>"> 
+
+                </div>
+                
+            </div>
               <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">Total Fc</span> 
+
+                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['total'];?>"> 
+
+                </div>
+                
+          </div>
+          <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">Comprobante Nro.</span> 
+
+                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['codigo'];?>"> 
+
+                </div>
+                
+          </div>
+            <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">CAE</span> 
+
+                  <input type="text" class="form-control input-lg"  value="..."> 
+
+                </div>
+
+          </div>
+          <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon" style="background-color: red;color:white;">Fecha Cae</span> 
+
+                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['fecha_cae'];?>"> 
+
+                </div>
+                
+          </div>
+            <div class="form-group">
                 
                 <div class="input-group">
                 
@@ -355,18 +427,7 @@ include('extensiones/afip/consulta.php');
 
           </div>
 
-          <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon" style="background-color: red;color:white;">Cuit</span> 
-
-                  <input type="text" class="form-control input-lg"  value="<?php echo $cuit;?>"> 
-
-                </div>
-                
-          </div>
-
+          
           <div class="form-group">
                 
                 <div class="input-group">
@@ -379,17 +440,8 @@ include('extensiones/afip/consulta.php');
                 
           </div>
 
-          <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon" style="background-color: red;color:white;">Fecha</span> 
-
-                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['fecha'];?>"> 
-
-                </div>
-                
-          </div>
+         
+           
           
           <div class="form-group">
                 
@@ -403,40 +455,12 @@ include('extensiones/afip/consulta.php');
                 
           </div>
 
-          <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon" style="background-color: red;color:white;">Comprobante Nro.</span> 
+          
 
-                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['codigo'];?>"> 
+          
 
-                </div>
-                
+        
           </div>
-
-          <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon" style="background-color: red;color:white;">Fecha Cae</span> 
-
-                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['fecha_cae'];?>"> 
-
-                </div>
-                
-          </div>
-
-          <div class="form-group">
-                
-                <div class="input-group">
-                
-                  <span class="input-group-addon" style="background-color: red;color:white;">Total Fc</span> 
-
-                  <input type="text" class="form-control input-lg"  value="<?php echo $ventas['total'];?>"> 
-
-                </div>
-                
           </div>
 
         </div>
