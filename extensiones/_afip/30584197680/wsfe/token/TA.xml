@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<loginTicketResponse version="1.0">
+    <header>
+        <source>CN=wsaa, O=AFIP, C=AR, SERIALNUMBER=CUIT 33693450239</source>
+        <destination>SERIALNUMBER=CUIT 30584197680, CN=colegio-0824</destination>
+        <uniqueId>2541352503</uniqueId>
+        <generationTime>2025-05-16T21:57:50.898-03:00</generationTime>
+        <expirationTime>2025-05-17T09:57:50.898-03:00</expirationTime>
+    </header>
+    <credentials>
+        <token>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgc3JjPSJDTj13c2FhLCBPPUFGSVAsIEM9QVIsIFNFUklBTE5VTUJFUj1DVUlUIDMzNjkzNDUwMjM5IiBkc3Q9IkNOPXdzZmUsIE89QUZJUCwgQz1BUiIgdW5pcXVlX2lkPSIzNzI2OTUyNzEwIiBnZW5fdGltZT0iMTc0NzQ0MzQxMCIgZXhwX3RpbWU9IjE3NDc0ODY2NzAiLz4KICAgIDxvcGVyYXRpb24gdHlwZT0ibG9naW4iIHZhbHVlPSJncmFudGVkIj4KICAgICAgICA8bG9naW4gZW50aXR5PSIzMzY5MzQ1MDIzOSIgc2VydmljZT0id3NmZSIgdWlkPSJTRVJJQUxOVU1CRVI9Q1VJVCAzMDU4NDE5NzY4MCwgQ049Y29sZWdpby0wODI0IiBhdXRobWV0aG9kPSJjbXMiIHJlZ21ldGhvZD0iMjIiPgogICAgICAgICAgICA8cmVsYXRpb25zPgogICAgICAgICAgICAgICAgPHJlbGF0aW9uIGtleT0iMzA1ODQxOTc2ODAiIHJlbHR5cGU9IjQiLz4KICAgICAgICAgICAgPC9yZWxhdGlvbnM+CiAgICAgICAgPC9sb2dpbj4KICAgIDwvb3BlcmF0aW9uPgo8L3Nzbz4K</token>
+        <sign>WfnneCmLGa7cfwcFqaxQzm8npHOffkx1KQ0lbR9P8PREWxNB4/aWMPN/Jv03z2KOE4xUQcefxONxyi7wafH+Ftjrl/WpbegAftUHt2iEBnQ1eoMKdfWkgRCxMuhWvmIFlEOZxS3kDlV4eZNo4f+dIv4TSZdRaEeYIQBC91aapr0=</sign>
+    </credentials>
+</loginTicketResponse>

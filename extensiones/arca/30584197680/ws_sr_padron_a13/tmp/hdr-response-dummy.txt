@@ -1,0 +1,14 @@
+HTTP/1.1 200 OK
+Date: Tue, 29 Apr 2025 19:03:11 GMT
+Strict-Transport-Security: max-age=300; includeSubDomains; preload
+Content-Length: 286
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: sameorigin
+X-Content-Type-Options: nosniff
+Set-Cookie: HttpOnly;Secure
+Keep-Alive: timeout=3000, max=100
+Connection: Keep-Alive
+Content-Type: text/xml;charset=UTF-8
+Set-Cookie: f5avraaaaaaaaaaaaaaaa_session_=NDFPOFBCIDJOANMBBABAENGCINBCPDFCBOLEHMDGGOCCJIEMBKLEKLPOCHOBPGODKCIDONMOECNFHNLLDBOAGEFPCCLIFMEDGAHCOKPKIMIADKIPFFDJFELKLAJCPHBA; HttpOnly; secure
+Set-Cookie: TS01a1c3b4=01439f1ddfaeb5585773d26986ba09c0c469c950264995ace9e0f4b377fdfda468d8044e2d43d95979a624cfbf23a3d2396bd941038664eceeee68a7d46fd85008526fecb0276081f6c59d11a16ba527c5a740f129; Path=/
+Vary: Accept-Encoding

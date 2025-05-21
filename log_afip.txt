@@ -1,0 +1,88 @@
+=== INICIO HOMOLOGACION [2025-05-21 19:18:39] ===
+Incluyendo: /var/www/html/controladores/../extensiones/arca/wsfev1.php
+Clases AFIP incluidas OK
+Cliente obtenido:
+Array
+(
+    [id] => 259
+    [0] => 259
+    [nombre] => NOELIA GONZALEZ
+    [1] => NOELIA GONZALEZ
+    [cuit] => 27305331703
+    [2] => 27305331703
+    [tipoiva] => RESPONSABLE MONOTRIBUTO
+    [3] => RESPONSABLE MONOTRIBUTO
+    [direccion] => .
+    [4] => .
+    [localidad] => .
+    [5] => .
+)
+Último comprobante: 353
+Preparando voucher...
+VOUCHER ARMADO:
+{
+    "idVoucher": 1,
+    "numeroComprobante": 353,
+    "numeroPuntoVenta": 4,
+    "cae": 0,
+    "letra": "C",
+    "fechaVencimientoCAE": "",
+    "tipoResponsable": "",
+    "nombreCliente": "NOELIA GONZALEZ",
+    "domicilioCliente": "",
+    "fechaComprobante": "20250521",
+    "codigoTipoComprobante": 11,
+    "TipoComprobante": "Factura",
+    "codigoConcepto": 1,
+    "codigoMoneda": "PES",
+    "cotizacionMoneda": 1,
+    "fechaDesde": "20250519",
+    "fechaHasta": "20250520",
+    "fechaVtoPago": "20250521",
+    "codigoTipoDocumento": 80,
+    "CondicionIVAReceptorId": 6,
+    "TipoDocumento": "DNI",
+    "numeroDocumento": 27305331703,
+    "importeTotal": "1",
+    "importeOtrosTributos": 0,
+    "importeGravado": "1",
+    "importeNoGravado": 0,
+    "importeExento": 0,
+    "importeIVA": 0,
+    "codigoPais": 200,
+    "idiomaComprobante": 1,
+    "NroRemito": 0,
+    "CondicionVenta": "Efectivo",
+    "canmismaMoneda": "N",
+    "items": [
+        {
+            "codigo": "45",
+            "scanner": "45",
+            "descripcion": "VENTA DE FORMULARIO 08",
+            "codigoUnidadMedida": 7,
+            "UnidadMedida": "Unidades",
+            "codigoCondicionIVA": 1,
+            "Alic": 0,
+            "cantidad": 1,
+            "porcBonif": 0,
+            "impBonif": 0,
+            "precioUnitario": 1,
+            "importeIVA": 0,
+            "importeItem": 1
+        }
+    ],
+    "subtotivas": [],
+    "Tributos": [],
+    "CbtesAsoc": []
+}
+Llamando a emitirComprobante...
+Resultado AFIP:
+Array
+(
+    [cae] => 75210236317722
+    [fechaVencimientoCAE] => 20250531
+    [observaciones] => Array
+        (
+        )
+
+)
