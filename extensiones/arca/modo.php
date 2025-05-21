@@ -1,6 +1,6 @@
 <?php
 
-$prueba = "DEVELOPER"; //DEVELOPER o PRODUCCION
+$prueba = "PRODUCCION"; //DEVELOPER o PRODUCCION
 $item = "nombre";
 $valor = "ventas";
 $registro = ControladorComprobantes::ctrMostrarComprobantes($item, $valor);
