@@ -83,8 +83,13 @@ class Wsaa {
                     '</loginTicketRequest>');
             $TRA->addChild('header');
             $TRA->header->addChild('uniqueId', date('U'));
-            $TRA->header->addChild('generationTime', date('c', date('U') - 60));
-            $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
+            // $TRA->header->addChild('generationTime', date('c', date('U') - 60));
+            // $TRA->header->addChild('expirationTime', date('c', date('U') + 60));
+
+            $TRA->header->addChild('generationTime', date('c', time() - 2500));
+
+            $TRA->header->addChild('expirationTime', date('c', time() + 3600));
+
             $TRA->addChild('service', $this->service);
             $TRA->asXML($this->base_dir . "/" . $this->cuit . '/' . $this->service . '/token/TRA.xml');
         } catch (Exception $exc) {

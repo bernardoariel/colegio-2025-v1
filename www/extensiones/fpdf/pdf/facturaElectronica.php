@@ -1,6 +1,6 @@
 <?php
 session_start();
-
+ob_start(); 
 include('../fpdf.php');
 include ('../../barcode.php');
 
@@ -105,7 +105,7 @@ function eliminarQRViejos($carpeta, $dias = 30) {
         }
     }
 }
-
+$escribanos = [];
 // PARAMETROS
 $item= "id";
 $valor = 1;
@@ -243,14 +243,12 @@ $cantCodigodeBarra =strlen($codigodeBarra);
 $impares = 0;
 $pares = 0;
 
-for ($i=0; $i <= $cantCodigodeBarra ; $i+=2) { 
-	# code...
-	$impares=$impares+$codigodeBarra[$i];
+for ($i = 0; $i < $cantCodigodeBarra; $i += 2) {
+    $impares += intval($codigodeBarra[$i]);
 }
 
-for ($i=1; $i <= $cantCodigodeBarra ; $i+=2) { 
-	# code...
-	$pares=$pares+$codigodeBarra[$i];
+for ($i = 1; $i < $cantCodigodeBarra; $i += 2) {
+    $pares += intval($codigodeBarra[$i]);
 }
 
 $impares = $impares * 3;
@@ -534,12 +532,12 @@ $pdf->Cell(0,0,convertirLetras('Domicilio:'));
 $pdf -> SetY(76);
 $pdf -> SetX(138);
 $pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($escribanos['direccion']));
+$pdf->Cell(0,0,convertirLetras(isset($escribanos['direccion']) ? $escribanos['direccion'] : ''));
 
 $pdf -> SetY(80);
 $pdf -> SetX(138);
 $pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($escribanos['localidad']));
+$pdf->Cell(0,0,convertirLetras(isset($escribanos['localidad']) ? $escribanos['localidad'] : ''));
 /*=============================================
 			ENCABEZADO
 =============================================*/
@@ -972,12 +970,12 @@ $pdf->Cell(0,0,convertirLetras('Domicilio:'));
 $pdf -> SetY(76+$pagina2);
 $pdf -> SetX(138);
 $pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($escribanos['direccion']));
+$pdf->Cell(0,0,convertirLetras(isset($escribanos['direccion']) ? $escribanos['direccion'] : ''));
 
 $pdf -> SetY(80+$pagina2);
 $pdf -> SetX(138);
 $pdf -> SetFont('Arial','',10);
-$pdf->Cell(0,0,convertirLetras($escribanos['localidad']));
+$pdf->Cell(0,0,convertirLetras(isset($escribanos['localidad']) ? $escribanos['localidad'] : ''));
 /*=============================================
 			ENCABEZADO
 =============================================*/
@@ -1563,9 +1561,10 @@ $pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabili
 // $pdf->Cell(15,0,convertirLetras($codigodeBarra.$ultimoDigito));	
 
 /*=====  End of PAGINA 2  ======*/
+if (ob_get_length()) ob_end_clean();
 $pdf->AutoPrint();
 $pdf->Output();
 
-
+exit;
 
 ?>

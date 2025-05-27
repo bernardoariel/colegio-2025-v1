@@ -1,34 +1,18 @@
-=== INICIO HOMOLOGACION [2025-05-21 19:18:39] ===
+=== INICIO HOMOLOGACION [2025-05-21 20:38:21] ===
 Incluyendo: /var/www/html/controladores/../extensiones/arca/wsfev1.php
 Clases AFIP incluidas OK
-Cliente obtenido:
-Array
-(
-    [id] => 259
-    [0] => 259
-    [nombre] => NOELIA GONZALEZ
-    [1] => NOELIA GONZALEZ
-    [cuit] => 27305331703
-    [2] => 27305331703
-    [tipoiva] => RESPONSABLE MONOTRIBUTO
-    [3] => RESPONSABLE MONOTRIBUTO
-    [direccion] => .
-    [4] => .
-    [localidad] => .
-    [5] => .
-)
-Último comprobante: 353
+Último comprobante: 354
 Preparando voucher...
 VOUCHER ARMADO:
 {
     "idVoucher": 1,
-    "numeroComprobante": 353,
+    "numeroComprobante": 354,
     "numeroPuntoVenta": 4,
     "cae": 0,
     "letra": "C",
     "fechaVencimientoCAE": "",
     "tipoResponsable": "",
-    "nombreCliente": "NOELIA GONZALEZ",
+    "nombreCliente": "CONSUMIDOR FINAL",
     "domicilioCliente": "",
     "fechaComprobante": "20250521",
     "codigoTipoComprobante": 11,
@@ -39,13 +23,13 @@ VOUCHER ARMADO:
     "fechaDesde": "20250519",
     "fechaHasta": "20250520",
     "fechaVtoPago": "20250521",
-    "codigoTipoDocumento": 80,
-    "CondicionIVAReceptorId": 6,
+    "codigoTipoDocumento": 99,
+    "CondicionIVAReceptorId": 5,
     "TipoDocumento": "DNI",
-    "numeroDocumento": 27305331703,
-    "importeTotal": "1",
+    "numeroDocumento": 0,
+    "importeTotal": "500",
     "importeOtrosTributos": 0,
-    "importeGravado": "1",
+    "importeGravado": "500",
     "importeNoGravado": 0,
     "importeExento": 0,
     "importeIVA": 0,
@@ -66,9 +50,9 @@ VOUCHER ARMADO:
             "cantidad": 1,
             "porcBonif": 0,
             "impBonif": 0,
-            "precioUnitario": 1,
+            "precioUnitario": 500,
             "importeIVA": 0,
-            "importeItem": 1
+            "importeItem": 500
         }
     ],
     "subtotivas": [],
@@ -79,7 +63,7 @@ Llamando a emitirComprobante...
 Resultado AFIP:
 Array
 (
-    [cae] => 75210236317722
+    [cae] => 75210236322149
     [fechaVencimientoCAE] => 20250531
     [observaciones] => Array
         (
