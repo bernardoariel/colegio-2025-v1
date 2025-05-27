@@ -213,12 +213,24 @@
           <div class="box box-danger">
             
             <!-- /.box-header -->
-            <div class="box-body">
+            <?php if ($cuotas && is_array($cuotas)): ?>
+              <p>Se generaron las <strong>CUOTAS</strong> del mes de 
+                <strong><?php echo $cuotas['mes'] . "/" . $cuotas['anio']; ?></strong> 
+                en la fecha <?php echo $cuotas['fecha']; ?>
+              </p>
+            <?php else: ?>
+              <p>No se encontraron cuotas generadas.</p>
+            <?php endif; ?>
 
-              
-              <p>Se generaron las <strong>CUOTAS</strong> del mes de <strong><?php echo $cuotas['mes']."/".$cuotas['anio'];?></strong> en la fecha <?php echo $cuotas['fecha'];?></p>
-              <p>Se generaron los  <strong>REINTEGROS de OSDE</strong> del mes de <strong><?php echo $osde['mes']."/".$osde['anio'];?></strong> en la fecha <?php echo $osde['fecha'];?></p>
-            </div>
+            <?php if ($osde && is_array($osde)): ?>
+              <p>Se generaron los <strong>REINTEGROS de OSDE</strong> del mes de 
+                <strong><?php echo $osde['mes'] . "/" . $osde['anio']; ?></strong> 
+                en la fecha <?php echo $osde['fecha']; ?>
+              </p>
+            <?php else: ?>
+              <p>No se encontraron reintegros OSDE generados.</p>
+            <?php endif; ?>
+
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
