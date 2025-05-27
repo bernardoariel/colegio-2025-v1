@@ -1287,13 +1287,23 @@ echo $productosNuevosInicio . $productosNuevosMedio . $productosNuevosFinal;
 
 	
 
-	static public function ctrNombreMes($mes){
+	static public function ctrNombreMes($mes) {
+		$meses = [
+			1 => 'Enero',
+			2 => 'Febrero',
+			3 => 'Marzo',
+			4 => 'Abril',
+			5 => 'Mayo',
+			6 => 'Junio',
+			7 => 'Julio',
+			8 => 'Agosto',
+			9 => 'Septiembre',
+			10 => 'Octubre',
+			11 => 'Noviembre',
+			12 => 'Diciembre'
+		];
 
-		setlocale(LC_TIME, 'spanish');  
-
-		$nombre=strftime("%B",mktime(0, 0, 0, $mes, 1, 2000)); 
-
-		return $nombre;
+		return $meses[(int)$mes] ?? 'Mes inválido';
 	}
 
 	static public function ctrRealizarPagoVenta(){

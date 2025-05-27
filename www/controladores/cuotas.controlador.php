@@ -363,7 +363,10 @@ class ControladorCuotas{
 	     	$valor = $value['id_categoria'];
 
 	     	$categoria = ControladorCategorias::ctrMostrarCategorias($item, $valor);
-	     	$importe = $categoria["importe"];
+			if ($resultado && isset($resultado['importe'])) {
+				$importe = $categoria["importe"];
+			}
+	     	
 	     	
 	     	$productos = '[{"id":"20","descripcion":"CUOTA MENSUAL '.strtoupper($mes).'/'.$anio.'","idnrocomprobante":"100","cantventaproducto":"1","folio1":"1","folio2":"1","cantidad":"1","precio":"'.$categoria["importe"].'","total":"'.$categoria["importe"].'"}]';
 

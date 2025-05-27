@@ -1,18 +1,19 @@
 version: '3.1'
 
 services:
-  web:
+  web_v8:
     build: ./php
+    container_name: colegio_web_v8
     ports:
-      - "8080:80"
+      - "8088:80"
     volumes:
       - ./www:/var/www/html
     depends_on:
-      - db
+      - db_v8
 
-  db:
+  db_v8:
     image: mysql:5.7
-    container_name: colegio_db
+    container_name: colegio_db_v8
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -20,22 +21,22 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: userpass
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data_v8:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
 
-  phpmyadmin:
+  phpmyadmin_v8:
     image: phpmyadmin/phpmyadmin
-    container_name: colegio_phpmyadmin
+    container_name: colegio_phpmyadmin_v8
     restart: always
     ports:
-      - "8081:80"
+      - "8089:80"
     environment:
-      PMA_HOST: db
+      PMA_HOST: db_v8
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: root
     depends_on:
-      - db
+      - db_v8
 
 volumes:
-  db_data:
+  db_data_v8:
