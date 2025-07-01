@@ -65,14 +65,16 @@
             $valor = $value["id_categoria"];
             $libros = $value["ultimolibrocomprado"] - $value["ultimolibrodevuelto"];
             $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
-
+            $categoriaTexto = ($categorias && isset($categorias["categoria"])) 
+            ? $categorias["categoria"] 
+            : "Sin categoría";  
             echo '<tr>
 
                     <td>'.($key+1).'</td>
 
                     <td>'.$value["nombre"].'</td>
 
-                    <td>'.$categorias["categoria"].'</td>
+                    <td>'.$categoriaTexto.'</td>
 
                     <td>'.$value["localidad"].'</td>
 

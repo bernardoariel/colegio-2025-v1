@@ -19,7 +19,7 @@ $(".btnImprimirPdfSH").on("click",function(){
 
 	let idFactura = $(this).attr("idFactura");
 	/* window.open("extensiones/tcpdf/pdf/factura.php?id="+idFactura, "FACTURA",1,2); */
-	window.open("extensiones/tcpdf/pdf/factura.php?id="+idFactura, "FACTURA",1);
+	window.open("extensiones/fpdf/pdf/factura2.php?id="+idFactura, "FACTURA",1);
 	
 })
 
@@ -690,7 +690,7 @@ $(".tablas").on("click", ".btnVerVenta", function(){
 	var codigo = $(this).attr("codigo");
 	console.log("codigo", codigo);
 	$(".finFactura #imprimirItems").remove();
-	boton = '<a href="extensiones/tcpdf/pdf/factura.php?id='+idVenta+'" target="_blank" id="imprimirItems"><button type="button" class="btn btn-info pull-left">Imprimir Factura</button></a>';
+	boton = '<a href="extensiones/fpdf/pdf/factura2.php?id='+idVenta+'" target="_blank" id="imprimirItems"><button type="button" class="btn btn-info pull-left">Imprimir Factura</button></a>';
 	$(".finFactura").append(boton);
 	$(".tablaArticulosVer").empty();
 	var datos = new FormData();

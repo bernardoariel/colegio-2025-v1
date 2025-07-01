@@ -1,6 +1,13 @@
 <?php
+// LIMPIEZA PREVIA
+while (ob_get_level()) ob_end_clean(); // Limpiar TODOS los niveles de buffer
+ob_start(); // Activar uno limpio
+
+// SESIÓN Y DEPURACIÓN
 session_start();
-ob_start(); 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include('../fpdf.php');
 include ('../../barcode.php');
 
@@ -115,6 +122,10 @@ $parametros = ControladorParametros::ctrMostrarParametros($item,$valor);
 $item= "id";
 $valor = $_GET['id'];
 $ventas = ControladorVentas::ctrMostrarVentas($item,$valor);
+
+if (!$venta || !isset($venta['productos'])) {
+    die("❌ Venta no encontrada o sin productos válidos.");
+}
 
 if($ventas['tipo']=='NC'){
 	
@@ -1560,11 +1571,21 @@ $pdf->Cell(15,0,convertirLetras('Esta Administración Federal no se responsabili
 // $pdf -> SetFont('Arial','',7);
 // $pdf->Cell(15,0,convertirLetras($codigodeBarra.$ultimoDigito));	
 
-/*=====  End of PAGINA 2  ======*/
-if (ob_get_length()) ob_end_clean();
-$pdf->AutoPrint();
+// VERIFICACIÓN FINAL DE ERRORES
+if (headers_sent($file, $line)) {
+    die("❌ Se enviaron headers previamente en $file línea $line");
+}
+
+if (ob_get_length()) {
+    echo "🟡 Buffer tiene salida previa: " . ob_get_length();
+    exit;
+}
+
+// CIERRE DEL BUFFER Y SALIDA LIMPIA
+if (ob_get_length()) {
+    ob_end_clean();
+}
+
 $pdf->Output();
-
 exit;
-
 ?>

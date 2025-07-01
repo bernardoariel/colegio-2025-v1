@@ -134,7 +134,9 @@ include('extensiones/arca/consulta.php');
 
             }
             
-            echo '<h5><strong>Ultimo Nro. de Comprobante: '.$cmp["number"].'</strong></h5>';
+           echo '<h5><strong>Último Nro. de Comprobante: ' . 
+     (is_array($cmp) && isset($cmp["number"]) ? $cmp["number"] : '[N/D]') . 
+     '</strong></h5>';
            ?>
 
           </div>
@@ -187,10 +189,11 @@ include('extensiones/arca/consulta.php');
           <div class="form-group">
                 
                 <div class="input-group">
-                
+
                   <span class="input-group-addon" style="background-color: blue;color:white;">Cuit</span> 
 
-                  <input type="text" class="form-control input-lg"  value="<?php echo $miObjeto['DocNro'];?>"> 
+                  <input type="text" class="form-control input-lg"  
+       value="<?php echo (is_array($miObjeto) && isset($miObjeto['DocNro'])) ? $miObjeto['DocNro'] : ''; ?>">
 
                 </div>
 
@@ -300,7 +303,7 @@ include('extensiones/arca/consulta.php');
              
               #BUSCO EL CAE DE LA FACTURA PARA TENER LOS DATOS QUE TENGO GUARDADO EN MI TABLA
               $item = "cae";
-              $valor = $miObjeto['CodAutorizacion'];34511
+              $valor = $miObjeto['CodAutorizacion'];
 
  // echo $miObjeto['CodAutorizacion'];
               $ventas = ControladorVentas::ctrMostrarVentas($item,$valor);

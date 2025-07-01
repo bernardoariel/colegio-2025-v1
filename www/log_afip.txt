@@ -1,35 +1,89 @@
-=== INICIO HOMOLOGACION [2025-05-21 20:38:21] ===
+=== INICIO HOMOLOGACION [2025-05-27 22:11:32] ===
 Incluyendo: /var/www/html/controladores/../extensiones/arca/wsfev1.php
 Clases AFIP incluidas OK
-Último comprobante: 354
+ESCRI obtenido:
+Array
+(
+    [id] => 89
+    [0] => 89
+    [nombre] => VERGARA MAURICIO MARTIN
+    [1] => VERGARA MAURICIO MARTIN
+    [direccion] => RIVADAVIA 1387
+    [2] => RIVADAVIA 1387
+    [localidad] => FORMOSA
+    [3] => FORMOSA
+    [telefono] => (370) 443-0713
+    [4] => (370) 443-0713
+    [documento] => 33333333
+    [5] => 33333333
+    [id_tipo_iva] => 6
+    [6] => 6
+    [tipo] => ESCRIBANO
+    [7] => ESCRIBANO
+    [facturacion] => CUIT
+    [8] => CUIT
+    [tipo_factura] => FACTURA
+    [9] => FACTURA
+    [cuit] => 20328854601
+    [10] => 20328854601
+    [email] => ESC.MAURICIOVERGARA@GMAIL.COM
+    [11] => ESC.MAURICIOVERGARA@GMAIL.COM
+    [id_categoria] => 2
+    [12] => 2
+    [id_escribano_relacionado] => 13
+    [13] => 13
+    [id_osde] => 255
+    [14] => 255
+    [ultimolibrocomprado] => 13
+    [15] => 13
+    [ultimolibrodevuelto] => 12
+    [16] => 12
+    [inhabilitado] => 1
+    [17] => 1
+    [obs] => 
+    [18] => 
+    [activo] => 1
+    [19] => 1
+    [obsdel] => 
+    [20] => 
+    [fechacreacion] => 2025-05-27 22:49:24
+    [21] => 2025-05-27 22:49:24
+    [apellido_ws] => VERGARA
+    [22] => VERGARA
+    [nombre_ws] => MAURICIO MARTIN
+    [23] => MAURICIO MARTIN
+    [matricula_ws] => 0
+    [24] => 0
+)
+Último comprobante: 357
 Preparando voucher...
 VOUCHER ARMADO:
 {
     "idVoucher": 1,
-    "numeroComprobante": 354,
+    "numeroComprobante": 357,
     "numeroPuntoVenta": 4,
     "cae": 0,
     "letra": "C",
     "fechaVencimientoCAE": "",
     "tipoResponsable": "",
-    "nombreCliente": "CONSUMIDOR FINAL",
+    "nombreCliente": "VERGARA MAURICIO MARTIN",
     "domicilioCliente": "",
-    "fechaComprobante": "20250521",
+    "fechaComprobante": "20250527",
     "codigoTipoComprobante": 11,
     "TipoComprobante": "Factura",
     "codigoConcepto": 1,
     "codigoMoneda": "PES",
     "cotizacionMoneda": 1,
-    "fechaDesde": "20250519",
-    "fechaHasta": "20250520",
-    "fechaVtoPago": "20250521",
-    "codigoTipoDocumento": 99,
-    "CondicionIVAReceptorId": 5,
+    "fechaDesde": "20250525",
+    "fechaHasta": "20250526",
+    "fechaVtoPago": "20250527",
+    "codigoTipoDocumento": 80,
+    "CondicionIVAReceptorId": 6,
     "TipoDocumento": "DNI",
-    "numeroDocumento": 0,
-    "importeTotal": "500",
+    "numeroDocumento": 20328854601,
+    "importeTotal": 337575,
     "importeOtrosTributos": 0,
-    "importeGravado": "500",
+    "importeGravado": 337575,
     "importeNoGravado": 0,
     "importeExento": 0,
     "importeIVA": 0,
@@ -40,9 +94,9 @@ VOUCHER ARMADO:
     "canmismaMoneda": "N",
     "items": [
         {
-            "codigo": "45",
-            "scanner": "45",
-            "descripcion": "VENTA DE FORMULARIO 08",
+            "codigo": "22",
+            "scanner": "22",
+            "descripcion": "REINTEGRO OSDE ABRIL\/2025",
             "codigoUnidadMedida": 7,
             "UnidadMedida": "Unidades",
             "codigoCondicionIVA": 1,
@@ -50,9 +104,9 @@ VOUCHER ARMADO:
             "cantidad": 1,
             "porcBonif": 0,
             "impBonif": 0,
-            "precioUnitario": 500,
+            "precioUnitario": 337575,
             "importeIVA": 0,
-            "importeItem": 500
+            "importeItem": 337575
         }
     ],
     "subtotivas": [],
@@ -63,8 +117,8 @@ Llamando a emitirComprobante...
 Resultado AFIP:
 Array
 (
-    [cae] => 75210236322149
-    [fechaVencimientoCAE] => 20250531
+    [cae] => 75210242043104
+    [fechaVencimientoCAE] => 20250606
     [observaciones] => Array
         (
         )

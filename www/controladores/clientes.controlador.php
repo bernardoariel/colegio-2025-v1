@@ -82,7 +82,7 @@ class ControladorClientes{
 
 				swal({
 					  type: "success",
-					  title: "El Escribano ha sido borrado correctamente",
+					  title: "El Cliente ha sido borrado correctamente",
 					  showConfirmButton: true,
 					  confirmButtonText: "Cerrar",
 					  closeOnConfirm: false
