@@ -7,7 +7,7 @@ $(".tablas").on("click", ".btnImprimirCaja", function(){
 	console.log("fecha", fecha);
 
 	window.open("extensiones/fpdf/pdf/caja.php?fecha1="+fecha);
-				 window.location = "inicio";
+				//  window.location = "inicio";
 
 })
 /*=============================================

@@ -1,5 +1,12 @@
 <?php
+while (ob_get_level()) ob_end_clean();
+ob_start();
 
+// Configurar headers para PDF
+header('Content-Type: application/pdf');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 require_once "../../../controladores/ventas.controlador.php";
 require_once "../../../modelos/ventas.modelo.php";
@@ -740,4 +747,8 @@ $pdf->Cell(19,0,$importeFacturas+$importeRemitos ,0,0,'R');//IMPORTE
 
 // El documento enviado al navegador
 $pdf->Output();
+
+// Limpiar y enviar el buffer
+ob_end_flush();
+exit();
 ?>

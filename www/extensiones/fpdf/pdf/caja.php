@@ -1,5 +1,6 @@
 <?php
-
+while (ob_get_level()) ob_end_clean();
+ob_start();
 
 require_once "../../../controladores/ventas.controlador.php";
 require_once "../../../modelos/ventas.modelo.php";
@@ -419,4 +420,5 @@ $pdf->SetXY(142,$altura+14);
 
 // El documento enviado al navegador
 $pdf->Output();
+ob_end_flush();
 ?>

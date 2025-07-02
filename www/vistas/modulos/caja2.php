@@ -227,7 +227,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Efectivo <a href="http://localhost/colegio/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=EFECTIVO" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Efectivo <a href="http://localhost:8088/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=EFECTIVO" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number" style="font-size: 15px">$<?php echo number_format($caja[0]['efectivo'],2); ?></span>
 
             </div>
@@ -244,7 +244,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Tarjeta  <a href="http://localhost/colegio/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=TARJETA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Tarjeta  <a href="http://localhost:8088/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=TARJETA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number" style="font-size: 15px">$<?php echo number_format($caja[0]['tarjeta'],2); ?></span>
 
             </div>
@@ -261,7 +261,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Cheque <a href="http://localhost/colegio/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=CHEQUE" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Cheque <a href="http://localhost:8088/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=CHEQUE" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number" style="font-size: 15px">$<?php echo number_format($caja[0]['cheque'],2); ?></span>
 
             </div>
@@ -278,7 +278,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Transferencias <a href="http://localhost/colegio/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=TRANSFERENCIA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Transferencias <a href="http://localhost:8088/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=TRANSFERENCIA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number" style="font-size: 15px">$<?php echo number_format($caja[0]['transferencia'],2); ?></span>
 
             </div>
@@ -295,7 +295,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Cuenta Corriente <a href="http://localhost/colegio/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=CTA.CORRIENTE" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Cuenta Corriente <a href="http://localhost:8088/extensiones/fpdf/pdf/informe-caja.php?fecha1=<?php echo $fecha1;?>&tipopago=CTA.CORRIENTE" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number"  style="font-size: 15px">$<?php echo number_format($cuentaCorrienteVenta+$cuentaCorrienteRemito,2); ?></span>
 
             </div>
@@ -312,7 +312,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
               <h5></h5>
-              <span class="info-box-text"><strong>Ventas <a href="http://localhost/colegio/extensiones/fpdf/pdf/ventas.php?fecha1=<?php echo $fecha1;?>&tipoventa=VENTA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Ventas <a href="http://localhost:8088/extensiones/fpdf/pdf/ventas.php?fecha1=<?php echo $fecha1;?>&tipoventa=VENTA" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               
               <span class="info-box-number">Total $<?php echo number_format($totalventas,2); ?></span>
               
@@ -330,7 +330,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
               <h5></h5>
-              <span class="info-box-text"><strong>Remitos <a href="http://localhost/colegio/extensiones/fpdf/pdf/ventas.php?fecha1=<?php echo $fecha1;?>&tipoventa=REMITO" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Remitos <a href="http://localhost:8088/extensiones/fpdf/pdf/ventas.php?fecha1=<?php echo $fecha1;?>&tipoventa=REMITO" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               
               <span class="info-box-number">Total $<?php echo number_format($totalRemitos,2); ?></span>
               
@@ -348,7 +348,7 @@ switch (intval($fechaFormateada[1])) {
 
             <div class="info-box-content">
 
-              <span class="info-box-text"><strong>Pagos de Cta.Corriente <a href="http://localhost/colegio/extensiones/fpdf/pdf/pagos.php?fecha1=<?php echo $fecha1;?>" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
+              <span class="info-box-text"><strong>Pagos de Cta.Corriente <a href="http://localhost:8088/extensiones/fpdf/pdf/pagos.php?fecha1=<?php echo $fecha1;?>" target="_blank"></strong><i class="fa fa-external-link-square" aria-hidden="true"></i></a></span>
               <span class="info-box-number">$<?php echo number_format($pagosVenta+$pagosRemito,2); ?></span>
 
             </div>

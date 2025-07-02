@@ -1,5 +1,13 @@
 <?php
+// Limpiar cualquier salida previa y configurar buffer
+while (ob_get_level()) ob_end_clean();
+ob_start();
 
+// Configurar headers para PDF
+header('Content-Type: application/pdf');
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 session_start();
 include('../fpdf.php');
@@ -304,4 +312,7 @@ $pdf->Cell(0,0,$ventas['total']);
 $pdf->AutoPrint();
 $pdf->Output();
 
+// Limpiar y enviar el buffer
+ob_end_flush();
+exit();
 ?>
