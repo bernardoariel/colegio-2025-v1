@@ -371,7 +371,7 @@ class ControladorCuotas{
 
 	     	
 	     	
-	     	$productos = '[{"id":"20","descripcion":"CUOTA MENSUAL '.strtoupper($mes).'/'.$anio.'","idnrocomprobante":"100","cantventaproducto":"1","folio1":"1","folio2":"1","cantidad":"1","precio":"'.$categoria["importe"].'","total":"'.$categoria["importe"].'"}]';
+	     	$productos = '[{"id":"20","descripcion":"CUOTA MENSUAL '.strtoupper($mes).'/'.$anio.'","idnrocomprobante":"100","cantventaproducto":"1","folio1":"1","folio2":"1","cantidad":"1","precio":"'.$importe.'","total":"'.$importe.'"}]';
 
 	     	$tabla = "cuotas";
 
