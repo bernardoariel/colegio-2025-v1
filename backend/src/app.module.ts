@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EscribanosModule } from './escribanos/escribanos.module';
+import { ApostillasModule } from './apostillas/apostillas.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { EscribanosModule } from './escribanos/escribanos.module';
       charset: 'utf8',
     }),
     EscribanosModule,
+    ApostillasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
