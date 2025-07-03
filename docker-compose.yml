@@ -23,7 +23,8 @@ services:
     volumes:
       - db_data_v8:/var/lib/mysql
       - ./db:/docker-entrypoint-initdb.d
-
+    ports:
+      - "3306:3306"
   phpmyadmin_v8:
     image: phpmyadmin/phpmyadmin
     container_name: colegio_phpmyadmin_v8
